@@ -2,8 +2,6 @@ package cz.muni.fi.pv168.freelancertimesheet.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainMenu extends JPanel {
 
