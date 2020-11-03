@@ -19,4 +19,14 @@ public interface ServiceType {
     public ServiceType validateHourlyRate(BigDecimal hourlyRate);
 
     public ServiceType validateHourlyRate(String hourlyRate);
+
+    public ServiceType createServiceType(
+            String description,
+            BigDecimal hourlyRate
+    );
+
+    public ServiceType createServiceType(
+            String description,
+            String hourlyRate
+    );
 }

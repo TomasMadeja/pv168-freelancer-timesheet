@@ -21,4 +21,10 @@ public interface Service {
     public Service setServiceType(ServiceType serviceType);
 
     public Service validateServiceType(ServiceType serviceType);
+
+    public Service createService(
+            ZonedDateTime startTime,
+            ZonedDateTime endTime,
+            ServiceType serviceType
+    );
 }
