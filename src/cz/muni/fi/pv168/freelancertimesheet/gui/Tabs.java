@@ -6,9 +6,9 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.TaskTab;
 import javax.swing.*;
 import java.awt.*;
 
-public class TabWindow extends JTabbedPane implements GenericElement {
+public class Tabs extends JTabbedPane implements GenericElement {
 
-    public TabWindow(int tabsPosition, int tabsBehaviour) {
+    public Tabs(int tabsPosition, int tabsBehaviour) {
         super(tabsPosition, tabsBehaviour);
     }
 
@@ -17,13 +17,15 @@ public class TabWindow extends JTabbedPane implements GenericElement {
         return this;
     }
 
-    public TabWindow setupVisuals() {
+    @Override
+    public Tabs setupVisuals() {
         return this;
     }
 
-    public TabWindow setupNested() {
-        var taskPanel = new TaskTab();
-        var invoicePanel = new InvoiceTab();
+    @Override
+    public Tabs setupNested() {
+        var taskPanel = TaskTab.setup();
+        var invoicePanel = InvoiceTab.setup();
 
         // need to create individual labels for each tabs
         // it allows to set custom size
@@ -43,8 +45,8 @@ public class TabWindow extends JTabbedPane implements GenericElement {
     }
 
 
-    public static TabWindow setupPanel() {
-        var tabs = new TabWindow(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
+    public static Tabs setup() {
+        var tabs = new Tabs(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
         tabs.setupNested();
         tabs.setVisible(true);
         return tabs;

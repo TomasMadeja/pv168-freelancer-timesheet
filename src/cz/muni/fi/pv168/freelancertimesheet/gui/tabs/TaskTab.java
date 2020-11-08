@@ -1,48 +1,48 @@
-package cz.muni.fi.pv168.freelancertimesheet.gui;
+package cz.muni.fi.pv168.freelancertimesheet.gui.tabs;
+
+import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskTable;
+import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TopPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class TaskPanel extends JPanel {
+/**
+ * Whole pane is divided into two sections
+ * Top one has text fields and buttons
+ * Bottom one has big table
+ */
+public class TaskTab extends JPanel implements GenericElement {
 
-    // TODO divide into specific functions
-    public TaskPanel() {
-        // Whole pane is divided into two sections
-        // Top one has text fields and buttons
-        // Bottom one has big table
-
-        JPanel topPanel = new JPanel();
-
-
-        var topLayout = new GridLayout(4, 2);
-        topLayout.setHgap(10);
-        topLayout.setVgap(20);
-
-        topPanel.setLayout(topLayout);
-
-        topPanel.add(new JLabel("Enter date:"));
-        topPanel.add(new JTextField());
-        topPanel.add(new JLabel("Enter task name:"));
-        topPanel.add(new JTextField());
-        topPanel.add(new JLabel("Enter description:"));
-        topPanel.add(new JTextField());
-        topPanel.add(new JButton("Add Task"));
-
-        // column names are not visible
-        String[] columnNames = {"Date", "Task name", "Description"};
-        String[][] data = {
-                {"1.1.1900", "Homework", "IB002"},
-                {"2.1.1900", "Homework", "IB111"}
-        };
-
-        var table = new JTable(data, columnNames);
-
-        var layout = new GridLayout(2, 1);
-        this.setLayout(layout);
-
-        this.add(topPanel);
-        this.add(table);
-
+    public TaskTab() {
+        super();
     }
 
+    @Override
+    public TaskTab setupLayout() {
+        GridLayout layout = new GridLayout(2, 1);
+        this.setLayout(layout);
+        return this;
+    }
+
+    @Override
+    public TaskTab setupVisuals() {
+        return this;
+    }
+
+    @Override
+    public TaskTab setupNested() {
+        this.add(TopPanel.setup());
+        this.add(TaskTable.setup());
+        return this;
+    }
+
+    public static TaskTab setup() {
+        TaskTab taskTab = new TaskTab();
+        taskTab
+                .setupLayout()
+                .setupVisuals()
+                .setupNested();
+        return taskTab;
+    }
 }

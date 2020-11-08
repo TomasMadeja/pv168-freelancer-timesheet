@@ -6,32 +6,32 @@ import java.awt.*;
 /**
  * Main window
  */
-public class Window extends JFrame implements GenericElement{
+public class MainWindow extends JFrame implements GenericElement{
     private JPanel rootPanel;
 
 
-    public Window() throws HeadlessException {
+    public MainWindow() throws HeadlessException {
         super();
     }
 
-    public Window(GraphicsConfiguration gc) {
+    public MainWindow(GraphicsConfiguration gc) {
         super(gc);
     }
 
-    public Window(String title) throws HeadlessException {
+    public MainWindow(String title) throws HeadlessException {
         super(title);
     }
 
-    public Window(String title, GraphicsConfiguration gc) {
+    public MainWindow(String title, GraphicsConfiguration gc) {
         super(title, gc);
     }
 
-    public Window setupLayout() // No need to
+    public MainWindow setupLayout() // No need to
     {
         return this;
     }
 
-    public Window setupVisuals()
+    public MainWindow setupVisuals()
     {
         rootPanel.setPreferredSize(
                 new Dimension(1000, 500)
@@ -44,25 +44,26 @@ public class Window extends JFrame implements GenericElement{
         return this;
     }
 
-    public Window setupNested() {
-        rootPanel.add(TabbedPane.setupPanel());
+    public MainWindow setupNested() {
+        rootPanel.add(Tabs.setup());
         return this;
     }
 
-    public static Window setupFrame() {
-        Window dashboard = new Window("Dashboard");
-        dashboard.rootPanel = new JPanel(new BorderLayout());
+    public static MainWindow setup() {
+        MainWindow window = new MainWindow("Dashboard");
+        window.rootPanel = new JPanel(new BorderLayout());
 
-        dashboard.setupLayout();
-        dashboard.setupVisuals();
-        dashboard.setupNested();
+        window
+                .setupLayout()
+                .setupVisuals()
+                .setupNested();
 
-        dashboard.add(dashboard.rootPanel);
-        dashboard.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        window.add(window.rootPanel);
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        dashboard.pack();
-        dashboard.setVisible(true);
+        window.pack();
+        window.setVisible(true);
 
-        return dashboard;
+        return window;
     }
 }
