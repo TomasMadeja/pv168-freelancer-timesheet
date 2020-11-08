@@ -3,6 +3,9 @@ package cz.muni.fi.pv168.freelancertimesheet.gui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Main window
+ */
 public class Dashboard extends JFrame {
 
     private JPanel rootPanel;
@@ -29,8 +32,7 @@ public class Dashboard extends JFrame {
         return this;
     }
 
-    private Dashboard setupFrameVisuals()
-    {
+    private Dashboard setupFrameVisuals() {
         rootPanel.setPreferredSize(
                 new Dimension(1000, 500)
         );
@@ -39,20 +41,19 @@ public class Dashboard extends JFrame {
         );
         rootPanel.setBackground(Color.BLUE);
         rootPanel.setOpaque(false);
-//        getContentPane().Op;.setBackground(Color.BLUE);
-//        setOpacity(0);
         return this;
     }
 
-    private Dashboard setupNested()
-    {
-        rootPanel.add(MainMenu.setupPanel(), BorderLayout.WEST);
-        rootPanel.add(MainTab.setupPanel(), BorderLayout.CENTER);
+    private Dashboard setupNested() {
+        rootPanel.add(TabbedPane.setupPanel());
+
+//        rootPanel.add(MainMenu.setupPanel(), BorderLayout.WEST);
+//        rootPanel.add(MainTab.setupPanel(), BorderLayout.CENTER);
         return this;
     }
 
-    public static JFrame setupFrame()
-    {
+    public static Dashboard setupFrame() {
+
         Dashboard dashboard = new Dashboard("Dashboard");
         dashboard.rootPanel = new JPanel(new BorderLayout());
 
@@ -62,12 +63,12 @@ public class Dashboard extends JFrame {
 
         dashboard.add(dashboard.rootPanel);
         dashboard.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        dashboard.pack();
+        dashboard.setVisible(true);
+
         return dashboard;
     }
 
-    public static void main(String[] args) {
-        Dashboard dash = (Dashboard) setupFrame();
-        dash.pack();
-        dash.setVisible(true);
-    }
+
 }
