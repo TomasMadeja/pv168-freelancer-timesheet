@@ -3,8 +3,10 @@ package cz.muni.fi.pv168.freelancertimesheet.gui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Main window
+ */
 public class Window extends JFrame implements GenericElement{
-
     private JPanel rootPanel;
 
 
@@ -39,35 +41,28 @@ public class Window extends JFrame implements GenericElement{
         );
         rootPanel.setBackground(Color.BLUE);
         rootPanel.setOpaque(false);
-//        getContentPane().Op;.setBackground(Color.BLUE);
-//        setOpacity(0);
         return this;
     }
 
-    public Window setupNested()
-    {
-        rootPanel.add(MainMenuBar.setup(), BorderLayout.NORTH);
-        rootPanel.add(MainPanel.setupPanel(), BorderLayout.CENTER);
+    public Window setupNested() {
+        rootPanel.add(TabbedPane.setupPanel());
         return this;
     }
 
-    public static JFrame setup()
-    {
-        Window window = new Window("Freelancer Timesheet");
-        window.rootPanel = new JPanel(new BorderLayout());
+    public static Window setupFrame() {
+        Window dashboard = new Window("Dashboard");
+        dashboard.rootPanel = new JPanel(new BorderLayout());
 
-        window.setupLayout();
-        window.setupVisuals();
-        window.setupNested();
+        dashboard.setupLayout();
+        dashboard.setupVisuals();
+        dashboard.setupNested();
 
-        window.add(window.rootPanel);
-        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        return window;
-    }
+        dashboard.add(dashboard.rootPanel);
+        dashboard.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-    public static void main(String[] args) {
-        Window dash = (Window) setup();
-        dash.pack();
-        dash.setVisible(true);
+        dashboard.pack();
+        dashboard.setVisible(true);
+
+        return dashboard;
     }
 }
