@@ -3,24 +3,24 @@ package cz.muni.fi.pv168.freelancertimesheet.gui;
 import javax.swing.*;
 import java.awt.*;
 
-public class MainTab extends JPanel {
-    public MainTab(LayoutManager layout, boolean isDoubleBuffered) {
+public class MainPanel extends JPanel {
+    public MainPanel(LayoutManager layout, boolean isDoubleBuffered) {
         super(layout, isDoubleBuffered);
     }
 
-    public MainTab(LayoutManager layout) {
+    public MainPanel(LayoutManager layout) {
         super(layout);
     }
 
-    public MainTab(boolean isDoubleBuffered) {
+    public MainPanel(boolean isDoubleBuffered) {
         super(isDoubleBuffered);
     }
 
-    public MainTab() {
+    public MainPanel() {
         super();
     }
 
-    public MainTab setupVisuals()
+    public MainPanel setupVisuals()
     {
         setPreferredSize(
                 new Dimension(500, 500)
@@ -35,7 +35,7 @@ public class MainTab extends JPanel {
     {
         JPanel pp = new JPanel(new BorderLayout());
         pp.setBackground(Color.RED);
-        MainTab tab = new MainTab(new GridBagLayout());
+        MainPanel tab = new MainPanel(new GridBagLayout());
         tab.setupVisuals();
         return tab;
     }

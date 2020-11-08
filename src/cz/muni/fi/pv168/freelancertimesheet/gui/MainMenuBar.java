@@ -2,31 +2,35 @@ package cz.muni.fi.pv168.freelancertimesheet.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
-public class MainMenu extends JPanel {
+public class MainMenuBar extends JPanel implements GenericElement {
 
-    public MainMenu(LayoutManager layout, boolean isDoubleBuffered) {
+    public MainMenuBar(LayoutManager layout, boolean isDoubleBuffered) {
         super(layout, isDoubleBuffered);
     }
 
-    public MainMenu(LayoutManager layout) {
+    public MainMenuBar(LayoutManager layout) {
         super(layout);
     }
 
-    public MainMenu(boolean isDoubleBuffered) {
+    public MainMenuBar(boolean isDoubleBuffered) {
         super(isDoubleBuffered);
     }
 
-    public MainMenu() {
+    public MainMenuBar() {
         super();
     }
 
-    public MainMenu setupVisuals()
+    @Override
+    public GenericElement setupLayout() {
+        return this;
+    }
+
+    @Override
+    public MainMenuBar setupVisuals()
     {
         setPreferredSize(
-                new Dimension(100, 500)
+                new Dimension(1000, 30)
         );
         setBackground(
                 Color.YELLOW
@@ -34,7 +38,8 @@ public class MainMenu extends JPanel {
         return this;
     }
 
-    private MainMenu setupNested()
+    @Override
+    public MainMenuBar setupNested()
     {
         JButton buttons[] = {
                 new JButton("test1"),
@@ -43,14 +48,15 @@ public class MainMenu extends JPanel {
         };
         GridBagConstraints coord = new GridBagConstraints();
         coord.fill = GridBagConstraints.BOTH;
-        coord.gridx = 10;
+        coord.gridx = 0;
         coord.gridy = 0;
         for (JButton button : buttons)
         {
             add(button, coord);
-            coord.gridy++;
+            coord.gridx++;
         }
         coord.weighty = 1;
+        coord.weightx = 1;
         JPanel padding = new JPanel();
         padding.setOpaque(false);
         add(padding, coord);
@@ -58,9 +64,9 @@ public class MainMenu extends JPanel {
         return this;
     }
 
-    public static JPanel setupPanel()
+    public static MainMenuBar setup()
     {
-        MainMenu menu = new MainMenu(new GridBagLayout());
+        MainMenuBar menu = new MainMenuBar(new GridBagLayout());
         menu.setupVisuals();
         menu.setupNested();
         return menu;
