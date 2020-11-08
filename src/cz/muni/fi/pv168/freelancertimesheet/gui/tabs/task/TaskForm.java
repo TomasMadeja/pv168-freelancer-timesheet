@@ -5,25 +5,25 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import javax.swing.*;
 import java.awt.*;
 
-public class TopPanel extends JPanel implements GenericElement {
-    public TopPanel(LayoutManager layout, boolean isDoubleBuffered) {
+public class TaskForm extends JPanel implements GenericElement {
+    public TaskForm(LayoutManager layout, boolean isDoubleBuffered) {
         super(layout, isDoubleBuffered);
     }
 
-    public TopPanel(LayoutManager layout) {
+    public TaskForm(LayoutManager layout) {
         super(layout);
     }
 
-    public TopPanel(boolean isDoubleBuffered) {
+    public TaskForm(boolean isDoubleBuffered) {
         super(isDoubleBuffered);
     }
 
-    public TopPanel() {
+    public TaskForm() {
         super();
     }
 
     @Override
-    public TopPanel setupLayout() {
+    public TaskForm setupLayout() {
         GridLayout topLayout = new GridLayout(4, 2);
         topLayout.setHgap(10);
         topLayout.setVgap(20);
@@ -33,12 +33,12 @@ public class TopPanel extends JPanel implements GenericElement {
     }
 
     @Override
-    public TopPanel setupVisuals() {
+    public TaskForm setupVisuals() {
         return this;
     }
 
     @Override
-    public TopPanel setupNested() {
+    public TaskForm setupNested() {
         add(new JLabel("Enter date:"));
         add(new JTextField());
         add(new JLabel("Enter task name:"));
@@ -49,8 +49,8 @@ public class TopPanel extends JPanel implements GenericElement {
         return this;
     }
 
-    public static TopPanel setup() {
-        TopPanel panel = new TopPanel();
+    public static TaskForm setup() {
+        TaskForm panel = new TaskForm();
         panel
                 .setupLayout()
                 .setupVisuals()

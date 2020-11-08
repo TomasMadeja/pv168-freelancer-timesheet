@@ -1,6 +1,8 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.InvoiceForm;
+import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.InvoiceTable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +15,8 @@ public class InvoiceTab extends JPanel implements GenericElement {
 
     @Override
     public InvoiceTab setupLayout() {
-        setLayout(new FlowLayout());
+        GridLayout layout = new GridLayout(2, 1);
+        this.setLayout(layout);
         return this;
     }
 
@@ -24,12 +27,8 @@ public class InvoiceTab extends JPanel implements GenericElement {
 
     @Override
     public InvoiceTab setupNested() {
-        var java = new JCheckBox("Java");
-        var is = new JCheckBox("Is");
-        var awesome = new JCheckBox("Awesome :)");
-        add(java);
-        add(is);
-        add(awesome);
+        add(InvoiceForm.setup());
+        add(InvoiceTable.setup());
         return this;
     }
 

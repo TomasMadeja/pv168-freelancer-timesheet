@@ -2,7 +2,7 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.tabs;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskTable;
-import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TopPanel;
+import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskForm;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +32,7 @@ public class TaskTab extends JPanel implements GenericElement {
 
     @Override
     public TaskTab setupNested() {
-        this.add(TopPanel.setup());
+        this.add(TaskForm.setup());
         this.add(TaskTable.setup());
         return this;
     }
