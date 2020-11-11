@@ -1,25 +1,24 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.InvoiceTableModel;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class InvoiceTable extends JScrollPane implements GenericElement {
-    public InvoiceTable(Component view, int vsbPolicy, int hsbPolicy) {
-        super(view, vsbPolicy, hsbPolicy);
-    }
-
-    public InvoiceTable(Component view) {
-        super(view);
-    }
-
-    public InvoiceTable(int vsbPolicy, int hsbPolicy) {
-        super(vsbPolicy, hsbPolicy);
-    }
+    private JTable table;
 
     public InvoiceTable() {
         super();
+    }
+
+    public InvoiceTable buildTable() {
+        table = new JTable(new InvoiceTableModel());
+        table.setAutoCreateRowSorter(true);
+        table.setRowHeight(20);
+        setViewportView(table);
+        return this;
     }
 
     @Override
@@ -39,6 +38,8 @@ public class InvoiceTable extends JScrollPane implements GenericElement {
 
     public static InvoiceTable setup() {
         InvoiceTable invoiceTable = new InvoiceTable();
+        invoiceTable
+                .buildTable();
         return invoiceTable;
     }
 }
