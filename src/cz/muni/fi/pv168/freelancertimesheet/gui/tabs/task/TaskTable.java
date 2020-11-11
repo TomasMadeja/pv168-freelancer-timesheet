@@ -3,46 +3,55 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 
 import javax.swing.*;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
-import java.util.Vector;
 
-public class TaskTable extends JScrollPane implements GenericElement {
-
-    private JTable table;
-
-    public TaskTable(Component view, int vsbPolicy, int hsbPolicy) {
-        super(view, vsbPolicy, hsbPolicy);
-    }
-
-    public TaskTable(Component view) {
-        super(view);
-    }
-
-    public TaskTable(int vsbPolicy, int hsbPolicy) {
-        super(vsbPolicy, hsbPolicy);
-    }
+public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     public TaskTable() {
         super();
     }
 
-    private TaskTable buildTable() {
-        String[] columnNames = {"Date", "Task name", "Description"};
+    private JPanel createTableButtonPanel() {
+        JPanel panel = new JPanel();
+        GridLayout layout = new GridLayout(1, 7);
+        panel.setLayout(layout);
+
+        panel.add(new JButton("New"));
+        panel.add(new JButton("Edit"));
+        panel.add(new JButton("Delete"));
+
+        var searchLabel = new JLabel("Search:", SwingConstants.CENTER);
+        panel.add(searchLabel);
+        panel.add(new JTextField());
+
+        panel.add(new JLabel());
+        panel.add(new JLabel());
+
+        return panel;
+    }
+
+    private JTable createTable() {
+        String[] columnNames = {"Date", "Task name", "Work Type", "Start Time", "End Time", "Description"};
         String[][] data = {
-                {"1.1.1900", "Homework", "IB002"},
-                {"2.1.1900", "Homework", "IB111"}
+                {"1.1.1900", "Sample task", "Work type", "14:50", "16:00", "Desc"},
+                {"1.1.1900", "Sample task2", "Work type", "02:00", "04:00", "Desc"},
+                {"2.1.1900", "Sample task3", "Work type", "15:00", "15:30", "Desc"}
         };
 
-        table = new JTable(data, columnNames);
-        return this;
+
+        var table = new JTable(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+//        table.setModel(model);
+        return table;
     }
 
     @Override
     public TaskTable setupLayout() {
-        buildTable();
-        setViewportView(table);
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         return this;
     }
 
@@ -53,15 +62,19 @@ public class TaskTable extends JScrollPane implements GenericElement {
 
     @Override
     public TaskTable setupNested() {
+        this.add(createTableButtonPanel());
+
+        // table needs to be wrapped in JScrollPane in order to show column names
+        this.add(new JScrollPane(createTable()));
+
+        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         return this;
     }
 
     public static TaskTable setup() {
-        TaskTable table = new TaskTable();
-        table
+        return new TaskTable()
                 .setupLayout()
                 .setupVisuals()
                 .setupNested();
-        return table;
     }
 }
