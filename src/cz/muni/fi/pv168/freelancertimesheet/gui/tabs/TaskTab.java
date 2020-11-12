@@ -32,8 +32,9 @@ public class TaskTab extends JPanel implements GenericElement<TaskTab> {
 
     @Override
     public TaskTab setupNested() {
-        this.add(TaskForm.setup());
-        this.add(TaskTable.setup());
+        TaskForm taskForm = TaskForm.setup();
+        this.add(taskForm);
+        this.add(TaskTable.setup(taskForm));
 
         return this;
     }
