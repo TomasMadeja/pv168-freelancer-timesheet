@@ -23,7 +23,7 @@ public class TaskTab extends JPanel implements GenericElement {
 
     @Override
     public TaskTab setupLayout() {
-        GridLayout layout = new GridLayout(3, 1);
+        GridLayout layout = new GridLayout(2, 1);
         this.setLayout(layout);
         return this;
     }
@@ -37,15 +37,6 @@ public class TaskTab extends JPanel implements GenericElement {
     public TaskTab setupNested() {
         this.add(TaskForm.setup());
         this.add(TaskTable.setup());
-        JButton viewTaskBtn = new JButton("View");
-        viewTaskBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                var taskFormPopup = Popups.GetTaskForm();
-                taskFormPopup.setVisible(true);
-            }
-        });
-        this.add(viewTaskBtn);
         return this;
     }
 

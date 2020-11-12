@@ -1,9 +1,12 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.Popups;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class InvoiceForm extends JPanel implements GenericElement {
     public InvoiceForm(LayoutManager layout, boolean isDoubleBuffered) {
@@ -39,6 +42,15 @@ public class InvoiceForm extends JPanel implements GenericElement {
 
     public static InvoiceForm setup() {
         InvoiceForm invoiceForm = new InvoiceForm();
+        JButton addWorkBtn = new JButton("Add Work");
+        addWorkBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame popup = Popups.GetTaskTabInvoice();
+                popup.setVisible(true);
+            }
+        });
+        invoiceForm.add(addWorkBtn);
         return invoiceForm;
     }
 }
