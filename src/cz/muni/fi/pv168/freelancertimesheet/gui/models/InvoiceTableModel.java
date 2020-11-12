@@ -1,6 +1,8 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.Date;
+import java.util.function.Function;
 
 public class InvoiceTableModel extends AbstractTableModel {
 
@@ -8,34 +10,72 @@ public class InvoiceTableModel extends AbstractTableModel {
         super();
     }
 
-    private class Column {
+    private static class Column {
+        public Class<?> rowClass;
         public String columnName;
         public Class<?> columnClass;
 
         private String attributeName;
 
-        public Column(String columnName, String attributeName, Class<?> columnClass) {
+        private Function getter;
+
+        public Column(String columnName, String attributeName, Class<?> columnClass, Class<?> rowClass, Function getter) {
             this.columnName = columnName;
             this.attributeName = attributeName;
             this.columnClass = columnClass;
+            this.getter = getter;
+            this.rowClass = rowClass;
         }
 
-        public Object getValue() {
-            return null;
+        public Object getValue(Object container) {
+            if (!rowClass.isInstance(container)) {
+                throw new RuntimeException();
+            }
+            return getter.apply(container);
         }
     }
 
+//    private interface AttributePicker {
+//
+//    }
+
     private Column[] columns = {
             new Column(
-                    "Test1",
+                    "Invoice Date",
                     "test1",
-                    String.class
+                    Date.class,
+                    Date.class, // TODO replace with actual object
+                    (Object object) -> new Date()
             ),
             new Column(
-                    "Test2",
+                    "Due Date",
                     "test2",
-                    String.class
+                    Date.class,
+                    Date.class, // TODO replace with actual object
+                    (Object object) -> new Date()
+            ),
+            new Column(
+                    "ICO",
+                    "test3",
+                    String.class,
+                    Date.class, // TODO replace with actual object
+                    (Object object) -> "25596641"
+            ),
+            new Column(
+                    "DIC",
+                    "test3",
+                    String.class,
+                    Date.class, // TODO replace with actual object
+                    (Object object) -> "CZ1234567890"
+            ),
+            new Column(
+                    "Customer Name",
+                    "test3",
+                    String.class,
+                    Date.class, // TODO replace with actual object
+                    (Object object) -> "Test Customer"
             )
+
     };
 
     @Override
@@ -73,6 +113,6 @@ public class InvoiceTableModel extends AbstractTableModel {
         if (rowIndex > 0 || rowIndex < 0) {
             throw new IndexOutOfBoundsException("Invalid column index: " + columnIndex);
         }
-        return columnIndex == 0 ? "A" : "B";
+        return columns[columnIndex].getValue(new Date());
     }
 }
