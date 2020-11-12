@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WorkType {
-    public String name;
-    public double rate;
-    public String description;
+    public final String name;
+    public final double rate;
+    public final String description;
 
     public WorkType(String name, double rate, String description) {
         this.name = name;
@@ -15,7 +15,7 @@ public class WorkType {
     }
 
     public static List<WorkType> getExampleData() {
-        List<WorkType> list = new ArrayList<WorkType>(List.of(
+        return new ArrayList<>(List.of(
                 new WorkType(
                         "Coding",
                         10.5,
@@ -27,7 +27,6 @@ public class WorkType {
                         "Doing graphic design"
                 )
         ));
-        return list;
     }
 
     public String getName() {

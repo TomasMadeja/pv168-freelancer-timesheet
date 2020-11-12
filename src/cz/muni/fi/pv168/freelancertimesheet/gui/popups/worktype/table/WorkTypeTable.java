@@ -2,46 +2,45 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.exampledata.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.forms.WorkTypeForm;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-import java.awt.*;
 import java.util.List;
 
-public class WorkTypeTableWindow {
-    private JFrame frame;
+public class WorkTypeTable {
+    private final JPanel panel;
+    private final JFrame frame;
 
-    private Action addAction;
-    private Action deleteAction;
-    private Action editAction;
-    private Action selectAction;
+    private final Action addAction;
+    private final Action deleteAction;
+    private final Action editAction;
+    private final Action selectAction;
 
-    public WorkTypeTableWindow() throws NoSuchMethodException {
-        frame = createFrame();
+    public WorkTypeTable(WorkTypeForm workTypeForm, JFrame frame) {
+        this.frame = frame;
+        panel = createPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         JTable workTypeTable = createWorkTypeTable(WorkType.getExampleData());
-        addAction = new AddAction(workTypeTable);
+        addAction = new AddAction(workTypeTable, workTypeForm);
         deleteAction = new DeleteAction(workTypeTable);
-        editAction = new EditAction(workTypeTable);
+        editAction = new EditAction(workTypeTable, workTypeForm);
         selectAction = new SelectAction(frame);
         updateUsabilityOfButtons(0);
         workTypeTable.setComponentPopupMenu(createEmployeeTablePopupMenu());
-        frame.add(new JScrollPane(workTypeTable), BorderLayout.CENTER);
-        frame.add(createToolbar(), BorderLayout.BEFORE_FIRST_LINE);
-        frame.setJMenuBar(createMenuBar());
-        frame.pack();
+        panel.add(createToolbar());
+        panel.add(new JScrollPane(workTypeTable));
     }
 
     public void show() {
         frame.setVisible(true);
     }
 
-    private JFrame createFrame() {
-        var frame = new JFrame("Employee evidence");
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        return frame;
+    private JPanel createPanel() {
+        return new JPanel();
     }
 
-    private JTable createWorkTypeTable(List<WorkType> workTypes) throws NoSuchMethodException {
+    private JTable createWorkTypeTable(List<WorkType> workTypes) {
         var model = new WorkTypeTableModel(workTypes);
         var table = new JTable(model);
         table.setAutoCreateRowSorter(true);
@@ -74,6 +73,7 @@ public class WorkTypeTableWindow {
 
     private JToolBar createToolbar() {
         var toolbar = new JToolBar();
+        toolbar.setFloatable(false);
         toolbar.add(selectAction);
         toolbar.addSeparator();
         toolbar.add(addAction);
@@ -92,5 +92,9 @@ public class WorkTypeTableWindow {
         editAction.setEnabled(rows == 1);
         selectAction.setEnabled(rows == 1);
         deleteAction.setEnabled(rows >= 1);
+    }
+
+    public static JPanel setup(WorkTypeForm workTypeForm, JFrame frame) {
+        return new WorkTypeTable(workTypeForm, frame).panel;
     }
 }

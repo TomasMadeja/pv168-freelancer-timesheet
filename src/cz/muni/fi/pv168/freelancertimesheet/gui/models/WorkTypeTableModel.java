@@ -10,16 +10,38 @@ import java.util.List;
 
 public class WorkTypeTableModel extends AbstractTableModel {
 
-    private List<WorkType> workTypes;
+    private final List<WorkType> workTypes;
 
-    public WorkTypeTableModel(List<WorkType> workTypes) throws NoSuchMethodException {
+    public WorkTypeTableModel(List<WorkType> workTypes) {
         this.workTypes = new ArrayList<>(workTypes);
+        try {
+            columns = new Column[]{
+                    new Column(
+                            "Name",
+                            String.class,
+                            WorkType.class.getMethod("getName")
+                    ),
+                    new Column(
+                            "Rate",
+                            Double.class,
+                            WorkType.class.getMethod("getRate")
+                    ),
+                    new Column(
+                            "Description",
+                            String.class,
+                            WorkType.class.getMethod("getDescription")
+                    )
+            };
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
 
-    private class Column {
-        public String name;
-        public Class<?> cClass;
-        public Method valueGetter;
+    private static class Column {
+        public final String name;
+        public final Class<?> cClass;
+        public final Method valueGetter;
 
         public Column(String name, Class<?> cClass, Method valueGetter) {
             this.name = name;
@@ -28,23 +50,7 @@ public class WorkTypeTableModel extends AbstractTableModel {
         }
     }
 
-    private Column[] columns = {
-            new Column(
-                    "Name",
-                    String.class,
-                    WorkType.class.getMethod("getName")
-            ),
-            new Column(
-                    "Rate",
-                    Double.class,
-                    WorkType.class.getMethod("getRate")
-            ),
-            new Column(
-                    "Description",
-                    String.class,
-                    WorkType.class.getMethod("getDescription")
-            )
-    };
+    private Column[] columns;
 
     @Override
     public int getRowCount() {
@@ -54,6 +60,11 @@ public class WorkTypeTableModel extends AbstractTableModel {
     @Override
     public int getColumnCount() {
         return columns.length;
+    }
+
+    @Override
+    public String getColumnName(int column) {
+        return columns[column].name;
     }
 
     @Override
