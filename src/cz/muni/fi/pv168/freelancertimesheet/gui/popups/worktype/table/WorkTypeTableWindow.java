@@ -14,6 +14,7 @@ public class WorkTypeTableWindow {
     private Action addAction;
     private Action deleteAction;
     private Action editAction;
+    private Action selectAction;
 
     public WorkTypeTableWindow() throws NoSuchMethodException {
         frame = createFrame();
@@ -21,6 +22,7 @@ public class WorkTypeTableWindow {
         addAction = new AddAction(workTypeTable);
         deleteAction = new DeleteAction(workTypeTable);
         editAction = new EditAction(workTypeTable);
+        selectAction = new SelectAction(frame);
         updateUsabilityOfButtons(0);
         workTypeTable.setComponentPopupMenu(createEmployeeTablePopupMenu());
         frame.add(new JScrollPane(workTypeTable), BorderLayout.CENTER);
@@ -50,6 +52,8 @@ public class WorkTypeTableWindow {
 
     private JPopupMenu createEmployeeTablePopupMenu() {
         var menu = new JPopupMenu();
+        menu.add(selectAction);
+        menu.addSeparator();
         menu.add(deleteAction);
         menu.add(editAction);
         return menu;
@@ -59,6 +63,8 @@ public class WorkTypeTableWindow {
         var menuBar = new JMenuBar();
         var editMenu = new JMenu("Edit");
         editMenu.setMnemonic('e');
+        editMenu.add(selectAction);
+        editMenu.addSeparator();
         editMenu.add(addAction);
         editMenu.add(editAction);
         editMenu.add(deleteAction);
@@ -68,6 +74,8 @@ public class WorkTypeTableWindow {
 
     private JToolBar createToolbar() {
         var toolbar = new JToolBar();
+        toolbar.add(selectAction);
+        toolbar.addSeparator();
         toolbar.add(addAction);
         toolbar.add(editAction);
         toolbar.add(deleteAction);
@@ -82,6 +90,7 @@ public class WorkTypeTableWindow {
 
     private void updateUsabilityOfButtons(int rows) {
         editAction.setEnabled(rows == 1);
+        selectAction.setEnabled(rows == 1);
         deleteAction.setEnabled(rows >= 1);
     }
 }
