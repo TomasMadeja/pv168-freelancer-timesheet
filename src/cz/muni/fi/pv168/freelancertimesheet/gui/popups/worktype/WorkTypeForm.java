@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.freelancertimesheet.gui.popups;
+package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 
@@ -62,6 +62,13 @@ public class WorkTypeForm extends JPanel implements GenericElement<WorkTypeForm>
         constraints.weighty = 1;
         constraints.ipady = 40;
         add(new JTextField(), constraints);
+
+        constraints.gridy = 3;
+        constraints.gridx = 1;
+        constraints.anchor = GridBagConstraints.LAST_LINE_END;
+        constraints.ipady = 10;
+        constraints.fill = GridBagConstraints.NONE;
+        add(new JButton("Add"), constraints);
 
         return this;
     }
