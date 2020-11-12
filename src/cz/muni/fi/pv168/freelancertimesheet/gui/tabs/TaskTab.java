@@ -1,11 +1,14 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.Popups;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskTable;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskForm;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Whole pane is divided into two sections
@@ -20,7 +23,7 @@ public class TaskTab extends JPanel implements GenericElement {
 
     @Override
     public TaskTab setupLayout() {
-        GridLayout layout = new GridLayout(2, 1);
+        GridLayout layout = new GridLayout(3, 1);
         this.setLayout(layout);
         return this;
     }
@@ -34,6 +37,15 @@ public class TaskTab extends JPanel implements GenericElement {
     public TaskTab setupNested() {
         this.add(TaskForm.setup());
         this.add(TaskTable.setup());
+        JButton viewTaskBtn = new JButton("View");
+        viewTaskBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                var taskFormPopup = Popups.GetTaskForm();
+                taskFormPopup.setVisible(true);
+            }
+        });
+        this.add(viewTaskBtn);
         return this;
     }
 

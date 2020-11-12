@@ -9,14 +9,13 @@ import javax.swing.*;
 public class Popups extends JFrame {
     static int defaultWidth = 600;
     static int defaultHeight = 300;
-    static PopupFactory popupFactory = new PopupFactory();
 
     public Popups() {
         super();
     }
 
     public static JFrame GetTaskForm() {
-        return GetPopup(TaskForm.setup(), "Task formular");
+        return GetPopup(TaskForm.setup(), "Task form");
     }
 
     public static JFrame GetTaskTable() {
