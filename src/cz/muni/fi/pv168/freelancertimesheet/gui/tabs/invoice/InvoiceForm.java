@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class InvoiceForm extends JPanel implements GenericElement {
@@ -113,8 +112,8 @@ public class InvoiceForm extends JPanel implements GenericElement {
         addRow(new JLabel("Telephone Number:"), TextFieldFactory.createWrappedTextField());
         addRow(new JLabel("ICO:"), TextFieldFactory.createWrappedTextField());
         addRow(new JLabel("DIC:"), TextFieldFactory.createWrappedTextField());
-        addRow(new JLabel("Invoice Date:"), DateTimePickerFactory.createGenericDatePicker());
-        addRow(new JLabel("Due Date:"), DateTimePickerFactory.createGenericDatePicker());
+        addRow(new JLabel("Invoice Date:"), DateTimePickerFactory.createGenericDatePicker("Select Date"));
+        addRow(new JLabel("Due Date:"), DateTimePickerFactory.createGenericDatePicker("Select Date"));
         addRow(new JLabel("Work:"), buildWorkPicker());
         addRow(new JLabel("Total:"), priceDisplay());
         addConfirmButton();

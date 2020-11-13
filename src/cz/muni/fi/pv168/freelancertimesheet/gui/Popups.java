@@ -19,13 +19,13 @@ public class Popups extends JFrame {
         return GetPopup(TaskForm.setup(), "Task form");
     }
 
-    public static JFrame GetTaskTable() {
-        return GetPopup(TaskTable.setup(), "Task table");
-    }
+//    public static JFrame GetTaskTable() {
+//        return GetPopup(TaskTable.setup(), "Task table");
+//    }
 
-    public static JFrame GetTaskTab() {
-        return GetPopup(TaskTab.setup(), "Tasks");
-    }
+//    public static JFrame GetTaskTab() {
+//        return GetPopup(TaskTab.setup(), "Tasks");
+//    }
 
     public static JFrame GetTaskTabInvoice() {
         JFrame frame = GetPopup(TaskTab.setup(), "Tasks");

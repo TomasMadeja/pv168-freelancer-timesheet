@@ -16,6 +16,7 @@ sourceSets {
     }
 }
 dependencies {
-    compile 'junit:junit:4.12', 'com.github.lgooddatepicker:LGoodDatePicker:11.1.0'
+    compile 'junit:junit:4.12'
+    compile 'com.github.lgooddatepicker:LGoodDatePicker:11.1.0'
 }
 
