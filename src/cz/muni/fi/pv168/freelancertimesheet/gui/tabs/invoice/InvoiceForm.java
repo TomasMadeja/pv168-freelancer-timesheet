@@ -22,6 +22,8 @@ public class InvoiceForm extends JPanel implements GenericElement {
     private List<Component> inputFields;
 
     private JLabel totalPriceField;
+
+    private JLabel selectedWorks; // TODO add proper container
     
     public InvoiceForm() {
         super();
@@ -62,10 +64,18 @@ public class InvoiceForm extends JPanel implements GenericElement {
 
     private JPanel buildWorkPicker() {
         JPanel panel = new JPanel(new GridLayout(1, 2));
-        JButton button = new JButton("...");
-        panel.add(new JLabel("Selected Work: 0"));
-        panel.add(button);
-        inputFields.add(button);
+        JButton workPicker = new JButton("Choose Work");
+        workPicker.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame popup = Popups.GetTaskTabInvoice();
+                popup.setVisible(true);
+            }
+        });
+        selectedWorks = new JLabel("Selected Work: 0");
+        panel.add(selectedWorks);
+        panel.add(workPicker);
+        inputFields.add(workPicker);
         return panel;
     }
 
@@ -130,17 +140,13 @@ public class InvoiceForm extends JPanel implements GenericElement {
         return this;
     }
 
+    public InvoiceForm updateSelectedWork(int count) {
+        selectedWorks.setText("Selected Work: " + count);
+        return this;
+    }
+
     public static InvoiceForm setup() {
         InvoiceForm invoiceForm = new InvoiceForm();
-        JButton addWorkBtn = new JButton("Add Work");
-        addWorkBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame popup = Popups.GetTaskTabInvoice();
-                popup.setVisible(true);
-            }
-        });
-        invoiceForm.add(addWorkBtn);
         invoiceForm
                 .setupLayout()
                 .setupVisuals()
