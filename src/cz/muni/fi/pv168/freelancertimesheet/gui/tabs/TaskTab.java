@@ -1,9 +1,11 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+
 import cz.muni.fi.pv168.freelancertimesheet.gui.Popups;
-import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskTable;
+
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskForm;
+import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskTable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +17,7 @@ import java.awt.event.ActionListener;
  * Top one has text fields and buttons
  * Bottom one has big table
  */
-public class TaskTab extends JPanel implements GenericElement {
+public class TaskTab extends JPanel implements GenericElement<TaskTab> {
 
     public TaskTab() {
         super();
@@ -35,17 +37,17 @@ public class TaskTab extends JPanel implements GenericElement {
 
     @Override
     public TaskTab setupNested() {
-        this.add(TaskForm.setup());
-        this.add(TaskTable.setup());
+        TaskForm taskForm = TaskForm.setup();
+        this.add(taskForm);
+        this.add(TaskTable.setup(taskForm));
+
         return this;
     }
 
     public static TaskTab setup() {
-        TaskTab taskTab = new TaskTab();
-        taskTab
+        return new TaskTab()
                 .setupLayout()
                 .setupVisuals()
                 .setupNested();
-        return taskTab;
     }
 }
