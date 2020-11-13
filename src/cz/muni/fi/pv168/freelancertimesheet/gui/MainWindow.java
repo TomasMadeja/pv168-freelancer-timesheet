@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * Main window
  */
-public class MainWindow extends JFrame implements GenericElement{
+public class MainWindow extends JFrame implements GenericElement<MainWindow> {
     private JPanel rootPanel;
 
 
@@ -37,7 +37,7 @@ public class MainWindow extends JFrame implements GenericElement{
                 new Dimension(1000, 500)
         );
         setMinimumSize(
-                new Dimension(600, 500)
+                new Dimension(600, 600)
         );
         rootPanel.setBackground(Color.BLUE);
         rootPanel.setOpaque(false);
