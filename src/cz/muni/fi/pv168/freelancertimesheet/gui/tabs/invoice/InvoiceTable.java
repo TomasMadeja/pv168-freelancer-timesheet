@@ -59,9 +59,9 @@ public class InvoiceTable extends JPanel implements GenericElement {
         String[] dateLabels = {"Invoice Date", "Due Date"};
         filterBar.add(new JComboBox<String>(dateLabels));
         filterBar.addSeparator();
-        addFilter("From:", DateTimePickerFactory.createGenericDatePicker());
+        addFilter("From:", DateTimePickerFactory.createGenericDatePicker(""));
         filterBar.addSeparator();
-        addFilter("To:", DateTimePickerFactory.createGenericDatePicker());
+        addFilter("To:", DateTimePickerFactory.createGenericDatePicker(""));
         filterBar.addSeparator();
         String[] textlabels = {"Name:", "ICO:", "DIC:"};
         addFilter(new JComboBox<String>(textlabels), new JTextField(100));
