@@ -166,12 +166,12 @@ public class TaskForm extends JPanel implements GenericElement<TaskForm> {
         fillForm(emptyData);
     }
 
-    public void fillForm(String[] rowData) {
+    public void fillForm(Object[] rowData) {
         String data;
         JComponent element;
-        for (int i = 0; i < forms.size(); i++) {
+        for (int i = 1; i < forms.size(); i++) {
             element = forms.get(i);
-            data = rowData[i];
+            data = (String)rowData[i];
 
             if (element instanceof JTextField) {
                 var textField = (JTextField) element;
