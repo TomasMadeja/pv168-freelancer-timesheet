@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
-import cz.muni.fi.pv168.freelancertimesheet.gui.Popups;
+import cz.muni.fi.pv168.freelancertimesheet.gui.TasksPopup;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.TextFieldFactory;
 
@@ -64,12 +64,10 @@ public class InvoiceForm extends JPanel implements GenericElement {
     private JPanel buildWorkPicker() {
         JPanel panel = new JPanel(new GridLayout(1, 2));
         JButton workPicker = new JButton("Choose Work");
-        workPicker.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame popup = Popups.GetTaskTabInvoice();
-                popup.setVisible(true);
-            }
+        InvoiceForm invoiceForm = this;
+        workPicker.addActionListener(e -> {
+            JFrame popup = TasksPopup.setup(invoiceForm);
+            popup.setVisible(true);
         });
         selectedWorks = new JLabel("Selected Work: 0");
         panel.add(selectedWorks);
