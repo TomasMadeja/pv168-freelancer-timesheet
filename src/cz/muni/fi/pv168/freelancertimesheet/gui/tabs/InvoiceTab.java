@@ -16,6 +16,7 @@ public class InvoiceTab extends JPanel implements GenericElement {
     @Override
     public InvoiceTab setupLayout() {
         GridLayout layout = new GridLayout(2, 1);
+//        BorderLayout layout = new BorderLayout();
         this.setLayout(layout);
         return this;
     }
@@ -27,8 +28,9 @@ public class InvoiceTab extends JPanel implements GenericElement {
 
     @Override
     public InvoiceTab setupNested() {
-        add(InvoiceForm.setup());
-        add(InvoiceTable.setup());
+        InvoiceForm form = InvoiceForm.setup();
+        add(form); //, BorderLayout.NORTH);
+        add(InvoiceTable.setup(form)); //, BorderLayout.CENTER);
         return this;
     }
 
