@@ -1,11 +1,16 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+
+import cz.muni.fi.pv168.freelancertimesheet.gui.Popups;
+
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskForm;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskTable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Whole pane is divided into two sections

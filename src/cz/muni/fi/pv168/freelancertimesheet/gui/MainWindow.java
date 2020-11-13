@@ -64,6 +64,12 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
         window.pack();
         window.setVisible(true);
 
+//        var taskTablePopup = Popups.GetTaskTable();
+//        taskTablePopup.setVisible(true);
+//
+//        var taskTabPopup = Popups.GetTaskTab();
+//        taskTabPopup.setVisible(true);
+
         return window;
     }
 }
