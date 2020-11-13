@@ -87,8 +87,13 @@ public class WorkTypeForm extends JPanel implements GenericElement<WorkTypeForm>
         constraints.ipady = 10;
         constraints.fill = GridBagConstraints.NONE;
         JButton addButton = new JButton("confirm");
-        addButton.addActionListener(e -> resetForm());
+        addButton.addActionListener(e -> {
+            resetForm();
+            disableFields();
+        });
         add(addButton, constraints);
+
+        disableFields();
 
         return this;
     }
@@ -97,11 +102,25 @@ public class WorkTypeForm extends JPanel implements GenericElement<WorkTypeForm>
         nameTextField.setText(workType.name);
         rateTextField.setText(Double.toString(workType.rate));
         descriptionTextArea.setText(workType.description);
+        enableFields();
     }
 
     public void resetForm() {
         nameTextField.setText("");
         rateTextField.setText(Double.toString(0));
         descriptionTextArea.setText("");
+        enableFields();
+    }
+
+    public void enableFields()  {
+        nameTextField.setEnabled(true);
+        rateTextField.setEnabled(true);
+        descriptionTextArea.setEnabled(true);
+    }
+
+    public void disableFields() {
+        nameTextField.setEnabled(false);
+        rateTextField.setEnabled(false);
+        descriptionTextArea.setEnabled(false);
     }
 }
