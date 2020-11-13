@@ -3,14 +3,24 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     private final TaskForm taskForm;
     private JTable table;
     private int tableColumnCount;
+
+    public int GetSelectedTasksCount() {
+        return table.getSelectedRows().length;
+    }
 
     public TaskTable() {
         super();
@@ -61,29 +71,26 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
             return;
         }
 
-        String[] rowData = new String[tableColumnCount];
-        for (int i = 0; i < tableColumnCount; i++) {
-            rowData[i] = (String) table.getValueAt(selectedRow, i);
+        Object[] rowData = new Object[tableColumnCount];
+        for (int i = 1; i < tableColumnCount; i++) {
+            rowData[i] = table.getValueAt(selectedRow, i);
         }
+        rowData[0] = false;
         taskForm.fillForm(rowData);
     }
 
     private JTable createTable() {
         String[] columnNames = {"Date", "Task name", "Work Type", "Start Time", "End Time", "Description"};
-        String[][] data = {
+        Object[][] data = {
                 {"November 4, 2020", "Sample task", "Work type", "14:50", "16:00", "Desc"},
                 {"November 4, 2020", "Sample task2", "Work type", "02:00", "04:00", "Desc"},
                 {"November 2, 2020", "Sample task3", "Work type", "15:00", "15:30", "Desc"}
         };
         tableColumnCount = 6;
 
+        table = new JTable(data, columnNames);
+        table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        table = new JTable(data, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
 //        table.setModel(model);
         return table;
     }
