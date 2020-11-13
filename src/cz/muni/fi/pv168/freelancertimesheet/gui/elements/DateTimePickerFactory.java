@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.elements;
 
+
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
@@ -32,7 +33,6 @@ public class DateTimePickerFactory {
         }
 
     }
-
 
     public static DatePicker createGenericDatePicker(String title) {
         DatePickerSettings dateSettings = new DatePickerSettings();
