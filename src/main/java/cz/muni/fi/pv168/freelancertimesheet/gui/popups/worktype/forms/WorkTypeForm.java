@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.forms;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.ServiceType;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.exampledata.WorkType;
 
@@ -7,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 
 public class WorkTypeForm extends JPanel implements GenericElement<WorkTypeForm> {
 
@@ -98,10 +100,10 @@ public class WorkTypeForm extends JPanel implements GenericElement<WorkTypeForm>
         return this;
     }
 
-    public void fillForm(WorkType workType) {
-        nameTextField.setText(workType.name);
-        rateTextField.setText(Double.toString(workType.rate));
-        descriptionTextArea.setText(workType.description);
+    public void fillForm(ServiceType workType) {
+        nameTextField.setText(workType.getName());
+        rateTextField.setText(workType.getHourlyRate().toString());
+        descriptionTextArea.setText(workType.getDescription());
         enableFields();
     }
 

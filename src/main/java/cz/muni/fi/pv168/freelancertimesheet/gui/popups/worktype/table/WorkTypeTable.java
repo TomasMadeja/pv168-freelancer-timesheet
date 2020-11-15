@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.exampledata.WorkType;
-import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.ServiceTypeTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.forms.WorkTypeForm;
 
 import javax.swing.*;
@@ -41,7 +41,7 @@ public class WorkTypeTable {
     }
 
     private JTable createWorkTypeTable(List<WorkType> workTypes) {
-        var model = new WorkTypeTableModel(workTypes);
+        var model = new ServiceTypeTableModel(workTypes);
         var table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);

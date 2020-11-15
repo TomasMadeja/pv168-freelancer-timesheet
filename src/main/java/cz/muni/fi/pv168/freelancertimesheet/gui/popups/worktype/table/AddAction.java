@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
-import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.ServiceTypeTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.forms.WorkTypeForm;
 
 import javax.swing.*;
@@ -22,7 +22,7 @@ public class AddAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var employeeTableModel = (WorkTypeTableModel) workTypeTable.getModel();
+        var employeeTableModel = (ServiceTypeTableModel) workTypeTable.getModel();
         workTypeForm.resetForm();
     }
 }

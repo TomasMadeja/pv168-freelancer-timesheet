@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 
 public interface ServiceType {
 
+    public String getName();
+
+    public String setName();
+
     public String getDescription();
 
     public ServiceType setDescription(String description);
@@ -21,11 +25,13 @@ public interface ServiceType {
     public ServiceType validateHourlyRate(String hourlyRate);
 
     public ServiceType createServiceType(
+            String name,
             String description,
             BigDecimal hourlyRate
     );
 
     public ServiceType createServiceType(
+            String name,
             String description,
             String hourlyRate
     );
