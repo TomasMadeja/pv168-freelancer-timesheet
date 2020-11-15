@@ -2,7 +2,9 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
+apply plugin: 'maven'
+
+group 'cz.muni.fi.pv168'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -11,11 +13,12 @@ repositories {
 sourceSets {
     main {
         java {
-            srcDirs = ['src']
+            srcDirs = ['src', 'cz.muni.fi.pv168.freelancertimesheet.resource']
         }
     }
 }
 dependencies {
     compile 'junit:junit:4.12'
+    compile 'com.github.lgooddatepicker:LGoodDatePicker:11.1.0'
 }
 
