@@ -2,6 +2,7 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 public class InvoiceTableModel extends TableModel<Invoice> {
@@ -10,41 +11,37 @@ public class InvoiceTableModel extends TableModel<Invoice> {
         super(new Column[] { new Column(
                         "Invoice Date",
                         "test1",
-                        Date.class,
-                        Date.class, // TODO replace with actual object
-                        (Object object) -> new Date()
+                        ZonedDateTime.class,
+                        Invoice.class,
+                        (Object object) -> ((Invoice)object).getIssueDate()
                 ),
                 new Column(
                         "Due Date",
                         "test2",
-                        Date.class,
-                        Date.class, // TODO replace with actual object
-                        (Object object) -> new Date()
+                        ZonedDateTime.class,
+                        Invoice.class,
+                        (Object object) -> ((Invoice)object).getDueDate()
                 ),
                 new Column(
                         "ICO",
                         "test3",
                         String.class,
-                        Date.class, // TODO replace with actual object
-                        (Object object) -> "25596641"
+                        Invoice.class,
+                        (Object object) -> "25596641" //TODO: add ICO to proper person
                 ),
                 new Column(
                         "DIC",
                         "test3",
                         String.class,
-                        Date.class, // TODO replace with actual object
-                        (Object object) -> "CZ1234567890"
+                        Invoice.class,
+                        (Object object) -> "CZ1234567890" //TODO: add DIC to proper person
                 ),
                 new Column(
                         "Customer Name",
                         "test3",
                         String.class,
-                        Date.class, // TODO replace with actual object
-                        (Object object) -> "Test Customer"
+                        Invoice.class,
+                        (Object object) -> ((Invoice)object).getClient().getName()
                 )});
     }
-
-//    private interface AttributePicker {
-//
-//    }
 }

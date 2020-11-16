@@ -1,12 +1,8 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 
-import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
-import cz.muni.fi.pv168.freelancertimesheet.gui.exampledata.WorkType;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 
@@ -14,10 +10,8 @@ public class TableModel<T> extends AbstractTableModel {
     public TableModel(Column[] columns) {
         super();
         this.columns = columns;
-        this.rows = new ArrayList<>();
+        this.rows = new ArrayList<T>();
     }
-
-    protected final List<T> rows;
 
     protected static class Column {
         public Class<?> rowClass;
@@ -32,19 +26,20 @@ public class TableModel<T> extends AbstractTableModel {
             this.columnName = columnName;
             this.attributeName = attributeName;
             this.columnClass = columnClass;
-            this.getter = getter;
             this.rowClass = rowClass;
+            this.getter = getter;
         }
 
         public Object getValue(Object container) {
             if (!rowClass.isInstance(container)) {
-                throw new RuntimeException();
+                throw new RuntimeException("Container class:" + container.getClass().toString() + " | rowClass: " + rowClass.toString());
             }
             return getter.apply(container);
         }
     }
 
     private Column[] columns;
+    protected final List<T> rows;
 
     protected TableModel addColumn(Column column) {
         List<Column> columnList = Arrays.asList(columns.clone());
@@ -88,7 +83,7 @@ public class TableModel<T> extends AbstractTableModel {
         if (rowIndex > 0 || rowIndex < 0) {
             throw new IndexOutOfBoundsException("Invalid column index: " + columnIndex);
         }
-        return columns[columnIndex].getValue(new Date());
+        return columns[columnIndex].getValue(rows.get(rowIndex));
     }
 
     public void addRow(T rowData) {

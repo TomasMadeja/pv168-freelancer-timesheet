@@ -6,7 +6,7 @@ public interface ServiceType {
 
     public String getName();
 
-    public String setName();
+    public ServiceType setName();
 
     public String getDescription();
 
