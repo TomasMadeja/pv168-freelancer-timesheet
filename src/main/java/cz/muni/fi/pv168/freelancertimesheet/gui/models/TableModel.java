@@ -41,7 +41,7 @@ public class TableModel<T> extends AbstractTableModel {
     private Column[] columns;
     protected final List<T> rows;
 
-    protected TableModel addColumn(Column column) {
+    protected TableModel<T> addColumn(Column column) {
         List<Column> columnList = Arrays.asList(columns.clone());
         columnList.add(column);
         columns = columnList.toArray(columns);
@@ -80,7 +80,7 @@ public class TableModel<T> extends AbstractTableModel {
         if (columnIndex > columns.length || columnIndex < 0) {
             throw new IndexOutOfBoundsException("Invalid column index: " + columnIndex);
         }
-        if (rowIndex > 0 || rowIndex < 0) {
+        if (rowIndex != 0) {
             throw new IndexOutOfBoundsException("Invalid column index: " + columnIndex);
         }
         return columns[columnIndex].getValue(rows.get(rowIndex));

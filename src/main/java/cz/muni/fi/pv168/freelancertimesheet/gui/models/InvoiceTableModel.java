@@ -3,7 +3,6 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 
 import java.time.ZonedDateTime;
-import java.util.Date;
 
 public class InvoiceTableModel extends TableModel<Invoice> {
 
