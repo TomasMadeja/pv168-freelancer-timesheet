@@ -16,15 +16,11 @@ public interface Work {
 
     public Work validateEndTime(ZonedDateTime datetime);
 
-    public WorkType getServiceType();
+    public WorkType getWorkType();
 
-    public Work setServiceType(WorkType workType);
+    public Work setWorkType(WorkType workType);
 
-    public Work validateServiceType(WorkType workType);
+    public Work validateWorkType(WorkType workType);
 
-    public Work createService(
-            ZonedDateTime startTime,
-            ZonedDateTime endTime,
-            WorkType workType
-    );
+
 }

@@ -19,14 +19,4 @@ public interface WorkType {
     public WorkType validateHourlyRate(BigDecimal hourlyRate);
 
     public WorkType validateHourlyRate(String hourlyRate);
-
-    public WorkType createServiceType(
-            String description,
-            BigDecimal hourlyRate
-    );
-
-    public WorkType createServiceType(
-            String description,
-            String hourlyRate
-    );
 }
