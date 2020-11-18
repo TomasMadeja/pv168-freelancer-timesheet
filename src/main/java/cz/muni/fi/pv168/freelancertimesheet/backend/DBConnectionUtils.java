@@ -4,9 +4,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 public class DBConnectionUtils {
-    private static final SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory;
 
-    static {
+    public static void init() {
+        if (sessionFactory == null) {
+            return;
+        }
+
         try {
             sessionFactory = new Configuration().configure().buildSessionFactory();
         } catch (Throwable ex) {
@@ -21,10 +25,17 @@ public class DBConnectionUtils {
     }
 
     public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            init();
+        }
         return sessionFactory;
     }
 
     public static void shutdown() {
-        getSessionFactory().close();
+        if (sessionFactory == null) {
+            return;
+        }
+        sessionFactory.close();
+        sessionFactory = null;
     }
 }

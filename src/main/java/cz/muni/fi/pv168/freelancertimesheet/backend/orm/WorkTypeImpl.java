@@ -24,14 +24,33 @@ public class WorkTypeImpl implements WorkType {
         return id;
     }
 
-    @Column(name = "description")
+    @Column(name = "name", nullable=false)
+    private String name;
+
+    @Column(name = "description", nullable=false)
     private String description;
 
-    @Column(name = "hourly_rate")
+    @Column(name = "hourly_rate", nullable=false)
     private BigDecimal hourlyRate;
 
     @OneToMany(mappedBy="workType")
     private Collection<WorkImpl> works;
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public WorkType setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    @Override
+    public WorkType validateName(String name) {
+        return this;
+    }
 
     @Override
     public String getDescription() {

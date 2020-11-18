@@ -4,6 +4,18 @@ import java.time.ZonedDateTime;
 
 public interface Work {
 
+    public String getName();
+
+    public Work setName(String name);
+
+    public Work validateName(String name);
+
+    public String getDescription();
+
+    public Work setDescription(String description);
+
+    public Work validateDescription(String description);
+
     public ZonedDateTime getStartTime();
 
     public Work setStartTime(ZonedDateTime datetime);

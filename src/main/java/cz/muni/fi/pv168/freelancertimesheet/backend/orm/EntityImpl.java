@@ -15,22 +15,22 @@ public class EntityImpl implements Entity {
     @Column(name = "id")
     protected int id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable=false)
     protected String name;
 
-    @Column(name = "address")
+    @Column(name = "address", nullable=false)
     protected String address;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable=false)
     protected String email;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable=false)
     protected String phoneNumber;
 
-    @Column(name = "ico")
+    @Column(name = "ico", nullable=false)
     protected String ico;
 
-    @Column(name = "dic")
+    @Column(name = "dic", nullable=false)
     protected String dic;
 
     public EntityImpl(String name, String address, String ico, String dic) {

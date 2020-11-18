@@ -24,14 +24,20 @@ public class WorkImpl implements Work {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "start_time")
+    @Column(name = "name", nullable=false)
+    private String name;
+
+    @Column(name = "start_time", nullable=false)
     private ZonedDateTime startTime;
 
-    @Column(name = "end_time")
+    @Column(name = "end_time", nullable=false)
     private ZonedDateTime endTime;
 
+    @Column(name = "description", nullable=false)
+    private String description;
+
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "work_type_id", referencedColumnName = "id")
+    @JoinColumn(name = "work_type_id", referencedColumnName = "id", nullable=false)
     private WorkTypeImpl workType;
 
     public WorkImpl(ZonedDateTime startTime, ZonedDateTime endTime, WorkTypeImpl workType) {
@@ -45,6 +51,38 @@ public class WorkImpl implements Work {
             throw new TypeMismatchException("Unknown WorkType");
         }
         return (WorkTypeImpl) workType;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public Work setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    @Override
+    public Work validateName(String name) {
+        return this;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public Work setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    @Override
+    public Work validateDescription(String description) {
+        return this;
     }
 
     @Override

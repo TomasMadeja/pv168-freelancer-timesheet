@@ -9,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
@@ -25,27 +27,29 @@ public class InvoiceImpl implements Invoice {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "issue_date")
+    @Column(name = "issue_date", nullable=false)
     private ZonedDateTime issueDate;
 
-    @Column(name = "due_date")
+    @Column(name = "due_date", nullable=false)
     private ZonedDateTime dueDate;
 
-    @OneToMany
-    @JoinTable(
-            name="invoice_works",
-            joinColumns = {@JoinColumn( name="invoice_id")},
-            inverseJoinColumns = {@JoinColumn( name="work_id")}
-    )
+//    @OneToMany
+//    @JoinTable(
+//            name="invoice_works",
+//            joinColumns = {@JoinColumn( name="invoice_id")},
+//            inverseJoinColumns = {@JoinColumn( name="work_id")}
+//    )
+    @Transient
     private List<WorkImpl> works;
 
     @Transient
     private Entity issuer;
 
-    @Transient
-    private Entity client;
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable=false)
+    private ClientImpl client;
 
-    @Transient
+    @Column(name = "total_amount", nullable=false)
     private BigDecimal totalAmount;
 
     @Override
@@ -55,7 +59,7 @@ public class InvoiceImpl implements Invoice {
 
     @Override
     public Invoice setClient(Entity client) {
-        this.client = client;
+        this.client = (ClientImpl) client;
         return this;
     }
 
