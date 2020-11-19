@@ -10,10 +10,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
 @Table(name = "work_types")
-public class WorkTypeImpl implements WorkType {
+public class WorkTypeImpl implements WorkType, Comparable {
 
     @Id
     @GeneratedValue
@@ -95,15 +96,16 @@ public class WorkTypeImpl implements WorkType {
         return this;
     }
 
-    public static WorkType createWorkType(String description, BigDecimal hourlyRate) {
+    public static WorkType createWorkType(String name, String description, BigDecimal hourlyRate) {
         WorkType instance = new WorkTypeImpl();
+        instance.setName(name);
         instance.setDescription(description);
         instance.setHourlyRate(hourlyRate);
         return instance;
     }
 
-    public static WorkType createWorkType(String description, String hourlyRate) {
-        return createWorkType(description, new BigDecimal(hourlyRate));
+    public static WorkType createWorkType(String name, String description, String hourlyRate) {
+        return createWorkType(name, description, new BigDecimal(hourlyRate));
     }
 
     @Override
@@ -113,5 +115,29 @@ public class WorkTypeImpl implements WorkType {
                 ", description='" + description + '\'' +
                 ", hourlyRate=" + hourlyRate +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WorkTypeImpl workType = (WorkTypeImpl) o;
+        return Objects.equals(name, workType.name) &&
+                Objects.equals(description, workType.description) &&
+                hourlyRate.compareTo(workType.hourlyRate) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, hourlyRate);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        WorkTypeImpl t = (WorkTypeImpl) o;
+        int i;
+        if ((i = name.compareTo(t.name)) != 0) return i;
+        if ((i = description.compareTo(t.description)) != 0) return i;
+        return hourlyRate.compareTo(t.hourlyRate);
     }
 }
