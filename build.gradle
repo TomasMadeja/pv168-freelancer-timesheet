@@ -1,8 +1,8 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'maven'
 }
-
-apply plugin: 'maven'
 
 group 'cz.muni.fi.pv168'
 version '1.0-SNAPSHOT'
@@ -10,15 +10,27 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
+
+ext {
+    javaMainClass = "cz.muni.fi.pv168.freelancertimesheet.Main"
+}
+
 sourceSets {
     main {
         java {
-            srcDirs = ['src', 'cz.muni.fi.pv168.freelancertimesheet.resource']
+            srcDirs = ['src/main/java', 'cz.muni.fi.pv168.freelancertimesheet']
+        }
+        resources {
+            srcDirs += ['src/main/resources']
         }
     }
 }
 dependencies {
     compile 'junit:junit:4.12'
     compile 'com.github.lgooddatepicker:LGoodDatePicker:11.1.0'
+}
+
+application {
+    mainClassName = javaMainClass
 }
 
