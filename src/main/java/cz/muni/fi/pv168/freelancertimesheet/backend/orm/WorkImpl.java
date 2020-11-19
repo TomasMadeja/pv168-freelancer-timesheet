@@ -46,6 +46,10 @@ public class WorkImpl implements Work {
         this.workType = workType;
     }
 
+    public WorkImpl() {
+
+    }
+
     private static WorkTypeImpl testWorkType(WorkType workType) {
         if (!(workType instanceof WorkTypeImpl)) {
             throw new TypeMismatchException("Unknown WorkType");

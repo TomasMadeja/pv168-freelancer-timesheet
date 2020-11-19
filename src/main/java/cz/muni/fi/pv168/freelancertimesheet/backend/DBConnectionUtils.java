@@ -7,7 +7,7 @@ public class DBConnectionUtils {
     private static SessionFactory sessionFactory;
 
     public static void init() {
-        if (sessionFactory == null) {
+        if (sessionFactory != null) {
             return;
         }
 
