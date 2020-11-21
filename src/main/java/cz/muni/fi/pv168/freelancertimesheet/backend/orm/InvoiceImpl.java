@@ -52,6 +52,9 @@ public class InvoiceImpl implements Invoice {
     @Column(name = "total_amount", nullable=false)
     private BigDecimal totalAmount;
 
+    @Column(name = "pdf_path", nullable=true)
+    private String pdfPath;
+
     @Override
     public Entity getClient() {
         return client;
@@ -148,6 +151,17 @@ public class InvoiceImpl implements Invoice {
     @Override
     public BigDecimal getTotalAmount() {
         return totalAmount;
+    }
+
+    @Override
+    public String getPdfPath() {
+        return pdfPath;
+    }
+
+    @Override
+    public Invoice setPdfPath(String pdfPath) {
+        this.pdfPath = pdfPath;
+        return this;
     }
 
     @Override

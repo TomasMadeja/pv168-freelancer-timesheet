@@ -2,7 +2,7 @@ package cz.muni.fi.pv168.freelancertimesheet.backend.interfaces;
 
 import java.time.ZonedDateTime;
 
-public interface Work {
+public interface Work extends Comparable {
 
     public String getName();
 

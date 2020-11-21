@@ -42,6 +42,10 @@ public interface Invoice {
 
     public BigDecimal getTotalAmount();
 
+    public String getPdfPath();
+
+    public Invoice setPdfPath(String pdfPath);
+
     public Invoice createInvoice(
             Entity Client,
             Entity Issuer,

@@ -61,8 +61,39 @@ public class BasicDatabaseTests {
         return collection;
     }
 
+    private List<Work> prepareWork() {
+        WorkType[] workTypes = prepareWorkTypes().toArray(WorkType[]::new);
+        List<Work> collection = new ArrayList<>();
+        collection.add(WorkImpl.createWork(
+                "TestWork1",
+                "Beepboop",
+                ZonedDateTime.parse("2011-12-03T10:15:30+01:00"),
+                ZonedDateTime.parse("2011-12-04T10:15:30+01:00"),
+                workTypes[0]
+        ));
+        collection.add(WorkImpl.createWork(
+                "TestWork1",
+                "Beepboop",
+                ZonedDateTime.parse("2011-12-05T10:15:30+01:00"),
+                ZonedDateTime.parse("2011-12-06T10:15:30+01:00"),
+                workTypes[1]
+        ));
+        collection.add(WorkImpl.createWork(
+                "TestWork1",
+                "Beepboop",
+                ZonedDateTime.parse("2011-12-07T10:15:30+01:00"),
+                ZonedDateTime.parse("2011-12-08T10:15:30+01:00"),
+                workTypes[2]
+        ));
+        return collection;
+    }
+
     private void addWorkTypes() {
         persistCollection(prepareWorkTypes());
+    }
+
+    private void addWork() {
+        persistCollection(prepareWork());
     }
 
     private <T> void persistCollection(Collection<T> records) {
@@ -77,7 +108,7 @@ public class BasicDatabaseTests {
     }
 
     @Test
-    public void testPersistWorkImpl() {
+    public void testPersistWorkTypeImpl() {
         addWorkTypes();
         List<WorkType> reference = prepareWorkTypes();
         Collections.sort(reference);
@@ -86,6 +117,25 @@ public class BasicDatabaseTests {
         entityManager.clear();
         Collections.sort(result);
         Assertions.assertEquals(reference,result);
+    }
+
+    @Test
+    public void testPersistWorkImpl() {
+        addWork();
+        List<WorkType> reference = prepareWorkTypes();
+        Collections.sort(reference);
+        EntityManager entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
+        List<WorkTypeImpl> result = entityManager.createQuery("from WorkTypeImpl").getResultList();
+        entityManager.clear();
+        Collections.sort(result);
+        Assertions.assertEquals(reference,result);
+
+        List<Work> referenceWork = prepareWork();
+        List<WorkImpl> resultWork = entityManager.createQuery("from WorkImpl").getResultList();
+        entityManager.clear();
+        Collections.sort(resultWork);
+        Assertions.assertEquals(referenceWork, resultWork);
+
     }
 
 }
