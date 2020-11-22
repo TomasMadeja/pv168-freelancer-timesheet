@@ -1,19 +1,19 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.exampledata;
 
-import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Service;
-import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.ServiceType;
-import cz.muni.fi.pv168.freelancertimesheet.gui.models.ServiceTableModel;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTableModel;
 
 import java.time.ZonedDateTime;
 
 public class RandomDataGenerator {
-    public static class ServiceImpl implements Service {
+    public static class WorkImpl implements Work {
 
         private String name;
         private String description;
         private ZonedDateTime startTime;
         private ZonedDateTime endTime;
-        private ServiceType serviceType;
+        private WorkType workType;
 
         @Override
         public String getName() {
@@ -21,12 +21,12 @@ public class RandomDataGenerator {
         }
 
         @Override
-        public Service setName() {
+        public Work setName() {
             return null;
         }
 
         @Override
-        public Service validateName9() {
+        public Work validateName() {
             return null;
         }
 
@@ -36,12 +36,12 @@ public class RandomDataGenerator {
         }
 
         @Override
-        public Service setDescription() {
+        public Work setDescription() {
             return null;
         }
 
         @Override
-        public Service validateDescription() {
+        public Work validateDescription() {
             return null;
         }
 
@@ -51,12 +51,12 @@ public class RandomDataGenerator {
         }
 
         @Override
-        public Service setStartTime(ZonedDateTime datetime) {
+        public Work setStartTime(ZonedDateTime datetime) {
             return null;
         }
 
         @Override
-        public Service validateStartTime(ZonedDateTime datetime) {
+        public Work validateStartTime(ZonedDateTime datetime) {
             return null;
         }
 
@@ -66,43 +66,43 @@ public class RandomDataGenerator {
         }
 
         @Override
-        public Service setEndTime(ZonedDateTime datetime) {
+        public Work setEndTime(ZonedDateTime datetime) {
             return null;
         }
 
         @Override
-        public Service validateEndTime(ZonedDateTime datetime) {
+        public Work validateEndTime(ZonedDateTime datetime) {
             return null;
         }
 
         @Override
-        public ServiceType getServiceType() {
-            return serviceType;
+        public WorkType getWorkType() {
+            return workType;
         }
 
         @Override
-        public Service setServiceType(ServiceType serviceType) {
+        public Work setWorkType(WorkType workType) {
             return null;
         }
 
         @Override
-        public Service validateServiceType(ServiceType serviceType) {
+        public Work validateWorkType(WorkType workType) {
             return null;
         }
 
         @Override
-        public Service createService(String name, String description, ZonedDateTime startTime, ZonedDateTime endTime, ServiceType serviceType) {
+        public Work createService(String name, String description, ZonedDateTime startTime, ZonedDateTime endTime, WorkType workType) {
             this.name = name;
             this.description = description;
             this.startTime = startTime;
             this.endTime = endTime;
-            this.serviceType = serviceType;
+            this.workType = workType;
             return this;
         }
     }
 
-    public static void GenerateServiceData (ServiceTableModel table) {
-        table.addRow(new ServiceImpl().createService(
+    public static void GenerateServiceData (WorkTableModel table) {
+        table.addRow(new WorkImpl().createService(
                 "Funny name",
                 "This is a funny description",
                 ZonedDateTime.now(),

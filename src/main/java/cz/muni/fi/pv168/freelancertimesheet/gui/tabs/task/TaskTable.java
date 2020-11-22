@@ -2,17 +2,11 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.exampledata.RandomDataGenerator;
-import cz.muni.fi.pv168.freelancertimesheet.gui.models.ServiceTableModel;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTableModel;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
@@ -81,9 +75,9 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
     }
 
     private JTable createTable() {
-        table = new JTable(new ServiceTableModel());
+        table = new JTable(new WorkTableModel());
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        RandomDataGenerator.GenerateServiceData((ServiceTableModel)table.getModel());
+        RandomDataGenerator.GenerateServiceData((WorkTableModel)table.getModel());
 //        table.setModel(model);
         return table;
     }

@@ -1,47 +1,47 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 
-import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Service;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 
 import java.time.ZonedDateTime;
 
-public class ServiceTableModel extends TableModel<Service> {
+public class WorkTableModel extends TableModel<Work> {
 
-    public ServiceTableModel() {
+    public WorkTableModel() {
         super(new Column[] {
                 new Column(
                         "Name",
                         "test2",
                         String.class,
-                        Service.class,
-                        (Object object) -> ((Service)object).getName()
+                        Work.class,
+                        (Object object) -> ((Work)object).getName()
                 ),
                 new Column(
                         "Description",
                         "test2",
                         String.class,
-                        Service.class,
-                        (Object object) -> ((Service)object).getDescription()
+                        Work.class,
+                        (Object object) -> ((Work)object).getDescription()
                 ),
                 new Column(
                         "Service Type",
                         "test3",
                         String.class,
-                        Service.class,
-                        (Object object) -> ((Service)object).getServiceType()
+                        Work.class,
+                        (Object object) -> ((Work)object).getWorkType()
                 ),
                 new Column(
                         "Start Time",
                         "test4",
                         ZonedDateTime.class,
-                        Service.class,
-                        (Object object) -> ((Service)object).getStartTime()
+                        Work.class,
+                        (Object object) -> ((Work)object).getStartTime()
                 ),
                 new Column(
                         "End Time",
                         "test5",
                         ZonedDateTime.class,
-                        Service.class,
-                        (Object object) -> ((Service)object).getEndTime()
+                        Work.class,
+                        (Object object) -> ((Work)object).getEndTime()
                 )
         });
     }

@@ -4,6 +4,12 @@ import java.math.BigDecimal;
 
 public interface WorkType {
 
+    public String getName();
+
+    public WorkType setName();
+
+    public WorkType validateName();
+
     public String getDescription();
 
     public WorkType setDescription(String description);

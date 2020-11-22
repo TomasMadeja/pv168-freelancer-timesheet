@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
-import cz.muni.fi.pv168.freelancertimesheet.gui.models.ServiceTypeTableModel;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -22,7 +22,7 @@ public class DeleteAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var employeeTableModel = (ServiceTypeTableModel) employeeTable.getModel();
+        var employeeTableModel = (WorkTypeTableModel) employeeTable.getModel();
         Arrays.stream(employeeTable.getSelectedRows())
                 // view row index must be converted to model row index
                 .map(employeeTable::convertRowIndexToModel)
