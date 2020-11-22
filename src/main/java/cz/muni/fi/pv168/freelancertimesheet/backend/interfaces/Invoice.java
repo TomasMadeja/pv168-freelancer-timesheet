@@ -30,15 +30,15 @@ public interface Invoice {
 
     public Invoice validateDueDate(ZonedDateTime datetime);
 
-    public List<Service> getServices();
+    public List<Work> getServices();
 
-    public Invoice setServices(List<Service> services);
+    public Invoice setServices(List<Work> works);
 
-    public Invoice addService(Service service);
+    public Invoice addService(Work work);
 
-    public Invoice validateServices(List<Service> services);
+    public Invoice validateServices(List<Work> works);
 
-    public Invoice validateService(Service service);
+    public Invoice validateService(Work work);
 
     public BigDecimal getTotalAmount();
 
@@ -47,6 +47,6 @@ public interface Invoice {
             Entity Issuer,
             ZonedDateTime issueDate,
             ZonedDateTime dueDate,
-            List<Service> services
+            List<Work> works
     );
 }
