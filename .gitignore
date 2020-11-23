@@ -32,3 +32,6 @@ gradle/
 # Build
 build/
 
+# Database folder
+resources/
+

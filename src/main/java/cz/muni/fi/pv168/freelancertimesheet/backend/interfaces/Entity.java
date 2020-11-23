@@ -25,8 +25,23 @@ public interface Entity {
 
     public Entity validatePhoneNumber(String phoneNumber);
 
-    public Entity createEntity(
+    public String getICO();
+
+    public Entity setICO(String ico);
+
+    public Entity validateICO(String ico);
+
+    public String getDIC();
+
+    public Entity setDIC(String dic);
+
+    public Entity validateDIC(String dic);
+
+    public static Entity createEntity(
             String name,
             String address
-    );
+    ) {
+        return null;
+    }
+
 }

@@ -2,7 +2,13 @@ package cz.muni.fi.pv168.freelancertimesheet.backend.interfaces;
 
 import java.math.BigDecimal;
 
-public interface WorkType {
+public interface WorkType extends Comparable {
+
+    public String getName();
+
+    public WorkType setName(String name);
+
+    public WorkType validateName(String name);
 
     public String getName();
 
@@ -25,14 +31,4 @@ public interface WorkType {
     public WorkType validateHourlyRate(BigDecimal hourlyRate);
 
     public WorkType validateHourlyRate(String hourlyRate);
-
-    public WorkType createServiceType(
-            String description,
-            BigDecimal hourlyRate
-    );
-
-    public WorkType createServiceType(
-            String description,
-            String hourlyRate
-    );
 }
