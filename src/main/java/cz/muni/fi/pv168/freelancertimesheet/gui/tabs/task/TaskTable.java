@@ -77,7 +77,7 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
     private JTable createTable() {
         table = new JTable(new WorkTableModel());
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        RandomDataGenerator.GenerateServiceData((WorkTableModel)table.getModel());
+        RandomDataGenerator.generateWorkData((WorkTableModel)table.getModel());
 //        table.setModel(model);
         return table;
     }

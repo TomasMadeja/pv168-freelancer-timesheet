@@ -10,12 +10,6 @@ public interface WorkType extends Comparable {
 
     public WorkType validateName(String name);
 
-    public String getName();
-
-    public WorkType setName();
-
-    public WorkType validateName();
-
     public String getDescription();
 
     public WorkType setDescription(String description);

@@ -23,11 +23,11 @@ public class WorkTableModel extends TableModel<Work> {
                         (Object object) -> ((Work)object).getDescription()
                 ),
                 new Column(
-                        "Service Type",
+                        "Work Type",
                         "test3",
                         String.class,
                         Work.class,
-                        (Object object) -> ((Work)object).getWorkType()
+                        (Object object) -> ((Work)object).getWorkType().getName()
                 ),
                 new Column(
                         "Start Time",

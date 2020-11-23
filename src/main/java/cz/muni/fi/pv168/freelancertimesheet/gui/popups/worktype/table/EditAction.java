@@ -10,12 +10,12 @@ import java.awt.event.KeyEvent;
 
 public class EditAction extends AbstractAction {
     private final JTable workTypeTable;
-    private final WorkTypeForm serviceTypeForm;
+    private final WorkTypeForm workTypeForm;
 
     public EditAction(JTable workTypeTable, WorkTypeForm workTypeForm) {
         super("Edit");
         this.workTypeTable = workTypeTable;
-        this.serviceTypeForm = workTypeForm;
+        this.workTypeForm = workTypeForm;
         putValue(SHORT_DESCRIPTION, "Edits selected work type");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
@@ -26,6 +26,6 @@ public class EditAction extends AbstractAction {
         var employeeTableModel = (WorkTypeTableModel) workTypeTable.getModel();
         int index = workTypeTable.getSelectedRow();
         WorkType workType = employeeTableModel.getRow(index);
-        serviceTypeForm.fillForm(workType);
+        workTypeForm.fillForm(workType);
     }
 }
