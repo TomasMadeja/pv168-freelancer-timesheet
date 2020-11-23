@@ -18,16 +18,24 @@ ext {
 sourceSets {
     main {
         java {
-            srcDirs = ['src/main/java', 'cz.muni.fi.pv168.freelancertimesheet']
+            srcDirs = ['src/main/java']
         }
         resources {
             srcDirs += ['src/main/resources']
         }
     }
 }
+
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
-    compile 'junit:junit:4.12'
     compile 'com.github.lgooddatepicker:LGoodDatePicker:11.1.0'
+    compile group: 'org.hibernate', name: 'hibernate-gradle-plugin', version: '5.4.22.Final'
+    compile group: 'org.apache.derby', name: 'derby', version: '10.14.1.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 }
 
 application {

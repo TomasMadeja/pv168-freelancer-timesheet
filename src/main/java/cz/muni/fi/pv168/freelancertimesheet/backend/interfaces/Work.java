@@ -2,7 +2,19 @@ package cz.muni.fi.pv168.freelancertimesheet.backend.interfaces;
 
 import java.time.ZonedDateTime;
 
-public interface Work {
+public interface Work extends Comparable {
+
+    public String getName();
+
+    public Work setName(String name);
+
+    public Work validateName(String name);
+
+    public String getDescription();
+
+    public Work setDescription(String description);
+
+    public Work validateDescription(String description);
 
     public ZonedDateTime getStartTime();
 
@@ -16,15 +28,11 @@ public interface Work {
 
     public Work validateEndTime(ZonedDateTime datetime);
 
-    public WorkType getServiceType();
+    public WorkType getWorkType();
 
-    public Work setServiceType(WorkType workType);
+    public Work setWorkType(WorkType workType);
 
-    public Work validateServiceType(WorkType workType);
+    public Work validateWorkType(WorkType workType);
 
-    public Work createService(
-            ZonedDateTime startTime,
-            ZonedDateTime endTime,
-            WorkType workType
-    );
+
 }
