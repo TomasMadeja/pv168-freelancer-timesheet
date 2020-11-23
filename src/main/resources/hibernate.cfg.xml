@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection settings -->
+        <property name="connection.driver_class">
+            org.apache.derby.jdbc.EmbeddedDriver
+        </property>
+        <property name="connection.url">
+            jdbc:derby:resources/dbDerby;create=true
+        </property>
+        <!-- JDBC connection pool (use the built-in) -->
+        <property name="connection.pool_size">1</property>
+        <!-- SQL dialect -->
+        <property name="hibernate.connection.autocommit">true</property>
+        <property name="dialect">
+            org.hibernate.dialect.DerbyTenSevenDialect
+        </property>
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">thread</property>
+        <!-- Disable the second-level cache -->
+
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">true</property>
+        <property name="hbm2ddl.auto">update</property>
+        <property name="hibernate.default_schema">APP</property>
+        <mapping class="cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl"/>
+        <mapping class="cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl"/>
+        <mapping class="cz.muni.fi.pv168.freelancertimesheet.backend.orm.IssuerImpl"/>
+        <mapping class="cz.muni.fi.pv168.freelancertimesheet.backend.orm.ClientImpl"/>
+        <mapping class="cz.muni.fi.pv168.freelancertimesheet.backend.orm.InvoiceImpl"/>
+    </session-factory>
+</hibernate-configuration>

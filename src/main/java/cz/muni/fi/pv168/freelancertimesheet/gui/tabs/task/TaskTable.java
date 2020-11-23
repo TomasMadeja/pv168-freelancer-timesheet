@@ -1,22 +1,17 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.exampledata.RandomDataGenerator;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTableModel;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     private final TaskForm taskForm;
     private JTable table;
-    private int tableColumnCount;
 
     public int GetSelectedTasksCount() {
         return table.getSelectedRows().length;
@@ -60,7 +55,7 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
     }
 
     private void resetTaskForm() {
-        String[] rowData = new String[tableColumnCount];
+        String[] rowData = new String[table.getColumnCount()];
         Arrays.fill(rowData, "");
         taskForm.fillForm(rowData);
     }
@@ -71,8 +66,8 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
             return;
         }
 
-        Object[] rowData = new Object[tableColumnCount];
-        for (int i = 1; i < tableColumnCount; i++) {
+        Object[] rowData = new Object[table.getColumnCount()];
+        for (int i = 1; i < table.getColumnCount(); i++) {
             rowData[i] = table.getValueAt(selectedRow, i);
         }
         rowData[0] = false;
@@ -80,17 +75,9 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
     }
 
     private JTable createTable() {
-        String[] columnNames = {"Date", "Task name", "Work Type", "Start Time", "End Time", "Description"};
-        Object[][] data = {
-                {"November 4, 2020", "Sample task", "Work type", "14:50", "16:00", "Desc"},
-                {"November 4, 2020", "Sample task2", "Work type", "02:00", "04:00", "Desc"},
-                {"November 2, 2020", "Sample task3", "Work type", "15:00", "15:30", "Desc"}
-        };
-        tableColumnCount = 6;
-
-        table = new JTable(data, columnNames);
+        table = new JTable(new WorkTableModel());
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
+        RandomDataGenerator.generateWorkData((WorkTableModel)table.getModel());
 //        table.setModel(model);
         return table;
     }

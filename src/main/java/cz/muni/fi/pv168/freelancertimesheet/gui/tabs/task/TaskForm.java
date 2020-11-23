@@ -92,7 +92,7 @@ public class TaskForm extends JPanel implements GenericElement<TaskForm> {
         startTimePicker = setupTimePicker();
         endTimePicker = setupTimePicker();
 
-        forms = List.of(datePicker, taskNameField, taskTypeField, startTimePicker, endTimePicker, descField);
+        forms = List.of(taskNameField, taskTypeField, startTimePicker, endTimePicker, descField);
 
         taskTypeField.setEditable(false);
         confirmButton.addActionListener(e -> confirmFilledForms());
@@ -103,9 +103,6 @@ public class TaskForm extends JPanel implements GenericElement<TaskForm> {
     public TaskForm setupNested() {
         JPanel panel = new JPanel(new GridLayout(6, 2));
         initForms();
-
-        panel.add(new JLabel("Enter date:"));
-        panel.add(datePicker);
 
         panel.add(new JLabel("Enter task name:"));
         panel.add(taskNameField);
@@ -171,7 +168,10 @@ public class TaskForm extends JPanel implements GenericElement<TaskForm> {
         JComponent element;
         for (int i = 1; i < forms.size(); i++) {
             element = forms.get(i);
-            data = (String)rowData[i];
+            if (rowData[i] == null)
+                data = "";
+            else
+                data = rowData[i].toString();
 
             if (element instanceof JTextField) {
                 var textField = (JTextField) element;

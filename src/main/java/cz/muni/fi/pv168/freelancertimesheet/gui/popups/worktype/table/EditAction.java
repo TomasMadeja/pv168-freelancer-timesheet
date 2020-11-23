@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
-import cz.muni.fi.pv168.freelancertimesheet.gui.exampledata.WorkType;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.forms.WorkTypeForm;
 

@@ -1,12 +1,10 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
-import cz.muni.fi.pv168.freelancertimesheet.gui.exampledata.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.forms.WorkTypeForm;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-import java.util.List;
 
 public class WorkTypeTable {
     private final JPanel panel;
@@ -21,7 +19,7 @@ public class WorkTypeTable {
         this.frame = frame;
         panel = createPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        JTable workTypeTable = createWorkTypeTable(WorkType.getExampleData());
+        JTable workTypeTable = createWorkTypeTable();
         addAction = new AddAction(workTypeTable, workTypeForm);
         deleteAction = new DeleteAction(workTypeTable);
         editAction = new EditAction(workTypeTable, workTypeForm);
@@ -40,8 +38,8 @@ public class WorkTypeTable {
         return new JPanel();
     }
 
-    private JTable createWorkTypeTable(List<WorkType> workTypes) {
-        var model = new WorkTypeTableModel(workTypes);
+    private JTable createWorkTypeTable() {
+        var model = new WorkTypeTableModel();
         var table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
