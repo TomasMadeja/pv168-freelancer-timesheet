@@ -1,16 +1,15 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
-import cz.muni.fi.pv168.freelancertimesheet.gui.TasksPopup;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.TextFieldFactory;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.chooseWork.ChooseWorkWindow;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class InvoiceForm extends JPanel implements GenericElement {
     private GridBagLayout layout;
@@ -66,7 +65,7 @@ public class InvoiceForm extends JPanel implements GenericElement {
         JButton workPicker = new JButton("Choose Work");
         InvoiceForm invoiceForm = this;
         workPicker.addActionListener(e -> {
-            JFrame popup = TasksPopup.setup(invoiceForm);
+            JFrame popup = ChooseWorkWindow.setup();
             popup.setVisible(true);
         });
         selectedWorks = new JLabel("Selected Work: 0");
