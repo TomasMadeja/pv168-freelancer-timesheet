@@ -21,13 +21,15 @@ public class TableModel<T> extends AbstractTableModel {
         private String attributeName;
 
         private Function getter;
+        private Function setter;
 
-        public Column(String columnName, String attributeName, Class<?> columnClass, Class<?> rowClass, Function getter) {
+        public Column(String columnName, String attributeName, Class<?> columnClass, Class<?> rowClass, Function getter, Function setter) {
             this.columnName = columnName;
             this.attributeName = attributeName;
             this.columnClass = columnClass;
             this.rowClass = rowClass;
             this.getter = getter;
+            this.setter = setter;
         }
 
         public Object getValue(Object container) {
@@ -80,9 +82,10 @@ public class TableModel<T> extends AbstractTableModel {
         if (columnIndex > columns.length || columnIndex < 0) {
             throw new IndexOutOfBoundsException("Invalid column index: " + columnIndex);
         }
-        if (rowIndex != 0) {
-            throw new IndexOutOfBoundsException("Invalid column index: " + columnIndex);
-        }
+        // TODO wrong check?
+//        if (rowIndex != 0) {
+//            throw new IndexOutOfBoundsException("Invalid column index: " + columnIndex);
+//        }
         return columns[columnIndex].getValue(rows.get(rowIndex));
     }
 
