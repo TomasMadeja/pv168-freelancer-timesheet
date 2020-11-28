@@ -1,34 +1,60 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.chooseWork;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.exampledata.RandomDataGenerator;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.ChooseWorkTableModel;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWorkWindow> {
 
     GridBagConstraints gbc;
 
+    private List<Boolean> selectedRows;
+
     public ChooseWorkWindow() {
         super("Choose Work");
+        selectedRows = new ArrayList<>();
     }
 
 
     private JTable createTable() {
         JTable table = new JTable(new ChooseWorkTableModel());
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-//        RandomDataGenerator.generateWorkData((ChooseWorkTableModel)table.getModel());
+
+        var listSelectionModel = table.getSelectionModel();
+//        listSelectionModel.addListSelectionListener(new CheckBoxTableSelectionListener(selectedRows));
+
+        // TODO use event to find the right rows
+        table.getSelectionModel().addListSelectionListener(e -> {
+            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+            AbstractTableModel model = (AbstractTableModel) table.getModel();
+
+            int[] rows = table.getSelectedRows();
+            int rowsIndex = 0;
+            for (int i = 0; i < selectedRows.size(); i++) {
+                if (rowsIndex < rows.length && rows[rowsIndex] == i) {
+                    selectedRows.set(i, true);
+                    rowsIndex++;
+                    model.setValueAt(true, i, 0);
+                } else {
+                    selectedRows.set(i, false);
+                    model.setValueAt(false, i, 0);
+                }
+            }
+        });
+
+        RandomDataGenerator.generateWorkData((ChooseWorkTableModel) table.getModel());
         return table;
     }
 
     private JButton confirmSelectionButton() {
-        var panel = new JPanel();
         var button = new JButton();
-
         button.setText("Confirm Selection");
-
-//        panel.add(button);
         return button;
     }
 
