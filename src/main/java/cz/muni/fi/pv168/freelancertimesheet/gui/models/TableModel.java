@@ -4,9 +4,17 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class TableModel<T> extends AbstractTableModel {
+
+    public TableModel() {
+        super();
+        this.columns = new ArrayList<>();
+        this.rows = new ArrayList<T>();
+    }
+
 
     public TableModel(Column[] columns) {
         super();
@@ -14,17 +22,17 @@ public class TableModel<T> extends AbstractTableModel {
         this.rows = new ArrayList<T>();
     }
 
-    protected static class Column {
-        public Class<?> rowClass;
+    protected class Column<ColT, RowT> {
+        public Class<RowT> rowClass;
         public String columnName;
-        public Class<?> columnClass;
+        public Class<ColT> columnClass;
 
         private String attributeName;
 
-        private Function getter;
-        private Function setter;
+        private final Function<Object, ColT> getter;
+        private final Consumer<Object> setter;
 
-        public Column(String columnName, String attributeName, Class<?> columnClass, Class<?> rowClass, Function getter, Function setter) {
+        public Column(String columnName, String attributeName, Class<ColT> columnClass, Class<RowT> rowClass, Function<Object, ColT> getter, Consumer<Object> setter) {
             this.columnName = columnName;
             this.attributeName = attributeName;
             this.columnClass = columnClass;
@@ -33,11 +41,13 @@ public class TableModel<T> extends AbstractTableModel {
             this.setter = setter;
         }
 
-        public Object getValue(Object container) {
-            if (!rowClass.isInstance(container)) {
-                throw new RuntimeException("Container class:" + container.getClass().toString() + " | rowClass: " + rowClass.toString());
-            }
+        public ColT getValue(Object container) {
+            // TODO check type
             return getter.apply(container);
+        }
+
+        public void setValue(Object object) {
+            setter.accept(object);
         }
 
     }

@@ -30,13 +30,16 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
 
 
     private JTable createTable() {
-        JTable table = new JTable(new ChooseWorkTableModel());
+        var model = new ChooseWorkTableModel();
+        JTable table = new JTable(model);
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        createTmpDataInDb();
 
+        createTmpDataInDb();
 //        RandomDataGenerator.generateWorkData((ChooseWorkTableModel) table.getModel());
+
         loadDataFromDatabase((ChooseWorkTableModel) table.getModel());
+
         return table;
     }
 
