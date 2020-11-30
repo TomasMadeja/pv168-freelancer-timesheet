@@ -14,17 +14,18 @@ public class TableModel<T> extends AbstractTableModel {
         this.rows = new ArrayList<T>();
     }
 
-    protected static class Column {
-        public Class<?> rowClass;
+    protected static class Column<ColT, RowT> {
+        public Class<ColT> columnClass;
+        public Class<RowT> rowClass;
         public String columnName;
-        public Class<?> columnClass;
 
         private String attributeName;
 
+        // TODO specify type
         private Function getter;
         private Function setter;
 
-        public Column(String columnName, String attributeName, Class<?> columnClass, Class<?> rowClass, Function getter, Function setter) {
+        public Column(String columnName, String attributeName, Class<ColT> columnClass, Class<RowT> rowClass, Function getter, Function setter) {
             this.columnName = columnName;
             this.attributeName = attributeName;
             this.columnClass = columnClass;
@@ -33,11 +34,16 @@ public class TableModel<T> extends AbstractTableModel {
             this.setter = setter;
         }
 
-        public Object getValue(Object container) {
-            if (!rowClass.isInstance(container)) {
+        public RowT getValue(RowT container) {
+            if (rowClass.isInstance(container)) {
                 throw new RuntimeException("Container class:" + container.getClass().toString() + " | rowClass: " + rowClass.toString());
             }
-            return getter.apply(container);
+            return (RowT) getter.apply(container);
+        }
+
+        public void setValue(Object value) {
+            // TODO check object type
+            setter.apply(value);
         }
 
     }
@@ -79,7 +85,6 @@ public class TableModel<T> extends AbstractTableModel {
         // TODO this needs to be implemented for checkboxes in ChooseWorkWindow
         throw new UnsupportedOperationException("TableModel::setValueAt not implemented");
     }
-
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
