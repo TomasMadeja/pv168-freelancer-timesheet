@@ -12,7 +12,7 @@ public class WorkTableModel extends TableModel<Work> {
     }
 
     private void createColumns() {
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<String, Work>(
                 "Name",
                 "test2",
                 false,
@@ -21,7 +21,7 @@ public class WorkTableModel extends TableModel<Work> {
                 (Object object) -> ((Work) object).getName(),
                 null
         ));
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<String, Work>(
                 "Description",
                 "test2",
                 false,
@@ -30,7 +30,7 @@ public class WorkTableModel extends TableModel<Work> {
                 (Object object) -> ((Work) object).getDescription(),
                 null
         ));
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<String, Work>(
                 "Work Type",
                 "test3",
                 false,
@@ -39,7 +39,7 @@ public class WorkTableModel extends TableModel<Work> {
                 (Object object) -> ((Work) object).getWorkType().getName(),
                 null
         ));
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<ZonedDateTime, Work>(
                 "Start Time",
                 "test4",
                 false,
@@ -48,7 +48,7 @@ public class WorkTableModel extends TableModel<Work> {
                 (Object object) -> ((Work) object).getStartTime(),
                 null
         ));
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<ZonedDateTime, Work>(
                 "End Time",
                 "test5",
                 false,

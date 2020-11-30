@@ -16,16 +16,16 @@ public class ChooseWorkTableModel extends TableModel<Work> {
     }
 
     private void createColumns() {
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<Boolean, Work>(
                 "Select",
                 "test1",
                 true,
                 Boolean.class,
                 Work.class,
                 (Object object) -> isSelected((Work) object),
-                (Object object) -> changeSelection((Work) object)
+                (Object object, Object value) -> changeSelection((Work) object, (Boolean) value)
         ));
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<String, Work>(
                 "Name",
                 "test2",
                 false,
@@ -34,7 +34,7 @@ public class ChooseWorkTableModel extends TableModel<Work> {
                 (Object object) -> ((Work) object).getName(),
                 null
         ));
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<String, Work>(
                 "Description",
                 "test2",
                 false,
@@ -43,7 +43,7 @@ public class ChooseWorkTableModel extends TableModel<Work> {
                 (Object object) -> ((Work) object).getDescription(),
                 null
         ));
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<String, Work>(
                 "Work Type",
                 "test3",
                 false,
@@ -52,7 +52,7 @@ public class ChooseWorkTableModel extends TableModel<Work> {
                 (Object object) -> ((Work) object).getWorkType().getName(),
                 null
         ));
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<ZonedDateTime, Work>(
                 "Start Time",
                 "test4",
                 false,
@@ -61,7 +61,7 @@ public class ChooseWorkTableModel extends TableModel<Work> {
                 (Object object) -> ((Work) object).getStartTime(),
                 null
         ));
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<ZonedDateTime, Work>(
                 "End Time",
                 "test5",
                 false,
@@ -76,8 +76,7 @@ public class ChooseWorkTableModel extends TableModel<Work> {
         return selectedRows.getOrDefault(object, false);
     }
 
-    public void changeSelection(Work object) {
-        // toggle boolean value
-        selectedRows.put(object, !selectedRows.get(object));
+    public void changeSelection(Work object, Boolean value) {
+        selectedRows.put(object, value);
     }
 }
