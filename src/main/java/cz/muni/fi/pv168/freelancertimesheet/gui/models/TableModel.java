@@ -39,6 +39,7 @@ public class TableModel<T> extends AbstractTableModel {
             }
             return getter.apply(container);
         }
+
     }
 
     private final List<Column> columns;
@@ -75,7 +76,8 @@ public class TableModel<T> extends AbstractTableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         checkColumnIndex(columnIndex);
         checkRowIndex(rowIndex);
-        // TODO
+        // TODO this needs to be implemented for checkboxes in ChooseWorkWindow
+        throw new UnsupportedOperationException("TableModel::setValueAt not implemented");
     }
 
 

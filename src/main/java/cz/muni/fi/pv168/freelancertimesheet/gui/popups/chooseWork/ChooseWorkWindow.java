@@ -1,11 +1,15 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.chooseWork;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.DBConnectionUtils;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
+import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.exampledata.RandomDataGenerator;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.ChooseWorkTableModel;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 
+import javax.persistence.EntityManager;
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,30 +30,15 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
         JTable table = new JTable(new ChooseWorkTableModel());
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        var listSelectionModel = table.getSelectionModel();
-//        listSelectionModel.addListSelectionListener(new CheckBoxTableSelectionListener(selectedRows));
-
-        // TODO use event to find the right rows
-        table.getSelectionModel().addListSelectionListener(e -> {
-            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-            AbstractTableModel model = (AbstractTableModel) table.getModel();
-
-            int[] rows = table.getSelectedRows();
-            int rowsIndex = 0;
-            for (int i = 0; i < selectedRows.size(); i++) {
-                if (rowsIndex < rows.length && rows[rowsIndex] == i) {
-                    selectedRows.set(i, true);
-                    rowsIndex++;
-                    model.setValueAt(true, i, 0);
-                } else {
-                    selectedRows.set(i, false);
-                    model.setValueAt(false, i, 0);
-                }
-            }
-        });
-
         RandomDataGenerator.generateWorkData((ChooseWorkTableModel) table.getModel());
+        loadDataFromDatabase((ChooseWorkTableModel) table.getModel());
         return table;
+    }
+
+    private void loadDataFromDatabase(TableModel<Work> table) {
+        EntityManager entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
+        List<WorkImpl> result = entityManager.createQuery("from WorkImpl").getResultList();
+        result.forEach(table::addRow);
     }
 
     private JButton confirmSelectionButton() {
