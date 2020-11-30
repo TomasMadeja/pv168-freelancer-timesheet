@@ -44,4 +44,5 @@ public interface Entity {
         return null;
     }
 
+    public String toXML();
 }

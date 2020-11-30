@@ -1,20 +1,22 @@
 package cz.muni.fi.pv168.freelancertimesheet.backend.interfaces;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.orm.IssuerImpl;
+
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface Invoice {
 
-    public Entity getClient();
+    public Client getClient();
 
-    public Invoice setClient(Entity client);
+    public Invoice setClient(Client client);
 
-    public Invoice validateClient(Entity client);
+    public Invoice validateClient(Client client);
 
-    public Entity getIssuer();
+    public Issuer getIssuer();
 
-    public Invoice setIssuer(Entity issuer);
+    public Invoice setIssuer(Issuer issuer);
 
     public Invoice validateIssuer(Entity issuer);
 
@@ -46,11 +48,13 @@ public interface Invoice {
 
     public Invoice setPdfPath(String pdfPath);
 
-    public Invoice createInvoice(
+    public static Invoice createInvoice(
             Entity Client,
             Entity Issuer,
             ZonedDateTime issueDate,
             ZonedDateTime dueDate,
             List<Work> works
-    );
+    ) {
+        return null;
+    }
 }
