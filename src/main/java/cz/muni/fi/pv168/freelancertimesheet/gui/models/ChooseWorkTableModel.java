@@ -3,8 +3,12 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChooseWorkTableModel extends TableModel<Work> {
+
+    private List<Boolean> selectedRows;
 
     public ChooseWorkTableModel() {
         super(new Column[]{
@@ -57,5 +61,9 @@ public class ChooseWorkTableModel extends TableModel<Work> {
                         null
                 )
         });
+
+        selectedRows = new ArrayList<>();
     }
+
+
 }
