@@ -21,10 +21,10 @@ public class EntityImpl implements Entity {
     @Column(name = "address", nullable=false)
     protected String address;
 
-    @Column(name = "email", nullable=false)
+    @Column(name = "email", nullable=true)
     protected String email;
 
-    @Column(name = "phone_number", nullable=false)
+    @Column(name = "phone_number", nullable=true)
     protected String phoneNumber;
 
     @Column(name = "ico", nullable=false)

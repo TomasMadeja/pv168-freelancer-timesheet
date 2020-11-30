@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Issuer;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -48,7 +49,7 @@ public class InvoiceImpl implements Invoice {
     @Transient
     private IssuerImpl issuer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id", nullable=false)
     private ClientImpl client;
 
