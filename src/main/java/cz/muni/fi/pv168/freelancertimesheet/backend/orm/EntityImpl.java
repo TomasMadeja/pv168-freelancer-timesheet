@@ -139,6 +139,12 @@ public class EntityImpl implements Entity {
         return this;
     }
 
+    @Override
+    public String toXML() {
+        return null;
+    }
+
+
     public static Entity createEntity(String name, String address, String ico, String dic) {
         return new EntityImpl(name, address, ico, dic);
     }

@@ -38,6 +38,8 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
     compile group: 'com.openhtmltopdf', name: 'openhtmltopdf-pdfbox', version: '1.0.4'
     compile group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
+    compile 'org.apache.commons:commons-lang3:3.11'
+
 }
 
 application {
