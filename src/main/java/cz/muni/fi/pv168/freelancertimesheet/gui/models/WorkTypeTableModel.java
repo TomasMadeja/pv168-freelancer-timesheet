@@ -15,6 +15,7 @@ public class WorkTypeTableModel extends TableModel<WorkType> {
         super.addColumn(new Column<>(
                 "Name",
                 "test1",
+                false,
                 String.class,
                 WorkType.class,
                 (Object object) -> ((WorkType) object).getDescription(),
@@ -23,6 +24,7 @@ public class WorkTypeTableModel extends TableModel<WorkType> {
         super.addColumn(new Column<>(
                 "Rate",
                 "test2",
+                false,
                 BigDecimal.class,
                 WorkType.class,
                 (Object object) -> ((WorkType) object).getHourlyRate(),
@@ -31,6 +33,7 @@ public class WorkTypeTableModel extends TableModel<WorkType> {
         super.addColumn(new Column<>(
                 "Description",
                 "test3",
+                false,
                 String.class,
                 WorkType.class,
                 (Object object) -> ((WorkType) object).getDescription(),
