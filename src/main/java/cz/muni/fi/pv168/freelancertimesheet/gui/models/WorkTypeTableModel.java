@@ -12,7 +12,7 @@ public class WorkTypeTableModel extends TableModel<WorkType> {
     }
 
     private void createColumns() {
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<String, WorkType>(
                 "Name",
                 "test1",
                 false,
@@ -21,7 +21,7 @@ public class WorkTypeTableModel extends TableModel<WorkType> {
                 (Object object) -> ((WorkType) object).getDescription(),
                 null
         ));
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<BigDecimal, WorkType>(
                 "Rate",
                 "test2",
                 false,
@@ -30,7 +30,7 @@ public class WorkTypeTableModel extends TableModel<WorkType> {
                 (Object object) -> ((WorkType) object).getHourlyRate(),
                 null
         ));
-        super.addColumn(new Column<>(
+        super.addColumn(new Column<String, WorkType>(
                 "Description",
                 "test3",
                 false,
