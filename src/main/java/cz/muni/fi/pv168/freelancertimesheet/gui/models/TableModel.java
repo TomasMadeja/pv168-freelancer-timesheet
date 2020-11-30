@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.function.Function;
 
 public class TableModel<T> extends AbstractTableModel {
+
     public TableModel(Column[] columns) {
         super();
-        this.columns = columns;
+        this.columns = Arrays.asList(columns);
         this.rows = new ArrayList<T>();
     }
 
@@ -40,13 +41,11 @@ public class TableModel<T> extends AbstractTableModel {
         }
     }
 
-    private Column[] columns;
+    private final List<Column> columns;
     protected final List<T> rows;
 
     protected TableModel<T> addColumn(Column column) {
-        List<Column> columnList = Arrays.asList(columns.clone());
-        columnList.add(column);
-        columns = columnList.toArray(columns);
+        columns.add(column);
         return this;
     }
 
@@ -57,36 +56,34 @@ public class TableModel<T> extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return columns.length;
+        return columns.size();
     }
 
     @Override
     public String getColumnName(int columnIndex) {
-        if (columnIndex > columns.length || columnIndex < 0) {
-            throw new IndexOutOfBoundsException("Invalid column index: " + columnIndex);
-        }
-        return columns[columnIndex].columnName;
+        checkColumnIndex(columnIndex);
+        return columns.get(columnIndex).columnName;
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if (columnIndex > columns.length || columnIndex < 0) {
-            throw new IndexOutOfBoundsException("Invalid column index: " + columnIndex);
-        }
-        return columns[columnIndex].columnClass;
+        checkColumnIndex(columnIndex);
+        return columns.get(columnIndex).columnClass;
+    }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        checkColumnIndex(columnIndex);
+        checkRowIndex(rowIndex);
+        // TODO
     }
 
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        if (columnIndex > columns.length || columnIndex < 0) {
-            throw new IndexOutOfBoundsException("Invalid column index: " + columnIndex);
-        }
-        // TODO wrong check?
-//        if (rowIndex != 0) {
-//            throw new IndexOutOfBoundsException("Invalid column index: " + columnIndex);
-//        }
-        return columns[columnIndex].getValue(rows.get(rowIndex));
+        checkColumnIndex(columnIndex);
+        checkRowIndex(rowIndex);
+        return columns.get(columnIndex).getValue(rows.get(rowIndex));
     }
 
     public void addRow(T rowData) {
@@ -100,7 +97,20 @@ public class TableModel<T> extends AbstractTableModel {
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
-    public T getRow(int rowIndex){
+    public T getRow(int rowIndex) {
         return rows.get(rowIndex);
     }
+
+    private void checkRowIndex(int rowIndex) {
+        if (rowIndex > rows.size() || rowIndex < 0) {
+            throw new IndexOutOfBoundsException("Invalid row index: " + rowIndex);
+        }
+    }
+
+    private void checkColumnIndex(int columnIndex) {
+        if (columnIndex > columns.size() || columnIndex < 0) {
+            throw new IndexOutOfBoundsException("Invalid column index: " + columnIndex);
+        }
+    }
+
 }
