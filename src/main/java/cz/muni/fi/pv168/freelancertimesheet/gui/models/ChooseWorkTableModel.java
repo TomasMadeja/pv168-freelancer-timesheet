@@ -16,9 +16,10 @@ public class ChooseWorkTableModel extends TableModel<Work> {
     }
 
     private void createColumns() {
-        super.addColumn(new Column<Boolean, Work>(
+        super.addColumn(new Column<>(
                 "Select",
                 "test1",
+                true,
                 Boolean.class,
                 Work.class,
                 (Object object) -> isSelected((Work) object),
@@ -27,6 +28,7 @@ public class ChooseWorkTableModel extends TableModel<Work> {
         super.addColumn(new Column<>(
                 "Name",
                 "test2",
+                false,
                 String.class,
                 Work.class,
                 (Object object) -> ((Work) object).getName(),
@@ -35,6 +37,7 @@ public class ChooseWorkTableModel extends TableModel<Work> {
         super.addColumn(new Column<>(
                 "Description",
                 "test2",
+                false,
                 String.class,
                 Work.class,
                 (Object object) -> ((Work) object).getDescription(),
@@ -43,6 +46,7 @@ public class ChooseWorkTableModel extends TableModel<Work> {
         super.addColumn(new Column<>(
                 "Work Type",
                 "test3",
+                false,
                 String.class,
                 Work.class,
                 (Object object) -> ((Work) object).getWorkType().getName(),
@@ -51,6 +55,7 @@ public class ChooseWorkTableModel extends TableModel<Work> {
         super.addColumn(new Column<>(
                 "Start Time",
                 "test4",
+                false,
                 ZonedDateTime.class,
                 Work.class,
                 (Object object) -> ((Work) object).getStartTime(),
@@ -59,6 +64,7 @@ public class ChooseWorkTableModel extends TableModel<Work> {
         super.addColumn(new Column<>(
                 "End Time",
                 "test5",
+                false,
                 ZonedDateTime.class,
                 Work.class,
                 (Object object) -> ((Work) object).getEndTime(),

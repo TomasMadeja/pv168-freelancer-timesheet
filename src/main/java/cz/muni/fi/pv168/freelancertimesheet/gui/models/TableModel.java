@@ -28,13 +28,15 @@ public class TableModel<T> extends AbstractTableModel {
         public Class<ColT> columnClass;
 
         private String attributeName;
+        private final boolean editable;
 
         private final Function<Object, ColT> getter;
         private final Consumer<Object> setter;
 
-        public Column(String columnName, String attributeName, Class<ColT> columnClass, Class<RowT> rowClass, Function<Object, ColT> getter, Consumer<Object> setter) {
+        public Column(String columnName, String attributeName, boolean editable, Class<ColT> columnClass, Class<RowT> rowClass, Function<Object, ColT> getter, Consumer<Object> setter) {
             this.columnName = columnName;
             this.attributeName = attributeName;
+            this.editable = editable;
             this.columnClass = columnClass;
             this.rowClass = rowClass;
             this.getter = getter;
@@ -48,6 +50,10 @@ public class TableModel<T> extends AbstractTableModel {
 
         public void setValue(Object object) {
             setter.accept(object);
+        }
+
+        public boolean isEditable() {
+            return editable;
         }
 
     }
@@ -90,6 +96,10 @@ public class TableModel<T> extends AbstractTableModel {
         throw new UnsupportedOperationException("TableModel::setValueAt not implemented");
     }
 
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return columns.get(columnIndex).isEditable();
+    }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {

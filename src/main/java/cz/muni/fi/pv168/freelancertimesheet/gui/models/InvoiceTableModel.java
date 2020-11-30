@@ -15,6 +15,7 @@ public class InvoiceTableModel extends TableModel<Invoice> {
         super.addColumn(new Column<>(
                 "Invoice Date",
                 "test1",
+                false,
                 ZonedDateTime.class,
                 Invoice.class,
                 (Object object) -> ((Invoice) object).getIssueDate(),
@@ -23,6 +24,7 @@ public class InvoiceTableModel extends TableModel<Invoice> {
         super.addColumn(new Column<>(
                 "Due Date",
                 "test2",
+                false,
                 ZonedDateTime.class,
                 Invoice.class,
                 (Object object) -> ((Invoice) object).getDueDate(),
@@ -31,6 +33,7 @@ public class InvoiceTableModel extends TableModel<Invoice> {
         super.addColumn(new Column<>(
                 "ICO",
                 "test3",
+                false,
                 String.class,
                 Invoice.class,
                 (Object object) -> "25596641", //TODO: add ICO to proper person
@@ -39,6 +42,7 @@ public class InvoiceTableModel extends TableModel<Invoice> {
         super.addColumn(new Column<>(
                 "DIC",
                 "test3",
+                false,
                 String.class,
                 Invoice.class,
                 (Object object) -> "CZ1234567890", //TODO: add DIC to proper person
@@ -47,6 +51,7 @@ public class InvoiceTableModel extends TableModel<Invoice> {
         super.addColumn(new Column<>(
                 "Customer Name",
                 "test3",
+                false,
                 String.class,
                 Invoice.class,
                 (Object object) -> ((Invoice) object).getClient().getName(),

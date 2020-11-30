@@ -15,6 +15,7 @@ public class WorkTableModel extends TableModel<Work> {
         super.addColumn(new Column<>(
                 "Name",
                 "test2",
+                false,
                 String.class,
                 Work.class,
                 (Object object) -> ((Work) object).getName(),
@@ -23,6 +24,7 @@ public class WorkTableModel extends TableModel<Work> {
         super.addColumn(new Column<>(
                 "Description",
                 "test2",
+                false,
                 String.class,
                 Work.class,
                 (Object object) -> ((Work) object).getDescription(),
@@ -31,6 +33,7 @@ public class WorkTableModel extends TableModel<Work> {
         super.addColumn(new Column<>(
                 "Work Type",
                 "test3",
+                false,
                 String.class,
                 Work.class,
                 (Object object) -> ((Work) object).getWorkType().getName(),
@@ -39,6 +42,7 @@ public class WorkTableModel extends TableModel<Work> {
         super.addColumn(new Column<>(
                 "Start Time",
                 "test4",
+                false,
                 ZonedDateTime.class,
                 Work.class,
                 (Object object) -> ((Work) object).getStartTime(),
@@ -47,6 +51,7 @@ public class WorkTableModel extends TableModel<Work> {
         super.addColumn(new Column<>(
                 "End Time",
                 "test5",
+                false,
                 ZonedDateTime.class,
                 Work.class,
                 (Object object) -> ((Work) object).getEndTime(),
