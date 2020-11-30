@@ -24,8 +24,7 @@
 
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">true</property>
-        <!--        TODO change create to update-->
-        <property name="hbm2ddl.auto">create</property>
+        <property name="hbm2ddl.auto">update</property>
         <property name="hibernate.default_schema">APP</property>
         <mapping class="cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl"/>
         <mapping class="cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl"/>
