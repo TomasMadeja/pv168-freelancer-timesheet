@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
-    private final TaskForm taskForm;
+//    private final TaskForm taskForm;
     private JTable table;
 
     public int GetSelectedTasksCount() {
@@ -19,13 +19,9 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     public TaskTable() {
         super();
-        taskForm = new TaskForm();
+//        taskForm = new TaskForm();
     }
 
-    public TaskTable(TaskForm taskForm) {
-        super();
-        this.taskForm = taskForm;
-    }
 
     private JPanel createTableButtonPanel() {
         JPanel panel = new JPanel();
@@ -57,7 +53,7 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
     private void resetTaskForm() {
         String[] rowData = new String[table.getColumnCount()];
         Arrays.fill(rowData, "");
-        taskForm.fillForm(rowData);
+//        taskForm.fillForm(rowData);
     }
 
     private void fillTaskForm() {
@@ -71,7 +67,7 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
             rowData[i] = table.getValueAt(selectedRow, i);
         }
         rowData[0] = false;
-        taskForm.fillForm(rowData);
+//        taskForm.fillForm(rowData);
     }
 
     private JTable createTable() {
@@ -104,8 +100,8 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         return this;
     }
 
-    public static TaskTable setup(TaskForm taskForm) {
-        return new TaskTable(taskForm)
+    public static TaskTable setup() {
+        return new TaskTable()
                 .setupLayout()
                 .setupVisuals()
                 .setupNested();

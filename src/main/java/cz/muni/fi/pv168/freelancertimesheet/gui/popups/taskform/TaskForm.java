@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task;
+package cz.muni.fi.pv168.freelancertimesheet.gui.popups.taskform;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
