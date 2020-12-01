@@ -7,11 +7,11 @@ import java.util.HashMap;
 
 public class ChooseWorkTableModel extends TableModel<Work> {
 
-    private HashMap<Work, Boolean> selectedRows;
+    private final HashMap<Work, Boolean> selectedRows;
 
-    public ChooseWorkTableModel() {
+    public ChooseWorkTableModel(HashMap<Work, Boolean> selectedRows) {
         super();
-        selectedRows = new HashMap<>();
+        this.selectedRows = selectedRows;
         createColumns();
     }
 
