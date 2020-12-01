@@ -14,7 +14,7 @@ import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.List;
 
-public class TaskForm extends JPanel implements GenericElement<TaskForm> {
+public class TaskForm extends JFrame implements GenericElement<TaskForm> {
 
     private JPanel centerPanel;
 
@@ -27,6 +27,8 @@ public class TaskForm extends JPanel implements GenericElement<TaskForm> {
 
     private List<JComponent> forms;
 
+    private GridBagConstraints gbc;
+
     public TaskForm() {
         super();
     }
@@ -34,16 +36,16 @@ public class TaskForm extends JPanel implements GenericElement<TaskForm> {
 
     @Override
     public TaskForm setupLayout() {
-        BoxLayout mainLayout = new BoxLayout(this, BoxLayout.X_AXIS);
-        this.setLayout(mainLayout);
+//        var mainLayout = new BoxLayout(this, BoxLayout.X_AXIS);
+//        this.setLayout(mainLayout);
 
         centerPanel = new JPanel();
         BoxLayout layout = new BoxLayout(centerPanel, BoxLayout.Y_AXIS);
         centerPanel.setLayout(layout);
 
-        this.add(new JPanel());
+//        this.add(new JPanel());
         this.add(centerPanel);
-        this.add(new JPanel());
+//        this.add(new JPanel());
 
         return this;
     }
@@ -128,7 +130,6 @@ public class TaskForm extends JPanel implements GenericElement<TaskForm> {
         centerPanel.add(panel);
         centerPanel.add(confirmPanel);
 
-        disableForm();
         return this;
     }
 
@@ -143,19 +144,6 @@ public class TaskForm extends JPanel implements GenericElement<TaskForm> {
         startTimePicker.setEnabled(true);
         endTimePicker.setEnabled(true);
     }
-
-    public void disableForm() {
-        taskNameField.setEnabled(false);
-        descField.setEnabled(false);
-        taskTypeField.setEnabled(false);
-        workTypeButton.setEnabled(false);
-        confirmButton.setEnabled(false);
-
-        datePicker.setEnabled(false);
-        startTimePicker.setEnabled(false);
-        endTimePicker.setEnabled(false);
-    }
-
 
     private void confirmFilledForms() {
         String[] emptyData = new String[forms.size()];
@@ -189,9 +177,14 @@ public class TaskForm extends JPanel implements GenericElement<TaskForm> {
     }
 
     public static TaskForm setup() {
-        return new TaskForm()
+        var taskForm = new TaskForm()
                 .setupLayout()
                 .setupVisuals()
                 .setupNested();
+        taskForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        taskForm.pack();
+        taskForm.setVisible(true);
+        return taskForm;
+
     }
 }
