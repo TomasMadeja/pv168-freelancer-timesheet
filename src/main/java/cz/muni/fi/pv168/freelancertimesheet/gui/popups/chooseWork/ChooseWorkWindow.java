@@ -35,7 +35,6 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
         JTable table = new JTable(model);
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-
 //        createTmpDataInDb();
 //        RandomDataGenerator.generateWorkData((ChooseWorkTableModel) table.getModel());
 
@@ -100,7 +99,6 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
         var table = new JScrollPane(createTable());
         var confirmButton = confirmSelectionButton();
 
-
         gbc = getGbc(0, 0, 3, 5, 0.5);
         gbc.fill = GridBagConstraints.BOTH;
         this.add(table, gbc);
@@ -121,7 +119,7 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
     }
 
 
-    // create temporary data in database
+    // create temporary data in database for testing
     private void createTmpDataInDb() {
         List<Work> records = prepareWork();
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
