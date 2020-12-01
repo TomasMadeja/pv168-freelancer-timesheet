@@ -15,27 +15,28 @@ import java.awt.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWorkWindow> {
 
     GridBagConstraints gbc;
 
-    private List<Boolean> selectedRows;
+    private final HashMap<Work, Boolean> selectedRows;
 
     public ChooseWorkWindow() {
         super("Choose Work");
-        selectedRows = new ArrayList<>();
+        selectedRows = new HashMap<>();
     }
 
 
     private JTable createTable() {
-        var model = new ChooseWorkTableModel();
+        var model = new ChooseWorkTableModel(selectedRows);
         JTable table = new JTable(model);
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 
-        createTmpDataInDb();
+//        createTmpDataInDb();
 //        RandomDataGenerator.generateWorkData((ChooseWorkTableModel) table.getModel());
 
         loadDataFromDatabase((ChooseWorkTableModel) table.getModel());
@@ -52,6 +53,18 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
     private JButton confirmSelectionButton() {
         var button = new JButton();
         button.setText("Confirm Selection");
+
+        // TODO modify so the invoice tab can get this info
+        button.addActionListener(e -> {
+            System.out.println("Printing selected rows (invoice choose work tab):");
+            selectedRows.forEach((workRow, isSelected) -> {
+                if (isSelected) {
+                    System.out.println(workRow);
+                }
+            });
+            this.dispose();
+        });
+
         return button;
     }
 
