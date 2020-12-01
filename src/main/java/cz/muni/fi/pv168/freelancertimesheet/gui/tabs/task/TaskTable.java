@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
-    private final WorkForm workForm;
+//    private final TaskForm taskForm;
     private JTable table;
 
     public int GetSelectedTasksCount() {
@@ -19,13 +19,9 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     public TaskTable() {
         super();
-        workForm = new WorkForm();
+//        taskForm = new TaskForm();
     }
 
-    public TaskTable(WorkForm workForm) {
-        super();
-        this.workForm = workForm;
-    }
 
     private JPanel createTableButtonPanel() {
         JPanel panel = new JPanel();
@@ -57,7 +53,7 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
     private void resetTaskForm() {
         String[] rowData = new String[table.getColumnCount()];
         Arrays.fill(rowData, "");
-        workForm.fillForm(rowData);
+//        taskForm.fillForm(rowData);
     }
 
     private void fillTaskForm() {
@@ -67,10 +63,11 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         }
 
         Object[] rowData = new Object[table.getColumnCount()];
-        for (int i = 0; i < table.getColumnCount(); i++) {
+        for (int i = 1; i < table.getColumnCount(); i++) {
             rowData[i] = table.getValueAt(selectedRow, i);
         }
-        workForm.fillForm(rowData);
+        rowData[0] = false;
+//        taskForm.fillForm(rowData);
     }
 
     private JTable createTable() {
@@ -103,8 +100,8 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         return this;
     }
 
-    public static TaskTable setup(WorkForm workForm) {
-        return new TaskTable(workForm)
+    public static TaskTable setup() {
+        return new TaskTable()
                 .setupLayout()
                 .setupVisuals()
                 .setupNested();
