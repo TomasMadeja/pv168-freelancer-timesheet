@@ -1,9 +1,12 @@
 package cz.muni.fi.pv168.freelancertimesheet.backend.orm;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Client;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Entity;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Issuer;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @javax.persistence.Entity
@@ -43,9 +47,9 @@ public class InvoiceImpl implements Invoice {
     private List<WorkImpl> works;
 
     @Transient
-    private Entity issuer;
+    private IssuerImpl issuer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id", nullable=false)
     private ClientImpl client;
 
@@ -55,30 +59,51 @@ public class InvoiceImpl implements Invoice {
     @Column(name = "pdf_path", nullable=true)
     private String pdfPath;
 
+    public InvoiceImpl(ZonedDateTime issueDate, ZonedDateTime dueDate, List<Work> works, IssuerImpl issuer, ClientImpl client) {
+        this.issueDate = issueDate;
+        this.dueDate = dueDate;
+        this.works = new ArrayList<>();
+        this.issuer = issuer;
+        this.client = client;
+
+        this.totalAmount = BigDecimal.ZERO;
+        setWorks(works);
+    }
+
+    public InvoiceImpl() {
+        this.issueDate = null;
+        this.dueDate = null;
+        this.works = new ArrayList<>();
+        this.issuer = null;
+        this.client = null;
+
+        this.totalAmount = BigDecimal.ZERO;
+    }
+
     @Override
-    public Entity getClient() {
+    public Client getClient() {
         return client;
     }
 
     @Override
-    public Invoice setClient(Entity client) {
+    public Invoice setClient(Client client) {
         this.client = (ClientImpl) client;
         return this;
     }
 
     @Override
-    public Invoice validateClient(Entity client) {
+    public Invoice validateClient(Client client) {
         return this;
     }
 
     @Override
-    public Entity getIssuer() {
+    public Issuer getIssuer() {
         return issuer;
     }
 
     @Override
-    public Invoice setIssuer(Entity issuer) {
-        this.issuer = issuer;
+    public Invoice setIssuer(Issuer issuer) {
+        this.issuer = (IssuerImpl) issuer;
         return this;
     }
 
@@ -135,6 +160,7 @@ public class InvoiceImpl implements Invoice {
     @Override
     public Invoice addWork(Work work) {
         this.works.add((WorkImpl) work);
+        this.totalAmount = this.totalAmount.add(work.getCost());
         return this;
     }
 
@@ -164,8 +190,8 @@ public class InvoiceImpl implements Invoice {
         return this;
     }
 
-    @Override
-    public Invoice createInvoice(Entity Client, Entity Issuer, ZonedDateTime issueDate, ZonedDateTime dueDate, List<Work> works) {
-        return null;
+    public static Invoice createInvoice(Client client, Issuer issuer, ZonedDateTime issueDate, ZonedDateTime dueDate, List<Work> works) {
+        InvoiceImpl invoice = new InvoiceImpl(issueDate, dueDate, works, (IssuerImpl) issuer, (ClientImpl) client);
+        return invoice;
     }
 }

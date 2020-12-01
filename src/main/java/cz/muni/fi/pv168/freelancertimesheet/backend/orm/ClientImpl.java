@@ -21,4 +21,18 @@ public class ClientImpl extends EntityImpl implements Client {
     public static Entity createEntity(String name, String address, String ico, String dic) {
         return new ClientImpl(name, address, ico, dic);
     }
+
+    public String toXML() {
+        String xml = String.format(
+                "                <p class=\"name\">%s</p>\n" +
+                "                <p>%s</p>\n" +
+                "                <p><b>ICO:</b> %s</p>\n" +
+                "                <p><b>DIC:</b> %s</p>\n",
+                name,
+                address,
+                ico,
+                dic
+        );
+        return xml;
+    }
 }
