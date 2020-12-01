@@ -27,8 +27,6 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
 
     private List<JComponent> forms;
 
-    private GridBagConstraints gbc;
-
     public TaskForm() {
         super();
     }
@@ -36,16 +34,12 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
 
     @Override
     public TaskForm setupLayout() {
-//        var mainLayout = new BoxLayout(this, BoxLayout.X_AXIS);
-//        this.setLayout(mainLayout);
 
         centerPanel = new JPanel();
         BoxLayout layout = new BoxLayout(centerPanel, BoxLayout.Y_AXIS);
         centerPanel.setLayout(layout);
 
-//        this.add(new JPanel());
         this.add(centerPanel);
-//        this.add(new JPanel());
 
         return this;
     }
@@ -133,17 +127,6 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
         return this;
     }
 
-    public void enableForm() {
-        taskNameField.setEnabled(true);
-        descField.setEnabled(true);
-        taskTypeField.setEnabled(true);
-        workTypeButton.setEnabled(true);
-        confirmButton.setEnabled(true);
-
-        datePicker.setEnabled(true);
-        startTimePicker.setEnabled(true);
-        endTimePicker.setEnabled(true);
-    }
 
     private void confirmFilledForms() {
         String[] emptyData = new String[forms.size()];
@@ -172,8 +155,6 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
                 timePicker.setText(data);
             }
         }
-
-        enableForm();
     }
 
     public static TaskForm setup() {
