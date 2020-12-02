@@ -1,7 +1,9 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
+import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
-import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.forms.WorkTypeForm;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeFormWindow;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeForm;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -20,7 +22,7 @@ public class WorkTypeTable {
         panel = createPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         JTable workTypeTable = createWorkTypeTable();
-        addAction = new AddAction(workTypeTable, workTypeForm);
+        addAction = new AddAction(workTypeTable, (JTable table, cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction.Callback callback) -> WorkTypeFormWindow.setup(callback), workTypeTable::repaint);
         deleteAction = new DeleteAction(workTypeTable);
         editAction = new EditAction(workTypeTable, workTypeForm);
         selectAction = new SelectAction(frame);
