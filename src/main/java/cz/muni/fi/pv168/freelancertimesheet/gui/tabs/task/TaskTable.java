@@ -67,10 +67,9 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         }
 
         Object[] rowData = new Object[table.getColumnCount()];
-        for (int i = 1; i < table.getColumnCount(); i++) {
+        for (int i = 0; i < table.getColumnCount(); i++) {
             rowData[i] = table.getValueAt(selectedRow, i);
         }
-        rowData[0] = false;
         workForm.fillForm(rowData);
     }
 
