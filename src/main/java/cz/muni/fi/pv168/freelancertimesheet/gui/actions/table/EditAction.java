@@ -1,10 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.actions.table;
 
-import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
-import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
-import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.forms.WorkTypeForm;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
