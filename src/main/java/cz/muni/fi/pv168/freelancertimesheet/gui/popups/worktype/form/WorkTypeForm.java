@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.forms;
+package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
@@ -29,7 +29,7 @@ public class WorkTypeForm extends FormModel {
     @Override
     public WorkTypeForm setupNested() {
         addRow(new JLabel("Name:"), nameTextField);
-        addRow(new JLabel("Rate:"), rateTextField);
+        addRow(new JLabel("Hourly rate:"), rateTextField);
         JLabel descriptionLabel = new JLabel("Description:");
         addRow(descriptionLabel, descriptionScrollPane);
         addConfirmButton();
@@ -40,13 +40,6 @@ public class WorkTypeForm extends FormModel {
         nameTextField.setText(workType.getName());
         rateTextField.setText(workType.getHourlyRate().toString());
         descriptionTextArea.setText(workType.getDescription());
-        enableForm();
-    }
-
-    public void resetForm() {
-        nameTextField.setText("");
-        rateTextField.setText(Double.toString(0));
-        descriptionTextArea.setText("");
         enableForm();
     }
 }
