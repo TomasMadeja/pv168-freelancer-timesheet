@@ -19,6 +19,11 @@ public class TextFieldFactory {
             textArea.setEnabled(enabled);
             textArea.setEditable(enabled);
         }
+
+        public CustomWrappedClass setText(String text) {
+            textArea.setText(text);
+            return this;
+        }
     }
 
     public static CustomWrappedClass createWrappedTextField() {
