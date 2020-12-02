@@ -137,6 +137,18 @@ public class BasicDatabaseTests {
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.clear();
+        entityManager.close();
+    }
+
+    @Test
+    public void testPersistanceManagerWorkTypeImpl() {
+        addWorkTypes();
+        List<WorkType> reference = prepareWorkTypes();
+        Collections.sort(reference);
+        EntityManager entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
+        List<? extends WorkType> result = PersistanceManager.getAllWorkType();
+        Collections.sort(result);
+        Assertions.assertEquals(reference,result);
     }
 
     @Test
@@ -147,6 +159,7 @@ public class BasicDatabaseTests {
         EntityManager entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         List<WorkTypeImpl> result = entityManager.createQuery("from WorkTypeImpl").getResultList();
         entityManager.clear();
+        entityManager.close();
         Collections.sort(result);
         Assertions.assertEquals(reference,result);
     }
@@ -165,6 +178,7 @@ public class BasicDatabaseTests {
         List<Work> referenceWork = prepareWork();
         List<WorkImpl> resultWork = entityManager.createQuery("from WorkImpl").getResultList();
         entityManager.clear();
+        entityManager.close();
         Collections.sort(resultWork);
         Assertions.assertEquals(referenceWork, resultWork);
 
@@ -196,6 +210,7 @@ public class BasicDatabaseTests {
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.clear();
+        entityManager.close();
     }
 
     @Test

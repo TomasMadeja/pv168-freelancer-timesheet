@@ -148,4 +148,12 @@ public class EntityImpl implements Entity {
     public static Entity createEntity(String name, String address, String ico, String dic) {
         return new EntityImpl(name, address, ico, dic);
     }
+
+    @Override
+    public void validateAttributes() {
+        validateName(name);
+        validateAddress(address);
+        validateDIC(dic);
+        validateICO(ico);
+    }
 }
