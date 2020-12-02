@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.TextFieldFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.chooseWork.ChooseWorkWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +26,7 @@ public class InvoiceForm extends FormModel {
         JButton workPicker = new JButton("Choose Work");
         InvoiceForm invoiceForm = this;
         workPicker.addActionListener(e -> {
-            JFrame popup = TasksPopup.setup(invoiceForm);
+            JFrame popup = ChooseWorkWindow.setup();
             popup.setVisible(true);
         });
         selectedWorks = new JLabel("Selected Work: 0");

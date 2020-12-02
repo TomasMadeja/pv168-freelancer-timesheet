@@ -7,40 +7,56 @@ import java.time.ZonedDateTime;
 public class InvoiceTableModel extends TableModel<Invoice> {
 
     public InvoiceTableModel() {
-        super(new Column[] { new Column(
-                        "Invoice Date",
-                        "test1",
-                        ZonedDateTime.class,
-                        Invoice.class,
-                        (Object object) -> ((Invoice)object).getIssueDate()
-                ),
-                new Column(
-                        "Due Date",
-                        "test2",
-                        ZonedDateTime.class,
-                        Invoice.class,
-                        (Object object) -> ((Invoice)object).getDueDate()
-                ),
-                new Column(
-                        "ICO",
-                        "test3",
-                        String.class,
-                        Invoice.class,
-                        (Object object) -> "25596641" //TODO: add ICO to proper person
-                ),
-                new Column(
-                        "DIC",
-                        "test3",
-                        String.class,
-                        Invoice.class,
-                        (Object object) -> "CZ1234567890" //TODO: add DIC to proper person
-                ),
-                new Column(
-                        "Customer Name",
-                        "test3",
-                        String.class,
-                        Invoice.class,
-                        (Object object) -> ((Invoice)object).getClient().getName()
-                )});
+        super();
+        createColumns();
+    }
+
+    private void createColumns() {
+        super.addColumn(new Column<ZonedDateTime, Invoice>(
+                "Invoice Date",
+                "test1",
+                false,
+                ZonedDateTime.class,
+                Invoice.class,
+                (Object object) -> ((Invoice) object).getIssueDate(),
+                null
+        ));
+        super.addColumn(new Column<ZonedDateTime, Invoice>(
+                "Due Date",
+                "test2",
+                false,
+                ZonedDateTime.class,
+                Invoice.class,
+                (Object object) -> ((Invoice) object).getDueDate(),
+                null
+        ));
+        super.addColumn(new Column<String, Invoice>(
+                "ICO",
+                "test3",
+                false,
+                String.class,
+                Invoice.class,
+                (Object object) -> "25596641", //TODO: add ICO to proper person
+                null
+        ));
+        super.addColumn(new Column<String, Invoice>(
+                "DIC",
+                "test3",
+                false,
+                String.class,
+                Invoice.class,
+                (Object object) -> "CZ1234567890", //TODO: add DIC to proper person
+                null
+        ));
+        super.addColumn(new Column<String, Invoice>(
+                "Customer Name",
+                "test3",
+                false,
+                String.class,
+                Invoice.class,
+                (Object object) -> ((Invoice) object).getClient().getName(),
+                null
+        ));
+
     }
 }

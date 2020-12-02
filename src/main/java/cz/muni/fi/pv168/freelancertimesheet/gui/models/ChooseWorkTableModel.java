@@ -3,15 +3,28 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 
-public class WorkTableModel extends TableModel<Work> {
+public class ChooseWorkTableModel extends TableModel<Work> {
 
-    public WorkTableModel() {
+    private final HashMap<Work, Boolean> selectedRows;
+
+    public ChooseWorkTableModel(HashMap<Work, Boolean> selectedRows) {
         super();
+        this.selectedRows = selectedRows;
         createColumns();
     }
 
     private void createColumns() {
+        super.addColumn(new Column<Boolean, Work>(
+                "Select",
+                "test1",
+                true,
+                Boolean.class,
+                Work.class,
+                (Object object) -> isSelected((Work) object),
+                (Object object, Object value) -> changeSelection((Work) object, (Boolean) value)
+        ));
         super.addColumn(new Column<String, Work>(
                 "Name",
                 "test2",
@@ -57,5 +70,13 @@ public class WorkTableModel extends TableModel<Work> {
                 (Object object) -> ((Work) object).getEndTime(),
                 null
         ));
+    }
+
+    public boolean isSelected(Work object) {
+        return selectedRows.getOrDefault(object, false);
+    }
+
+    public void changeSelection(Work object, Boolean value) {
+        selectedRows.put(object, value);
     }
 }
