@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.backend.interfaces;
 
-public interface Entity {
+public interface Entity extends ORMEntity {
     public String getName();
 
     public Entity setName(String name);
@@ -44,4 +44,5 @@ public interface Entity {
         return null;
     }
 
+    public String toXML();
 }

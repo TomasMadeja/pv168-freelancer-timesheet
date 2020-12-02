@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.backend.orm;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.Constants;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import org.hibernate.TypeMismatchException;
@@ -11,11 +12,25 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.math.BigDecimal;
+import java.time.Period;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import java.time.temporal.ChronoUnit;
+import org.apache.commons.lang3.StringUtils;
 
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = "getAllWorks",
+                        query = "from WorkImpl"
+                )
+        }
+)
 @Entity
 @Table(name = "works")
 public class WorkImpl implements Work {
@@ -171,6 +186,38 @@ public class WorkImpl implements Work {
         return Objects.hash(name, startTime, endTime, description, workType);
     }
 
+    public BigDecimal getHours() {
+        BigDecimal hours = new BigDecimal(ChronoUnit.HOURS.between(startTime, endTime));
+        if (ChronoUnit.MINUTES.between(startTime, endTime) % 60 != 0) {
+            hours = hours.add(new BigDecimal("1"));
+        }
+        return hours;
+    }
+
+    public BigDecimal getCost() {
+        return getHours().multiply(this.workType.getHourlyRate());
+    }
+
+    public String toXML()
+    {
+        String xml = String.format(
+                "            <tr>\n" +
+                "                <th class=\"desc\"><h3>%s</h3>%s</th>\n" +
+                "                <th class=\"qty\">%s</th>\n" +
+                "                <th class=\"unit\">%s</th>\n" +
+                "                <th class=\"total\">%s %s</th>\n" +
+                "            </tr>\n",
+                StringUtils.capitalize(name),
+                StringUtils.capitalize(description),
+                workType.getHourlyRate().toString(),
+                getHours().toString(),
+                getCost().toString(),
+                Constants.getCurrency()
+        );
+        return xml;
+    }
+
+
     @Override
     public String toString() {
         return "WorkImpl{" +
@@ -181,5 +228,12 @@ public class WorkImpl implements Work {
                 ", description='" + description + '\'' +
                 ", workType=" + workType +
                 '}';
+    }
+
+    @Override
+    public void validateAttributes() {
+        validateName(name);
+        validateDescription(description);
+        validateWorkType(workType);
     }
 }

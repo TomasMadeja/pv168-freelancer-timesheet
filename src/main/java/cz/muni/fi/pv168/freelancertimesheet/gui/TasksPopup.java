@@ -1,14 +1,10 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui;
 
-import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.TaskTab;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.InvoiceForm;
-import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskForm;
+import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.WorkForm;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskTable;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class TasksPopup extends JFrame implements GenericElement<TasksPopup> {
     static int defaultWidth = 800;
@@ -53,10 +49,10 @@ public class TasksPopup extends JFrame implements GenericElement<TasksPopup> {
 
     @Override
     public TasksPopup setupNested() {
-        TaskForm taskForm = TaskForm.setup();
-        innerPanel.add(taskForm);
+        WorkForm workForm = WorkForm.setup();
+        innerPanel.add(workForm);
 
-        TaskTable taskTable = TaskTable.setup(taskForm);
+        TaskTable taskTable = TaskTable.setup(workForm);
         innerPanel.add(taskTable);
 
         JButton btn = new JButton("Add selected");

@@ -1,9 +1,10 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.InvoiceTableModel;
-import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.buttons.AddButton;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,11 +14,11 @@ public class InvoiceTable extends JPanel implements GenericElement {
     private JToolBar toolbar;
     private JToolBar filterBar;
 
-    private InvoiceForm form;
+//    private InvoiceForm form;
 
-    public InvoiceTable(InvoiceForm form) {
+    public InvoiceTable() {
         super();
-        this.form = form;
+//        this.form = form;
     }
 
     private InvoiceTable addFilter(String title, Component inputField) {
@@ -44,7 +45,7 @@ public class InvoiceTable extends JPanel implements GenericElement {
         toolbar = new JToolBar();
         toolbar.setFloatable(false);
         toolbar.setRollover(true);
-        toolbar.add(new AddButton(form));
+        toolbar.add(new AddAction(table, (JTable table, AddAction.Callback callback) -> InvoiceWindow.setup(callback), () -> table.repaint()));
         toolbar.add(new JButton("View"));
         toolbar.add(new JButton("Delete"));
         toolbar.addSeparator();
@@ -95,8 +96,8 @@ public class InvoiceTable extends JPanel implements GenericElement {
         return this;
     }
 
-    public static InvoiceTable setup(InvoiceForm form) {
-        InvoiceTable invoiceTable = new InvoiceTable(form);
+    public static InvoiceTable setup() {
+        InvoiceTable invoiceTable = new InvoiceTable();
         invoiceTable
                 .setupLayout()
                 .setupVisuals()
