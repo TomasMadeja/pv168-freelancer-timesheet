@@ -3,8 +3,18 @@ package cz.muni.fi.pv168.freelancertimesheet.backend.orm;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Client;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Entity;
 
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+@NamedQueries(
+    {
+        @NamedQuery(
+                name = "getAllClients",
+                query = "from ClientImpl"
+        )
+    }
+)
 @javax.persistence.Entity
 @Table(name="clients")
 public class ClientImpl extends EntityImpl implements Client {

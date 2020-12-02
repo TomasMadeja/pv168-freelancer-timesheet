@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
@@ -21,6 +23,14 @@ import java.util.Objects;
 import java.time.temporal.ChronoUnit;
 import org.apache.commons.lang3.StringUtils;
 
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = "getAllWorks",
+                        query = "from WorkImpl"
+                )
+        }
+)
 @Entity
 @Table(name = "works")
 public class WorkImpl implements Work {
@@ -218,5 +228,12 @@ public class WorkImpl implements Work {
                 ", description='" + description + '\'' +
                 ", workType=" + workType +
                 '}';
+    }
+
+    @Override
+    public void validateAttributes() {
+        validateName(name);
+        validateDescription(description);
+        validateWorkType(workType);
     }
 }

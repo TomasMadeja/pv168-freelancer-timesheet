@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -21,7 +23,14 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = "getAllInvoices",
+                        query = "from InvoiceImpl"
+                )
+        }
+)
 @javax.persistence.Entity
 @Table(name="invoices")
 public class InvoiceImpl implements Invoice {
@@ -193,5 +202,14 @@ public class InvoiceImpl implements Invoice {
     public static Invoice createInvoice(Client client, Issuer issuer, ZonedDateTime issueDate, ZonedDateTime dueDate, List<Work> works) {
         InvoiceImpl invoice = new InvoiceImpl(issueDate, dueDate, works, (IssuerImpl) issuer, (ClientImpl) client);
         return invoice;
+    }
+
+    @Override
+    public void validateAttributes() {
+        validateClient(client);
+        validateIssuer(issuer);
+        validateIssueDate(issueDate);
+        validateDueDate(dueDate);
+        validateWorks(works);
     }
 }

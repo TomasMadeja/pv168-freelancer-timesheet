@@ -3,8 +3,18 @@ package cz.muni.fi.pv168.freelancertimesheet.backend.orm;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Entity;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Issuer;
 
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = "getAllIssuers",
+                        query = "from IssuerImpl"
+                )
+        }
+)
 @javax.persistence.Entity
 @Table(name="issuers")
 public class IssuerImpl extends EntityImpl implements Issuer {

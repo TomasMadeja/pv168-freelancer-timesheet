@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-public interface Invoice {
+public interface Invoice extends ORMEntity {
 
     public Client getClient();
 

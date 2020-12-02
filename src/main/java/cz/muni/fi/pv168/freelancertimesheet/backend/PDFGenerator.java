@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.freelancertimesheet.backend;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.sun.xml.bind.v2.runtime.reflect.opt.Const;
 import cz.muni.fi.pv168.freelancertimesheet.Main;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.InvoiceImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
@@ -50,7 +51,7 @@ public class PDFGenerator {
         }
     }
 
-    public static String generatePDF(InvoiceImpl invoice) throws URISyntaxException,FileNotFoundException, IOException {
+    public static String generatePDF(Invoice invoice) throws URISyntaxException,FileNotFoundException, IOException {
         StringBuilder workListBuilder = new StringBuilder();
         for (Work work : invoice.getWorks()) {
             workListBuilder.append(work.toXML());
