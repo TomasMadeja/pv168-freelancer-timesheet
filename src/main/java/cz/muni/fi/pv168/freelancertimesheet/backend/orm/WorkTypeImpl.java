@@ -6,12 +6,22 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Objects;
 
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = "getAllWorkTypes",
+                        query = "from WorkTypeImpl"
+                )
+        }
+)
 @Entity
 @Table(name = "work_types")
 public class WorkTypeImpl implements WorkType, Comparable {
@@ -139,5 +149,12 @@ public class WorkTypeImpl implements WorkType, Comparable {
         if ((i = name.compareTo(t.name)) != 0) return i;
         if ((i = description.compareTo(t.description)) != 0) return i;
         return hourlyRate.compareTo(t.hourlyRate);
+    }
+
+    @Override
+    public void validateAttributes() {
+        validateName(name);
+        validateDescription(description);
+        validateHourlyRate(hourlyRate);
     }
 }

@@ -21,10 +21,10 @@ public class EntityImpl implements Entity {
     @Column(name = "address", nullable=false)
     protected String address;
 
-    @Column(name = "email", nullable=false)
+    @Column(name = "email", nullable=true)
     protected String email;
 
-    @Column(name = "phone_number", nullable=false)
+    @Column(name = "phone_number", nullable=true)
     protected String phoneNumber;
 
     @Column(name = "ico", nullable=false)
@@ -139,7 +139,21 @@ public class EntityImpl implements Entity {
         return this;
     }
 
+    @Override
+    public String toXML() {
+        return null;
+    }
+
+
     public static Entity createEntity(String name, String address, String ico, String dic) {
         return new EntityImpl(name, address, ico, dic);
+    }
+
+    @Override
+    public void validateAttributes() {
+        validateName(name);
+        validateAddress(address);
+        validateDIC(dic);
+        validateICO(ico);
     }
 }
