@@ -6,6 +6,7 @@ import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.WorkTypeWindow;
 
 import javax.swing.*;
@@ -14,44 +15,15 @@ import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.List;
 
-public class TaskForm extends JPanel implements GenericElement<TaskForm> {
-
-    private JPanel centerPanel;
-
+public class TaskForm extends FormModel {
 
     private JTextField taskNameField, descField, taskTypeField;
-    private JButton workTypeButton, confirmButton;
+    private JButton workTypeButton;
 
     private DatePicker datePicker;
     private TimePicker startTimePicker, endTimePicker;
 
     private List<JComponent> forms;
-
-    public TaskForm() {
-        super();
-    }
-
-
-    @Override
-    public TaskForm setupLayout() {
-        BoxLayout mainLayout = new BoxLayout(this, BoxLayout.X_AXIS);
-        this.setLayout(mainLayout);
-
-        centerPanel = new JPanel();
-        BoxLayout layout = new BoxLayout(centerPanel, BoxLayout.Y_AXIS);
-        centerPanel.setLayout(layout);
-
-        this.add(new JPanel());
-        this.add(centerPanel);
-        this.add(new JPanel());
-
-        return this;
-    }
-
-    @Override
-    public TaskForm setupVisuals() {
-        return this;
-    }
 
     private DatePicker setupDatePicker() {
         DatePickerSettings dateSettings = new DatePickerSettings();
@@ -60,11 +32,6 @@ public class TaskForm extends JPanel implements GenericElement<TaskForm> {
 
         JButton datePickerButton = datePicker.getComponentToggleCalendarButton();
         datePickerButton.setText("Pick date");
-
-        // TODO
-//        URL calendarIconUrl = Main.class.getResource("/resource/datepickerbutton.png");
-//        ImageIcon calendarIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(calendarIconUrl));
-//        datePickerButton.setIcon(calendarIcon);
 
         return datePicker;
     }
@@ -86,7 +53,6 @@ public class TaskForm extends JPanel implements GenericElement<TaskForm> {
         descField = new JTextField(20);
         taskTypeField = new JTextField(20);
         workTypeButton = new JButton("Manage work type");
-        confirmButton = new JButton("Confirm");
 
         datePicker = setupDatePicker();
         startTimePicker = setupTimePicker();
@@ -95,72 +61,23 @@ public class TaskForm extends JPanel implements GenericElement<TaskForm> {
         forms = List.of(taskNameField, taskTypeField, startTimePicker, endTimePicker, descField);
 
         taskTypeField.setEditable(false);
-        confirmButton.addActionListener(e -> confirmFilledForms());
         workTypeButton.addActionListener(e -> WorkTypeWindow.setup());
     }
 
     @Override
     public TaskForm setupNested() {
-        JPanel panel = new JPanel(new GridLayout(6, 2));
         initForms();
 
-        panel.add(new JLabel("Enter task name:"));
-        panel.add(taskNameField);
-
-        panel.add(new JLabel("Enter description:"));
-        panel.add(descField);
-
-        panel.add(new JLabel("Enter start time:"));
-        panel.add(startTimePicker);
-
-        panel.add(new JLabel("Enter end time:"));
-        panel.add(endTimePicker);
-
-        panel.add(new JLabel("Enter task type:"));
+        addRow(new JLabel("Enter task name:"), taskNameField);
+        addRow(new JLabel("Enter description:"), descField);
+        addRow(new JLabel("Enter start time:"), startTimePicker);
+        addRow(new JLabel("Enter end time:"), endTimePicker);
         JPanel taskTypePanel = new JPanel();
         taskTypePanel.add(taskTypeField);
         taskTypePanel.add(workTypeButton);
-        panel.add(taskTypePanel);
-
-        JPanel confirmPanel = new JPanel();
-        confirmPanel.add(confirmButton);
-
-        centerPanel.add(panel);
-        centerPanel.add(confirmPanel);
-
-        disableForm();
+        addRow(new JLabel("Enter task type:"), taskTypePanel);
+        addConfirmButton();
         return this;
-    }
-
-    public void enableForm() {
-        taskNameField.setEnabled(true);
-        descField.setEnabled(true);
-        taskTypeField.setEnabled(true);
-        workTypeButton.setEnabled(true);
-        confirmButton.setEnabled(true);
-
-        datePicker.setEnabled(true);
-        startTimePicker.setEnabled(true);
-        endTimePicker.setEnabled(true);
-    }
-
-    public void disableForm() {
-        taskNameField.setEnabled(false);
-        descField.setEnabled(false);
-        taskTypeField.setEnabled(false);
-        workTypeButton.setEnabled(false);
-        confirmButton.setEnabled(false);
-
-        datePicker.setEnabled(false);
-        startTimePicker.setEnabled(false);
-        endTimePicker.setEnabled(false);
-    }
-
-
-    private void confirmFilledForms() {
-        String[] emptyData = new String[forms.size()];
-        Arrays.fill(emptyData, "");
-        fillForm(emptyData);
     }
 
     public void fillForm(Object[] rowData) {
@@ -189,7 +106,8 @@ public class TaskForm extends JPanel implements GenericElement<TaskForm> {
     }
 
     public static TaskForm setup() {
-        return new TaskForm()
+        TaskForm taskForm = new TaskForm();
+        return (TaskForm) taskForm
                 .setupLayout()
                 .setupVisuals()
                 .setupNested();
