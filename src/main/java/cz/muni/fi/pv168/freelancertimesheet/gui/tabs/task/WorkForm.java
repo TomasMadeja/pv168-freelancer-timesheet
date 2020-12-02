@@ -1,17 +1,14 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task;
 
-import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
-import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.TextFieldFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.WorkTypeWindow;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Time;
 
 public class WorkForm extends FormModel {
 

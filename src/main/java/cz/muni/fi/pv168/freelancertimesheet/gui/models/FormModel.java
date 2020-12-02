@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class FormModel extends JPanel implements GenericElement<FormModel>{
@@ -13,8 +14,15 @@ public abstract class FormModel extends JPanel implements GenericElement<FormMod
     protected GridBagConstraints layoutConstraints;
     protected List<Component> inputFields;
 
-    private JButton confirmButton;
-    private JButton cancelButton;
+    protected JButton confirmButton;
+    protected JButton cancelButton;
+
+    protected Callback confirmCallback;
+    protected Callback cancelCallback;
+
+    public interface Callback {
+        void call();
+    }
 
     public FormModel() {
         super();
@@ -35,11 +43,44 @@ public abstract class FormModel extends JPanel implements GenericElement<FormMod
         return this;
     }
 
+    protected JButton buildConfirmButton() {
+        confirmButton = new JButton("Confirm");
+        confirmButton.addActionListener((ActionEvent e) -> triggerConfirmCallback());
+        return confirmButton;
+    }
+
+    protected JButton buildCancelButton() {
+        cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener((ActionEvent e) -> triggerCancelCallback());
+        return cancelButton;
+    }
+
+    private void triggerConfirmCallback() {
+        if (confirmCallback != null) {
+            confirmCallback.call();
+        }
+    }
+
+    private void triggerCancelCallback() {
+        if (cancelCallback != null) {
+            cancelCallback.call();
+        }
+    }
+
+    public FormModel setConfirmCallback(Callback callback) {
+        confirmCallback = callback;
+        return this;
+    }
+
+    public FormModel setCancelCallback(Callback callback) {
+        cancelCallback = callback;
+        return this;
+    }
+
     protected FormModel addConfirmButton() {
         JPanel panel = new JPanel(new BorderLayout());
-        confirmButton = new JButton("Confirm");
-        cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener((ActionEvent e) -> disableForm());
+        buildConfirmButton();
+        buildCancelButton();
         JPanel subPanel = new JPanel(new GridLayout(1, 2));
         subPanel.add(cancelButton);
         subPanel.add(confirmButton);
@@ -86,6 +127,21 @@ public abstract class FormModel extends JPanel implements GenericElement<FormMod
 
     @Override
     public FormModel setupVisuals() {
+        setBorder(
+                BorderFactory.createEmptyBorder(10,10,10,10)
+        );
         return this;
+    }
+
+    public static <T> FormModel setup() {
+        return null;
+    }
+
+    public static <T> FormModel setup(T object) {
+        return null;
+    }
+
+    public static <T> FormModel setup(Collection<T> object) {
+        return null;
     }
 }
