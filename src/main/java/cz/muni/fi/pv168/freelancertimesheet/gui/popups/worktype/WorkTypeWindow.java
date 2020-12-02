@@ -14,7 +14,7 @@ public class WorkTypeWindow extends JFrame implements GenericElement<WorkTypeWin
 
     @Override
     public WorkTypeWindow setupLayout() {
-        GridLayout layout = new GridLayout(2, 1);
+        GridLayout layout = new GridLayout(1, 1);
         this.setLayout(layout);
         return this;
     }
