@@ -4,7 +4,6 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class WorkTypeForm extends FormModel {
 

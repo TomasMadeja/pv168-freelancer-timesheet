@@ -18,7 +18,7 @@ public abstract class FormModel extends JPanel implements GenericElement<FormMod
 
     public FormModel() {
         super();
-        inputFields = new ArrayList<Component>();
+        inputFields = new ArrayList<>();
     }
 
     protected FormModel addRow(Component left, Component right) {
