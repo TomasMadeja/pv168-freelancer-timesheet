@@ -6,7 +6,6 @@ import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
-import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.WorkTypeWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -92,7 +91,7 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
 
         taskTypeField.setEditable(false);
         confirmButton.addActionListener(e -> confirmFilledForms());
-        workTypeButton.addActionListener(e -> WorkTypeWindow.setup());
+//        workTypeButton.addActionListener(e -> WorkTypeWindow.setup());
     }
 
     @Override
