@@ -5,13 +5,20 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
+import cz.muni.fi.pv168.freelancertimesheet.backend.DBConnectionUtils;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
+import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
+import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
-import java.util.Arrays;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.util.TimeZone;
 
 public class TaskForm extends JFrame implements GenericElement<TaskForm> {
 
@@ -24,7 +31,6 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
     private DatePicker datePicker;
     private TimePicker startTimePicker, endTimePicker;
 
-    private List<JComponent> forms;
 
     public TaskForm() {
         super();
@@ -56,11 +62,6 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
         JButton datePickerButton = datePicker.getComponentToggleCalendarButton();
         datePickerButton.setText("Pick date");
 
-        // TODO
-//        URL calendarIconUrl = Main.class.getResource("/resource/datepickerbutton.png");
-//        ImageIcon calendarIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(calendarIconUrl));
-//        datePickerButton.setIcon(calendarIcon);
-
         return datePicker;
     }
 
@@ -87,8 +88,6 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
         startTimePicker = setupTimePicker();
         endTimePicker = setupTimePicker();
 
-        forms = List.of(taskNameField, taskTypeField, startTimePicker, endTimePicker, descField);
-
         taskTypeField.setEditable(false);
         confirmButton.addActionListener(e -> confirmFilledForms());
 //        workTypeButton.addActionListener(e -> WorkTypeWindow.setup());
@@ -98,6 +97,9 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
     public TaskForm setupNested() {
         JPanel panel = new JPanel(new GridLayout(6, 2));
         initForms();
+
+        panel.add(new JLabel("Enter task name:"));
+        panel.add(datePicker);
 
         panel.add(new JLabel("Enter task name:"));
         panel.add(taskNameField);
@@ -128,33 +130,52 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
 
 
     private void confirmFilledForms() {
-        String[] emptyData = new String[forms.size()];
-        Arrays.fill(emptyData, "");
-        fillForm(emptyData);
+        // TODO check if all needed fields have value
+
+        pushDataToDatabase(prepareDataFromForms());
+        emptyForms();
     }
 
-    public void fillForm(Object[] rowData) {
-        String data;
-        JComponent element;
-        for (int i = 1; i < forms.size(); i++) {
-            element = forms.get(i);
-            if (rowData[i] == null)
-                data = "";
-            else
-                data = rowData[i].toString();
+    private Work prepareDataFromForms() {
+        // TODO add support for WorkTypes
+        var tmpWorkType = WorkTypeImpl.createWorkType(
+                "TestType1",
+                "Never gonna give you up",
+                new BigDecimal("20")
+        );
 
-            if (element instanceof JTextField) {
-                var textField = (JTextField) element;
-                textField.setText(data);
-            } else if (element instanceof DatePicker) {
-                var datePicker = (DatePicker) element;
-                datePicker.setText(data); // TODO date is not showing
-            } else if (element instanceof TimePicker) {
-                var timePicker = (TimePicker) element;
-                timePicker.setText(data);
-            }
-        }
+        return WorkImpl.createWork(
+                taskNameField.getText(),
+                descField.getText(),
+                getDateTimeFromForms(startTimePicker.getTime()),
+                getDateTimeFromForms(endTimePicker.getTime()),
+                tmpWorkType
+        );
     }
+
+    private void emptyForms() {
+        datePicker.setText("");
+        taskNameField.setText("");
+        descField.setText("");
+        startTimePicker.setText("");
+        endTimePicker.setText("");
+    }
+
+    private ZonedDateTime getDateTimeFromForms(LocalTime time) {
+        return LocalDateTime.of(datePicker.getDate(), time).atZone(TimeZone.getDefault().toZoneId());
+    }
+
+    private void pushDataToDatabase(Work work) {
+        var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
+        entityManager.getTransaction().begin();
+
+        entityManager.persist(work);
+
+        entityManager.flush();
+        entityManager.getTransaction().commit();
+        entityManager.clear();
+    }
+
 
     public static TaskForm setup() {
         var taskForm = new TaskForm()
