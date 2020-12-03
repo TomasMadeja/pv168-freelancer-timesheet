@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui;
 
-import cz.muni.fi.pv168.freelancertimesheet.gui.popups.taskform.TaskForm;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.taskform.TaskFormWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.InvoiceForm;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskTable;
 
@@ -49,8 +49,8 @@ public class TasksPopup extends JFrame implements GenericElement<TasksPopup> {
 
     @Override
     public TasksPopup setupNested() {
-        TaskForm taskForm = TaskForm.setup();
-        innerPanel.add(taskForm);
+        TaskFormWindow taskFormWindow = TaskFormWindow.setup();
+        innerPanel.add(taskFormWindow);
 
         TaskTable taskTable = TaskTable.setup();
         innerPanel.add(taskTable);
