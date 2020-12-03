@@ -20,7 +20,7 @@ import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.TimeZone;
 
-public class TaskForm extends JFrame implements GenericElement<TaskForm> {
+public class TaskFormWindow extends JFrame implements GenericElement<TaskFormWindow> {
 
     private JPanel centerPanel;
 
@@ -32,13 +32,13 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
     private TimePicker startTimePicker, endTimePicker;
 
 
-    public TaskForm() {
+    public TaskFormWindow() {
         super();
     }
 
 
     @Override
-    public TaskForm setupLayout() {
+    public TaskFormWindow setupLayout() {
 
         centerPanel = new JPanel();
         BoxLayout layout = new BoxLayout(centerPanel, BoxLayout.Y_AXIS);
@@ -50,7 +50,42 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
     }
 
     @Override
-    public TaskForm setupVisuals() {
+    public TaskFormWindow setupVisuals() {
+        return this;
+    }
+
+    @Override
+    public TaskFormWindow setupNested() {
+        JPanel panel = new JPanel(new GridLayout(6, 2));
+        initForms();
+
+        panel.add(new JLabel("Enter task name:"));
+        panel.add(datePicker);
+
+        panel.add(new JLabel("Enter task name:"));
+        panel.add(taskNameField);
+
+        panel.add(new JLabel("Enter description:"));
+        panel.add(descField);
+
+        panel.add(new JLabel("Enter start time:"));
+        panel.add(startTimePicker);
+
+        panel.add(new JLabel("Enter end time:"));
+        panel.add(endTimePicker);
+
+        panel.add(new JLabel("Enter task type:"));
+        JPanel taskTypePanel = new JPanel();
+        taskTypePanel.add(taskTypeField);
+        taskTypePanel.add(workTypeButton);
+        panel.add(taskTypePanel);
+
+        JPanel confirmPanel = new JPanel();
+        confirmPanel.add(confirmButton);
+
+        centerPanel.add(panel);
+        centerPanel.add(confirmPanel);
+
         return this;
     }
 
@@ -93,47 +128,12 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
 //        workTypeButton.addActionListener(e -> WorkTypeWindow.setup());
     }
 
-    @Override
-    public TaskForm setupNested() {
-        JPanel panel = new JPanel(new GridLayout(6, 2));
-        initForms();
-
-        panel.add(new JLabel("Enter task name:"));
-        panel.add(datePicker);
-
-        panel.add(new JLabel("Enter task name:"));
-        panel.add(taskNameField);
-
-        panel.add(new JLabel("Enter description:"));
-        panel.add(descField);
-
-        panel.add(new JLabel("Enter start time:"));
-        panel.add(startTimePicker);
-
-        panel.add(new JLabel("Enter end time:"));
-        panel.add(endTimePicker);
-
-        panel.add(new JLabel("Enter task type:"));
-        JPanel taskTypePanel = new JPanel();
-        taskTypePanel.add(taskTypeField);
-        taskTypePanel.add(workTypeButton);
-        panel.add(taskTypePanel);
-
-        JPanel confirmPanel = new JPanel();
-        confirmPanel.add(confirmButton);
-
-        centerPanel.add(panel);
-        centerPanel.add(confirmPanel);
-
-        return this;
-    }
-
-
     private void confirmFilledForms() {
         // TODO check if all needed fields have value
 
         pushDataToDatabase(prepareDataFromForms());
         emptyForms();
+        this.dispose();
     }
 
     private Work prepareDataFromForms() {
@@ -177,15 +177,15 @@ public class TaskForm extends JFrame implements GenericElement<TaskForm> {
     }
 
 
-    public static TaskForm setup() {
-        var taskForm = new TaskForm()
+    public static TaskFormWindow setup() {
+        var taskFormWindow = new TaskFormWindow()
                 .setupLayout()
                 .setupVisuals()
                 .setupNested();
-        taskForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        taskForm.pack();
-        taskForm.setVisible(true);
-        return taskForm;
+        taskFormWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        taskFormWindow.pack();
+        taskFormWindow.setVisible(true);
+        return taskFormWindow;
 
     }
 }
