@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.freelancertimesheet.gui.popups.taskform;
+package cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
@@ -20,7 +20,7 @@ import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.TimeZone;
 
-public class TaskForm extends FormModel {
+public class WorkForm extends FormModel {
 
     private final DatePicker datePicker;
     private final TimePicker startTimePicker;
@@ -33,7 +33,7 @@ public class TaskForm extends FormModel {
     private final JButton workTypeButton;
 
 
-    public TaskForm() {
+    public WorkForm() {
         super();
 
         datePicker = setupDatePicker();
@@ -45,8 +45,8 @@ public class TaskForm extends FormModel {
         workTypeButton = new JButton("Manage work type");
     }
 
-    public static TaskForm setup() {
-        TaskForm form = new TaskForm();
+    public static WorkForm setup() {
+        WorkForm form = new WorkForm();
         form.setupLayout()
                 .setupVisuals()
                 .setupNested();
@@ -55,7 +55,7 @@ public class TaskForm extends FormModel {
 
 
     @Override
-    public TaskForm setupNested() {
+    public WorkForm setupNested() {
         addRow(new JLabel("Date:"), datePicker);
         addRow(new JLabel("Name:"), nameTextField);
         addRow(new JLabel("Description:"), descriptionScrollPane);

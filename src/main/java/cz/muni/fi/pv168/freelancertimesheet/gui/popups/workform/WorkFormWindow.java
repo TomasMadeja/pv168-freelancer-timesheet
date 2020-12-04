@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.freelancertimesheet.gui.popups.taskform;
+package cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.DBConnectionUtils;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
@@ -7,42 +7,42 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import javax.swing.*;
 import java.awt.*;
 
-public class TaskFormWindow extends JFrame implements GenericElement<TaskFormWindow> {
+public class WorkFormWindow extends JFrame implements GenericElement<WorkFormWindow> {
 
-    private TaskForm taskForm;
+    private WorkForm workForm;
 
-    public TaskFormWindow() {
+    public WorkFormWindow() {
         super();
     }
 
 
     @Override
-    public TaskFormWindow setupLayout() {
+    public WorkFormWindow setupLayout() {
         GridLayout layout = new GridLayout(1, 1);
         this.setLayout(layout);
         return this;
     }
 
     @Override
-    public TaskFormWindow setupVisuals() {
+    public WorkFormWindow setupVisuals() {
         return this;
     }
 
     @Override
-    public TaskFormWindow setupNested() {
-        taskForm = TaskForm.setup();
-        taskForm.setupConfirmButtonAction(e -> confirmFilledForms());
+    public WorkFormWindow setupNested() {
+        workForm = WorkForm.setup();
+        workForm.setupConfirmButtonAction(e -> confirmFilledForms());
 
-        Dimension preferredSize = taskForm.getPreferredSize();
+        Dimension preferredSize = workForm.getPreferredSize();
         this.setPreferredSize(new Dimension(preferredSize.width * 2, preferredSize.height * 2));
-        this.add(taskForm);
+        this.add(workForm);
         return this;
     }
 
 
     private void confirmFilledForms() {
         // TODO check if all needed fields have value
-        pushDataToDatabase(taskForm.prepareDataFromForms());
+        pushDataToDatabase(workForm.prepareDataFromForms());
         this.dispose();
     }
 
@@ -58,8 +58,8 @@ public class TaskFormWindow extends JFrame implements GenericElement<TaskFormWin
     }
 
 
-    public static TaskFormWindow setup() {
-        var taskFormWindow = new TaskFormWindow()
+    public static WorkFormWindow setup() {
+        var taskFormWindow = new WorkFormWindow()
                 .setupLayout()
                 .setupVisuals()
                 .setupNested();
