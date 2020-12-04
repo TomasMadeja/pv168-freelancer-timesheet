@@ -19,7 +19,7 @@ public class WorkTypeTableModel extends TableModel<WorkType> {
                 false,
                 String.class,
                 WorkType.class,
-                (Object object) -> ((WorkType) object).getDescription(),
+                (Object object) -> ((WorkType) object).getName(),
                 null
         ));
         super.addColumn(new Column<BigDecimal, WorkType>(
