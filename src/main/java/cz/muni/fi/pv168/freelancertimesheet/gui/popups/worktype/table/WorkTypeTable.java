@@ -15,8 +15,6 @@ public class WorkTypeTable {
     private final JFrame frame;
 
     private final Action addAction;
-    private final Action deleteAction;
-    private final Action editAction;
     private final Action selectAction;
 
     private JTable workTypeTable;
@@ -36,8 +34,6 @@ public class WorkTypeTable {
                     refresh();
                 }
         );
-        deleteAction = new DeleteAction(workTypeTable);
-        editAction = new EditAction(workTypeTable, workTypeForm);
         selectAction = new SelectAction(frame);
         updateUsabilityOfButtons(0);
         workTypeTable.setComponentPopupMenu(createEmployeeTablePopupMenu());
@@ -71,8 +67,6 @@ public class WorkTypeTable {
         var menu = new JPopupMenu();
         menu.add(selectAction);
         menu.addSeparator();
-        menu.add(deleteAction);
-        menu.add(editAction);
         return menu;
     }
 
@@ -83,8 +77,6 @@ public class WorkTypeTable {
         editMenu.add(selectAction);
         editMenu.addSeparator();
         editMenu.add(addAction);
-        editMenu.add(editAction);
-        editMenu.add(deleteAction);
         menuBar.add(editMenu);
         return menuBar;
     }
@@ -95,8 +87,6 @@ public class WorkTypeTable {
         toolbar.add(selectAction);
         toolbar.addSeparator();
         toolbar.add(addAction);
-        toolbar.add(editAction);
-        toolbar.add(deleteAction);
         return toolbar;
     }
 
@@ -107,9 +97,7 @@ public class WorkTypeTable {
     }
 
     private void updateUsabilityOfButtons(int rows) {
-        editAction.setEnabled(rows == 1);
         selectAction.setEnabled(rows == 1);
-        deleteAction.setEnabled(rows >= 1);
     }
 
     public static JPanel setup(WorkTypeForm workTypeForm, JFrame frame) {
