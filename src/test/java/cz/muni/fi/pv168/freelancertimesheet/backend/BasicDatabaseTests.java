@@ -201,6 +201,14 @@ public class BasicDatabaseTests {
     }
 
     @Test
+    public void testInvoiceDBManager1() throws IOException, URISyntaxException {
+        testInvoiceDB();
+
+//        Assertions.assertTrue(PersistanceManager.getAllInvoice().size() == 1);
+        Assertions.assertTrue(PersistanceManager.getAllInvoice("3123123123", "CZ123123123").size() == 1);
+    }
+
+    @Test
     public void testInvoiceDB() throws IOException, URISyntaxException {
         InvoiceImpl invoice = sampleTemplatedPDF();
 

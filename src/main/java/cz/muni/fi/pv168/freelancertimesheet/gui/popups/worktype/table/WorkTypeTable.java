@@ -1,6 +1,8 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeFormWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeForm;
@@ -17,12 +19,23 @@ public class WorkTypeTable {
     private final Action editAction;
     private final Action selectAction;
 
+    private JTable workTypeTable;
+
+    private final WorkTypeContainer container;
+
     public WorkTypeTable(WorkTypeForm workTypeForm, JFrame frame) {
+        container = new WorkTypeContainer();
         this.frame = frame;
         panel = createPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        JTable workTypeTable = createWorkTypeTable();
-        addAction = new AddAction(workTypeTable, (JTable table, cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction.Callback callback) -> WorkTypeFormWindow.setup(callback), workTypeTable::repaint);
+        workTypeTable = createWorkTypeTable();
+        addAction = new AddAction(
+                workTypeTable,
+                (JTable table, AddAction.Callback callback) -> WorkTypeFormWindow.setup(callback),
+                () -> {
+                    refresh();
+                }
+        );
         deleteAction = new DeleteAction(workTypeTable);
         editAction = new EditAction(workTypeTable, workTypeForm);
         selectAction = new SelectAction(frame);
@@ -30,6 +43,11 @@ public class WorkTypeTable {
         workTypeTable.setComponentPopupMenu(createEmployeeTablePopupMenu());
         panel.add(createToolbar());
         panel.add(new JScrollPane(workTypeTable));
+    }
+
+    public void refresh() {
+        container.refresh();
+        ((TableModel) workTypeTable.getModel()).fireTableDataChanged();
     }
 
     public void show() {
@@ -41,7 +59,7 @@ public class WorkTypeTable {
     }
 
     private JTable createWorkTypeTable() {
-        var model = new WorkTypeTableModel();
+        var model = new WorkTypeTableModel(container);
         var table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);

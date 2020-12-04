@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.exampledata.RandomDataGenerator;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTableModel;
 
@@ -10,6 +11,7 @@ import java.awt.*;
 public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     private JTable table;
+    private final WorkContainer container;
 
     public int GetSelectedTasksCount() {
         return table.getSelectedRows().length;
@@ -18,7 +20,6 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
     public TaskTable() {
         super();
     }
-
 
     private JPanel createTableButtonPanel() {
         JPanel panel = new JPanel();

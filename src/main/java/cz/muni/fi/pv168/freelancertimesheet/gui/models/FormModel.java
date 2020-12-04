@@ -7,7 +7,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class FormModel extends JPanel implements GenericElement<FormModel>{
     protected GridBagLayout layout;
@@ -20,13 +22,21 @@ public abstract class FormModel extends JPanel implements GenericElement<FormMod
     protected Callback confirmCallback;
     protected Callback cancelCallback;
 
+    protected Map<String, Object> fieldMap;
+
     public interface Callback {
         void call();
     }
 
     public FormModel() {
         super();
+        fieldMap = new HashMap<>();
         inputFields = new ArrayList<>();
+    }
+
+    protected Component addField(String name, Component component) {
+        fieldMap.put(name, component);
+        return component;
     }
 
     protected FormModel addRow(Component left, Component right) {
