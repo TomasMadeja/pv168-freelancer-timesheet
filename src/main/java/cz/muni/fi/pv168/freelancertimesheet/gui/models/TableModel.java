@@ -133,4 +133,7 @@ public class TableModel<T> extends AbstractTableModel {
         }
     }
 
+    public Object getDataFromContainer(int row) {
+        return container.get(row);
+    }
 }
