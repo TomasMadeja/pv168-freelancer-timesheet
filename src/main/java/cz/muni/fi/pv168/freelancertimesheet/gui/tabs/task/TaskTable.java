@@ -6,11 +6,9 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTableModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
-//    private final TaskForm taskForm;
     private JTable table;
 
     public int GetSelectedTasksCount() {
@@ -19,7 +17,6 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     public TaskTable() {
         super();
-//        taskForm = new TaskForm();
     }
 
 
@@ -28,15 +25,9 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         GridLayout layout = new GridLayout(1, 7);
         panel.setLayout(layout);
 
-        var newButton = new JButton("New");
-        var editButton = new JButton("Edit");
-        var deleteButton = new JButton("Delete");
+        var editButton = new JButton("Edit"); // TODO
+        var deleteButton = new JButton("Delete"); // TODO
 
-        newButton.addActionListener(e -> resetTaskForm());
-        editButton.addActionListener(e -> fillTaskForm());
-
-
-        panel.add(newButton);
         panel.add(editButton);
         panel.add(deleteButton);
 
@@ -50,31 +41,11 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         return panel;
     }
 
-    private void resetTaskForm() {
-        String[] rowData = new String[table.getColumnCount()];
-        Arrays.fill(rowData, "");
-//        taskForm.fillForm(rowData);
-    }
-
-    private void fillTaskForm() {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            return;
-        }
-
-        Object[] rowData = new Object[table.getColumnCount()];
-        for (int i = 1; i < table.getColumnCount(); i++) {
-            rowData[i] = table.getValueAt(selectedRow, i);
-        }
-        rowData[0] = false;
-//        taskForm.fillForm(rowData);
-    }
 
     private JTable createTable() {
         table = new JTable(new WorkTableModel());
-        table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        RandomDataGenerator.generateWorkData((WorkTableModel)table.getModel());
-//        table.setModel(model);
+        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        RandomDataGenerator.generateWorkData((WorkTableModel) table.getModel());
         return table;
     }
 
