@@ -33,11 +33,13 @@ public class EntityImpl implements Entity {
     @Column(name = "dic", nullable=false)
     protected String dic;
 
-    public EntityImpl(String name, String address, String ico, String dic) {
+    public EntityImpl(String name, String address, String ico, String dic, String phoneNumber, String email) {
         this.name = name;
         this.address = address;
         this.ico = ico;
         this.dic = dic;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 
     public EntityImpl() {
@@ -145,8 +147,8 @@ public class EntityImpl implements Entity {
     }
 
 
-    public static Entity createEntity(String name, String address, String ico, String dic) {
-        return new EntityImpl(name, address, ico, dic);
+    public static Entity createEntity(String name, String address, String ico, String dic, String phoneNumber, String email) {
+        return new EntityImpl(name, address, ico, dic, phoneNumber, email);
     }
 
     @Override

@@ -19,16 +19,16 @@ import javax.persistence.Table;
 @Table(name="issuers")
 public class IssuerImpl extends EntityImpl implements Issuer {
 
-    public IssuerImpl(String name, String address, String ico, String dic) {
-        super(name, address, ico, dic);
+    public IssuerImpl(String name, String address, String ico, String dic, String phoneNumber, String email) {
+        super(name, address, ico, dic, phoneNumber, email);
     }
 
     public IssuerImpl() {
         super();
     }
 
-    public static Entity createEntity(String name, String address, String ico, String dic) {
-        return new IssuerImpl(name, address, ico, dic);
+    public static Entity createEntity(String name, String address, String ico, String dic, String phoneNumber, String email) {
+        return new IssuerImpl(name, address, ico, dic, phoneNumber, email);
     }
 
     public String toXML() {

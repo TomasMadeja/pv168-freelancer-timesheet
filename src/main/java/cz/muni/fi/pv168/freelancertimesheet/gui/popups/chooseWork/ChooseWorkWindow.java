@@ -18,15 +18,18 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 
 public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWorkWindow> {
 
     GridBagConstraints gbc;
+    Function<List<Work>, Object> updateCallback;
 
     private final HashMap<Work, Boolean> selectedRows;
 
-    public ChooseWorkWindow() {
+    public ChooseWorkWindow(Function<List<Work>, Object> updateCallback) {
         super("Choose Work");
+        this.updateCallback = updateCallback;
         selectedRows = new HashMap<>();
     }
 
@@ -50,18 +53,21 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
         result.forEach(table::addRow);
     }
 
-    private JButton confirmSelectionButton() {
+    private JButton confirmSelectionButton(Function<List<Work>, Object> updateWorkSelection) {
         var button = new JButton();
         button.setText("Confirm Selection");
 
         // TODO modify so the invoice tab can get this info
         button.addActionListener(e -> {
             System.out.println("Printing selected rows (invoice choose work tab):");
+            List<Work> selectedWorks = new ArrayList<>();
             selectedRows.forEach((workRow, isSelected) -> {
                 if (isSelected) {
                     System.out.println(workRow);
+                    selectedWorks.add(workRow);
                 }
             });
+            updateWorkSelection.apply(selectedWorks);
             this.dispose();
         });
 
@@ -98,7 +104,7 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
     @Override
     public ChooseWorkWindow setupNested() {
         var table = new JScrollPane(createTable());
-        var confirmButton = confirmSelectionButton();
+        var confirmButton = confirmSelectionButton(updateCallback);
 
         gbc = getGbc(0, 0, 3, 5, 0.5);
         gbc.fill = GridBagConstraints.BOTH;
@@ -110,8 +116,8 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
         return this;
     }
 
-    public static ChooseWorkWindow setup() {
-        ChooseWorkWindow window = new ChooseWorkWindow()
+    public static ChooseWorkWindow setup(Function<List<Work>, Object> updateCallback) {
+        ChooseWorkWindow window = new ChooseWorkWindow(updateCallback)
                 .setupLayout()
                 .setupVisuals()
                 .setupNested();
