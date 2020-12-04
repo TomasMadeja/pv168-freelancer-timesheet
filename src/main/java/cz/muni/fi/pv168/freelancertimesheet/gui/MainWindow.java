@@ -1,6 +1,8 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui;
 
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform.WorkFormWindow;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeFormWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,9 +62,9 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
         var newTaskItem = new JMenuItem("New Task");
         newTaskItem.addActionListener(e -> WorkFormWindow.setup());
         var newTaskTypeItem = new JMenuItem("New Task Type");
-//        newTaskTypeItem.addActionListener(e -> WorkTypeFormWindow.setup());
+        newTaskTypeItem.addActionListener(e -> WorkTypeFormWindow.setup(null));
         var newInvoiceItem = new JMenuItem("New Invoice");
-//        newInvoiceItem.addActionListener(e -> InvoiceWindow.setup());
+        newInvoiceItem.addActionListener(e -> InvoiceWindow.setup(null));
 
 
         fileMenu.addSeparator();
