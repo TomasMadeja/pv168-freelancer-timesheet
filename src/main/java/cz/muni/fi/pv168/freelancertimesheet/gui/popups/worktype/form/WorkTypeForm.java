@@ -1,9 +1,12 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.PersistanceManager;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
+import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 public class WorkTypeForm extends FormModel {
 
@@ -33,6 +36,7 @@ public class WorkTypeForm extends FormModel {
         JLabel descriptionLabel = new JLabel("Description:");
         addRow(descriptionLabel, descriptionScrollPane);
         addConfirmButton();
+        makeConfirmAddData();
         return this;
     }
 
@@ -41,5 +45,27 @@ public class WorkTypeForm extends FormModel {
         rateTextField.setText(workType.getHourlyRate().toString());
         descriptionTextArea.setText(workType.getDescription());
         enableForm();
+    }
+
+    private WorkType getDataFromForm() {
+        return WorkTypeImpl.createWorkType(
+                nameTextField.getText(),
+                descriptionTextArea.getText(),
+                rateTextField.getText()
+        );
+    }
+
+    private void validateData(WorkType workType) {
+        workType.validateAttributes();
+    }
+
+    private void addDataToDatabase() {
+        WorkType workType = getDataFromForm();
+        validateData(workType);
+        PersistanceManager.persistWorkType(workType);
+    }
+
+    private void makeConfirmAddData() {
+        confirmButton.addActionListener((ActionEvent e) -> addDataToDatabase());
     }
 }
