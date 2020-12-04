@@ -29,7 +29,7 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
 
     @Override
     public ChooseWorkType setupLayout() {
-        setLayout(new GridLayout(2, 1));
+        setLayout(new GridBagLayout());
         return this;
     }
 
@@ -40,7 +40,12 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
 
     @Override
     public ChooseWorkType setupNested() {
-        add(buildTable());
+        var constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        add(buildTable(), constraints);
         confirm.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,7 +58,11 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
                 }
             }
         });
-        add(confirm);
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.gridwidth = 0;
+        constraints.gridheight = 0;
+        add(confirm, constraints);
         return this;
     }
 
