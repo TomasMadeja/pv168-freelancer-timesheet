@@ -28,7 +28,7 @@ public class WorkTypeTableWindow extends JFrame implements GenericElement<WorkTy
         WorkTypeForm workTypeForm = WorkTypeForm.setup();
         Dimension preferredSize = workTypeForm.getPreferredSize();
         this.setPreferredSize(new Dimension(preferredSize.width, preferredSize.height * 4));
-        this.add(WorkTypeTable.setup(workTypeForm, this));
+        this.add(WorkTypeTable.setup());
 
         return this;
     }

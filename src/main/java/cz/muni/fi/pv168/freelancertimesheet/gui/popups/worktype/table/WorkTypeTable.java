@@ -1,48 +1,30 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
+import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeFormWindow;
-import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeForm;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
+import java.awt.*;
 
-public class WorkTypeTable {
-    private final JPanel panel;
-    private final JFrame frame;
-
-    private final Action addAction;
-    private final Action deleteAction;
-    private final Action editAction;
-    private final Action selectAction;
-
+public class WorkTypeTable extends JPanel implements GenericElement<WorkTypeTable> {
+    private final WorkTypeContainer container;
     private JTable workTypeTable;
 
-    private final WorkTypeContainer container;
-
-    public WorkTypeTable(WorkTypeForm workTypeForm, JFrame frame) {
+    public WorkTypeTable() {
         container = new WorkTypeContainer();
-        this.frame = frame;
-        panel = createPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        workTypeTable = createWorkTypeTable();
-        addAction = new AddAction(
-                workTypeTable,
-                (JTable table, AddAction.Callback callback) -> WorkTypeFormWindow.setup(callback),
-                () -> {
-                    refresh();
-                }
-        );
-        deleteAction = new DeleteAction(workTypeTable);
-        editAction = new EditAction(workTypeTable, workTypeForm);
-        selectAction = new SelectAction(frame);
-        updateUsabilityOfButtons(0);
-        workTypeTable.setComponentPopupMenu(createEmployeeTablePopupMenu());
-        panel.add(createToolbar());
-        panel.add(new JScrollPane(workTypeTable));
+    }
+
+    public static JPanel setup() {
+        WorkTypeTable workTypeTable = new WorkTypeTable();
+        workTypeTable
+                .setupVisuals()
+                .setupLayout()
+                .setupNested();
+        return workTypeTable;
     }
 
     public void refresh() {
@@ -50,69 +32,49 @@ public class WorkTypeTable {
         ((TableModel) workTypeTable.getModel()).fireTableDataChanged();
     }
 
-    public void show() {
-        frame.setVisible(true);
+    private JScrollPane buildWorkTypeTable() {
+        workTypeTable = new JTable(new WorkTypeTableModel(container));
+        workTypeTable.setAutoCreateRowSorter(true);
+        workTypeTable.setRowHeight(20);
+        return new JScrollPane(workTypeTable);
     }
 
-    private JPanel createPanel() {
-        return new JPanel();
-    }
-
-    private JTable createWorkTypeTable() {
-        var model = new WorkTypeTableModel(container);
-        var table = new JTable(model);
-        table.setAutoCreateRowSorter(true);
-        table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
-        table.setRowHeight(20);
-        return table;
-    }
-
-    private JPopupMenu createEmployeeTablePopupMenu() {
+    private JPopupMenu buildPopupMenu(AbstractAction addAction) {
         var menu = new JPopupMenu();
-        menu.add(selectAction);
-        menu.addSeparator();
-        menu.add(deleteAction);
-        menu.add(editAction);
+        menu.add(addAction);
         return menu;
     }
 
-    private JMenuBar createMenuBar() {
-        var menuBar = new JMenuBar();
-        var editMenu = new JMenu("Edit");
-        editMenu.setMnemonic('e');
-        editMenu.add(selectAction);
-        editMenu.addSeparator();
-        editMenu.add(addAction);
-        editMenu.add(editAction);
-        editMenu.add(deleteAction);
-        menuBar.add(editMenu);
-        return menuBar;
-    }
-
-    private JToolBar createToolbar() {
+    private JToolBar buildToolbar(AbstractAction addAction) {
         var toolbar = new JToolBar();
         toolbar.setFloatable(false);
-        toolbar.add(selectAction);
-        toolbar.addSeparator();
         toolbar.add(addAction);
-        toolbar.add(editAction);
-        toolbar.add(deleteAction);
         return toolbar;
     }
 
-    private void rowSelectionChanged(ListSelectionEvent listSelectionEvent) {
-        var selectionModel = (ListSelectionModel) listSelectionEvent.getSource();
-        int rows = selectionModel.getSelectedItemsCount();
-        updateUsabilityOfButtons(rows);
+    @Override
+    public WorkTypeTable setupLayout() {
+        return this;
     }
 
-    private void updateUsabilityOfButtons(int rows) {
-        editAction.setEnabled(rows == 1);
-        selectAction.setEnabled(rows == 1);
-        deleteAction.setEnabled(rows >= 1);
+    @Override
+    public WorkTypeTable setupVisuals() {
+        setLayout(new BorderLayout());
+        return this;
     }
 
-    public static JPanel setup(WorkTypeForm workTypeForm, JFrame frame) {
-        return new WorkTypeTable(workTypeForm, frame).panel;
+    @Override
+    public WorkTypeTable setupNested() {
+        add(buildWorkTypeTable(), BorderLayout.CENTER);
+        var addAction = new AddAction(
+                workTypeTable,
+                (JTable table, AddAction.Callback callback) -> WorkTypeFormWindow.setup(callback),
+                () -> {
+                    refresh();
+                }
+        );
+        add(buildToolbar(addAction), BorderLayout.BEFORE_FIRST_LINE);
+        workTypeTable.setComponentPopupMenu(buildPopupMenu(addAction));
+        return this;
     }
 }
