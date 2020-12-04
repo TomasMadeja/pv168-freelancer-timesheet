@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeFormWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeForm;
@@ -17,7 +18,10 @@ public class WorkTypeTable {
     private final Action editAction;
     private final Action selectAction;
 
+    private final WorkTypeContainer container;
+
     public WorkTypeTable(WorkTypeForm workTypeForm, JFrame frame) {
+        container = new WorkTypeContainer();
         this.frame = frame;
         panel = createPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
@@ -41,7 +45,7 @@ public class WorkTypeTable {
     }
 
     private JTable createWorkTypeTable() {
-        var model = new WorkTypeTableModel();
+        var model = new WorkTypeTableModel(container);
         var table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);

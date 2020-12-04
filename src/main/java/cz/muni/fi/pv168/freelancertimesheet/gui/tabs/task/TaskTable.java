@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.exampledata.RandomDataGenerator;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTableModel;
 
@@ -12,6 +13,7 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     private final WorkForm workForm;
     private JTable table;
+    private final WorkContainer container;
 
     public int GetSelectedTasksCount() {
         return table.getSelectedRows().length;
@@ -20,11 +22,13 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
     public TaskTable() {
         super();
         workForm = new WorkForm();
+        container = new WorkContainer();
     }
 
     public TaskTable(WorkForm workForm) {
         super();
         this.workForm = workForm;
+        container = new WorkContainer();
     }
 
     private JPanel createTableButtonPanel() {
@@ -74,7 +78,7 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
     }
 
     private JTable createTable() {
-        table = new JTable(new WorkTableModel());
+        table = new JTable(new WorkTableModel(container));
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         RandomDataGenerator.generateWorkData((WorkTableModel)table.getModel());
 //        table.setModel(model);
