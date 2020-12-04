@@ -15,13 +15,16 @@ public class WorkTypeForm extends FormModel {
     private final JTextArea descriptionTextArea = new JTextArea();
     private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
 
-    public WorkTypeForm(){
+    private final JFrame parentFrame;
+
+    public WorkTypeForm(JFrame parentFrame){
         super();
+        this.parentFrame = parentFrame;
         rateTextField.setText(Double.toString(0));
     }
 
-    public static WorkTypeForm setup() {
-        WorkTypeForm form = new WorkTypeForm();
+    public static WorkTypeForm setup(JFrame parentFrame) {
+        WorkTypeForm form = new WorkTypeForm(parentFrame);
         form
                 .setupLayout()
                 .setupVisuals()
@@ -40,29 +43,35 @@ public class WorkTypeForm extends FormModel {
         return this;
     }
 
-    public void fillForm(WorkType workType) {
-        nameTextField.setText(workType.getName());
-        rateTextField.setText(workType.getHourlyRate().toString());
-        descriptionTextArea.setText(workType.getDescription());
-        enableForm();
-    }
-
     private WorkType getDataFromForm() {
-        return WorkTypeImpl.createWorkType(
-                nameTextField.getText(),
-                descriptionTextArea.getText(),
-                rateTextField.getText()
-        );
+        try {
+            return WorkTypeImpl.createWorkType(
+                    nameTextField.getText(),
+                    descriptionTextArea.getText(),
+                    rateTextField.getText()
+            );
+        }
+        catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid hourly rate, valid are only numbers and ',' for decimal numbers!", "Invalid hourly rate", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
     }
 
-    private void validateData(WorkType workType) {
-        workType.validateAttributes();
+    private WorkType validateData(WorkType workType) {
+        if (workType == null) return null;
+        if (workType.getName().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Field name cannot be empty!", "Invalid name!", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+        return workType;
     }
 
     private void addDataToDatabase() {
         WorkType workType = getDataFromForm();
-        validateData(workType);
+        workType = validateData(workType);
+        if (workType == null) return;
         PersistanceManager.persistWorkType(workType);
+        parentFrame.dispose();
     }
 
     private void makeConfirmAddData() {

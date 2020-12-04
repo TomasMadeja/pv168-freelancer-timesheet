@@ -28,11 +28,10 @@ public class WorkTypeFormWindow extends JFrame implements GenericElement<WorkTyp
 
     @Override
     public WorkTypeFormWindow setupNested() {
-        WorkTypeForm workTypeForm = WorkTypeForm.setup();
+        WorkTypeForm workTypeForm = WorkTypeForm.setup(this);
         workTypeForm.setConfirmCallback(
                 () -> {
                     if (callback != null) callback.call();
-                    this.dispose();
                 }
         );
         workTypeForm.setCancelCallback(
