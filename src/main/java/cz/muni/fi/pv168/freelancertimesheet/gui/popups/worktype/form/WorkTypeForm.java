@@ -43,13 +43,6 @@ public class WorkTypeForm extends FormModel {
         return this;
     }
 
-    public void fillForm(WorkType workType) {
-        nameTextField.setText(workType.getName());
-        rateTextField.setText(workType.getHourlyRate().toString());
-        descriptionTextArea.setText(workType.getDescription());
-        enableForm();
-    }
-
     private WorkType getDataFromForm() {
         try {
             return WorkTypeImpl.createWorkType(
