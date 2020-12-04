@@ -13,7 +13,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.EventListener;
 
 public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkType> {
     private final Method getSelectedWorkType;
@@ -49,10 +48,8 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
                 var s = (WorkType)((TableModel) table.getModel()).getDataFromContainer(wt);
                 try {
                     getSelectedWorkType.invoke(s);
-                } catch (IllegalAccessException illegalAccessException) {
+                } catch (IllegalAccessException | InvocationTargetException illegalAccessException) {
                     illegalAccessException.printStackTrace();
-                } catch (InvocationTargetException invocationTargetException) {
-                    invocationTargetException.printStackTrace();
                 }
             }
         });
@@ -64,12 +61,7 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
         var tableModel = new WorkTypeTableModel(container);
         table = new JTable(tableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                selectionChanged(table.getSelectedRows().length);
-            }
-        });
+        table.getSelectionModel().addListSelectionListener(e -> selectionChanged(table.getSelectedRows().length));
         return new JScrollPane(table);
     }
 
