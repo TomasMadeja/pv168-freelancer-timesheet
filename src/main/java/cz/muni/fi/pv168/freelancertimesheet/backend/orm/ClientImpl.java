@@ -20,16 +20,16 @@ import javax.persistence.Table;
 public class ClientImpl extends EntityImpl implements Client {
 
 
-    public ClientImpl(String name, String address, String ico, String dic) {
-        super(name, address, ico, dic);
+    public ClientImpl(String name, String address, String ico, String dic, String phoneNumber, String email) {
+        super(name, address, ico, dic, phoneNumber, email);
     }
 
     public ClientImpl() {
         super();
     }
 
-    public static Entity createEntity(String name, String address, String ico, String dic) {
-        return new ClientImpl(name, address, ico, dic);
+    public static Entity createEntity(String name, String address, String ico, String dic, String phoneNumber, String email) {
+        return new ClientImpl(name, address, ico, dic, phoneNumber, email);
     }
 
     public String toXML() {

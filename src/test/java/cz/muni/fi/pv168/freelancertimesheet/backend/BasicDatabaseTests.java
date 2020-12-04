@@ -242,8 +242,8 @@ public class BasicDatabaseTests {
         ArrayList<Work> works = new ArrayList<>();
         works.add(w1);
         works.add(w2);
-        ClientImpl client = ((ClientImpl) ClientImpl.createEntity("Client1", "Client Address, 00000 Place, Country", "3123123123", "CZ123123123"));
-        IssuerImpl issuer = ((IssuerImpl) IssuerImpl.createEntity("Issuer1", "Issuer Address, 00000 Place, Country", "089876768", "CZ0988777797"));
+        ClientImpl client = ((ClientImpl) ClientImpl.createEntity("Client1", "Client Address, 00000 Place, Country", "3123123123", "CZ123123123", "", ""));
+        IssuerImpl issuer = ((IssuerImpl) IssuerImpl.createEntity("Issuer1", "Issuer Address, 00000 Place, Country", "089876768", "CZ0988777797", "", ""));
         InvoiceImpl invoice = (InvoiceImpl) InvoiceImpl.createInvoice(client, issuer, ZonedDateTime.parse("2000-04-08 08:30 +0000", formatter), ZonedDateTime.parse("2000-05-08 08:30 +0000", formatter), works);
         return invoice;
     }

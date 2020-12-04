@@ -24,6 +24,10 @@ public class TextFieldFactory {
             textArea.setText(text);
             return this;
         }
+
+        public String getText() {
+            return textArea.getText();
+        }
     }
 
     public static CustomWrappedClass createWrappedTextField() {
