@@ -34,7 +34,7 @@ public class TableModel<T> extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return container.size();
+        return columns.size();
     }
 
     @Override
