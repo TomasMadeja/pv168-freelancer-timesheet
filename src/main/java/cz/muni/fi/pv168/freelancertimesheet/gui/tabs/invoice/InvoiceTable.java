@@ -2,7 +2,6 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
-import cz.muni.fi.pv168.freelancertimesheet.gui.containers.InvoiceContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.InvoiceTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
@@ -14,19 +13,12 @@ public class InvoiceTable extends JPanel implements GenericElement {
     private JTable table;
     private JToolBar toolbar;
     private JToolBar filterBar;
-    private InvoiceContainer container;
 
 //    private InvoiceForm form;
 
     public InvoiceTable() {
         super();
-        container = new InvoiceContainer();
 //        this.form = form;
-    }
-
-    private void refresh() {
-        container.refresh();
-        table.repaint();
     }
 
     private InvoiceTable addFilter(String title, Component inputField) {
@@ -43,7 +35,7 @@ public class InvoiceTable extends JPanel implements GenericElement {
     }
 
     private JScrollPane buildTable() {
-        table = new JTable(new InvoiceTableModel(container));
+        table = new JTable(new InvoiceTableModel());
         table.setAutoCreateRowSorter(true);
         table.setRowHeight(20);
         return new JScrollPane(table);
@@ -53,12 +45,7 @@ public class InvoiceTable extends JPanel implements GenericElement {
         toolbar = new JToolBar();
         toolbar.setFloatable(false);
         toolbar.setRollover(true);
-        toolbar.add(
-                new AddAction(
-                        table,
-                        (JTable table, AddAction.Callback callback) -> InvoiceWindow.setup(callback),
-                        () -> this.refresh())
-        );
+        toolbar.add(new AddAction(table, (JTable table, AddAction.Callback callback) -> InvoiceWindow.setup(callback), () -> table.repaint()));
         toolbar.add(new JButton("View"));
         toolbar.add(new JButton("Delete"));
         toolbar.addSeparator();

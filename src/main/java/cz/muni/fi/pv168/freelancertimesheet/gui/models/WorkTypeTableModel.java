@@ -1,14 +1,13 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
-import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 
 import java.math.BigDecimal;
 
 public class WorkTypeTableModel extends TableModel<WorkType> {
 
-    public WorkTypeTableModel(WorkTypeContainer container) {
-        super(container);
+    public WorkTypeTableModel() {
+        super();
         createColumns();
     }
 

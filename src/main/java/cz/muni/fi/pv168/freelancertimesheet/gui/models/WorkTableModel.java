@@ -1,14 +1,13 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
-import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
 
 import java.time.ZonedDateTime;
 
 public class WorkTableModel extends TableModel<Work> {
 
-    public WorkTableModel(WorkContainer container) {
-        super(container);
+    public WorkTableModel() {
+        super();
         createColumns();
     }
 

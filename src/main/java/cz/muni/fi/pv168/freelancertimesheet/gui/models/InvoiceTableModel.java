@@ -1,14 +1,13 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
-import cz.muni.fi.pv168.freelancertimesheet.gui.containers.InvoiceContainer;
 
 import java.time.ZonedDateTime;
 
 public class InvoiceTableModel extends TableModel<Invoice> {
 
-    public InvoiceTableModel(InvoiceContainer container) {
-        super(container);
+    public InvoiceTableModel() {
+        super();
         createColumns();
     }
 

@@ -1,7 +1,5 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 
-import cz.muni.fi.pv168.freelancertimesheet.gui.containers.GenericContainer;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +8,13 @@ import java.util.function.Function;
 
 public class TableModel<T> extends AbstractTableModel {
 
-    protected final GenericContainer container;
     protected final List<T> rows;
     private final List<Column<?, T>> columns;
 
-    public TableModel(GenericContainer container) {
+    public TableModel() {
         super();
         this.columns = new ArrayList<>();
         this.rows = new ArrayList<>();
-        this.container = container;
     }
 
 
@@ -29,12 +25,12 @@ public class TableModel<T> extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return container.size();
+        return rows.size();
     }
 
     @Override
     public int getColumnCount() {
-        return container.size();
+        return columns.size();
     }
 
     @Override
@@ -53,14 +49,14 @@ public class TableModel<T> extends AbstractTableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         checkColumnIndex(columnIndex);
         checkRowIndex(rowIndex);
-        columns.get(columnIndex).setValue(container.get(rowIndex), aValue);
+        columns.get(columnIndex).setValue(rows.get(rowIndex), aValue);
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         checkColumnIndex(columnIndex);
         checkRowIndex(rowIndex);
-        return columns.get(columnIndex).getValue(container.get(rowIndex));
+        return columns.get(columnIndex).getValue(rows.get(rowIndex));
     }
 
     @Override
@@ -122,7 +118,7 @@ public class TableModel<T> extends AbstractTableModel {
 
 
     private void checkRowIndex(int rowIndex) {
-        if (rowIndex > container.size() || rowIndex < 0) {
+        if (rowIndex > rows.size() || rowIndex < 0) {
             throw new IndexOutOfBoundsException("Invalid row index: " + rowIndex);
         }
     }
