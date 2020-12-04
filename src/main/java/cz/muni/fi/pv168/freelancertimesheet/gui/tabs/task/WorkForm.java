@@ -5,7 +5,6 @@ import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.TextFieldFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
-import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table.WorkTypeTableWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +16,7 @@ public class WorkForm extends FormModel {
     private JPanel buildWorkTypePicker() {
         JPanel panel = new JPanel(new GridLayout(1, 2));
         JButton workTypePicker = new JButton("Choose work type");
-        workTypePicker.addActionListener(e -> WorkTypeTableWindow.setup());
+//        workTypePicker.addActionListener(e -> WorkTypeTableWindow.setup());
         workTypeField = new JLabel("No work type selected");
         panel.add(workTypeField);
         panel.add(workTypePicker);
