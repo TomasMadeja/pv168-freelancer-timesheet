@@ -9,6 +9,7 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table.WorkTypeTableWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,7 +77,7 @@ public class WorkForm extends FormModel {
         c.weightx = 1;
         workTypePanel.add(workTypeButton, c);
         // TODO
-//        workTypeButton.addActionListener(e -> WorkTypeWindow.setup());
+        workTypeButton.addActionListener(e -> WorkTypeTableWindow.setup());
 
         addRow(new JLabel("Task type:"), workTypePanel);
 
