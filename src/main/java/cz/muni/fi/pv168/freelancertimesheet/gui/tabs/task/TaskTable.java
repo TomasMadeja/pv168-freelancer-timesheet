@@ -7,11 +7,9 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTableModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
-    private final WorkForm workForm;
     private JTable table;
     private final WorkContainer container;
 
@@ -21,14 +19,6 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     public TaskTable() {
         super();
-        workForm = new WorkForm();
-        container = new WorkContainer();
-    }
-
-    public TaskTable(WorkForm workForm) {
-        super();
-        this.workForm = workForm;
-        container = new WorkContainer();
     }
 
     private JPanel createTableButtonPanel() {
@@ -36,15 +26,9 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         GridLayout layout = new GridLayout(1, 7);
         panel.setLayout(layout);
 
-        var newButton = new JButton("New");
-        var editButton = new JButton("Edit");
-        var deleteButton = new JButton("Delete");
+        var editButton = new JButton("Edit"); // TODO
+        var deleteButton = new JButton("Delete"); // TODO
 
-        newButton.addActionListener(e -> resetTaskForm());
-        editButton.addActionListener(e -> fillTaskForm());
-
-
-        panel.add(newButton);
         panel.add(editButton);
         panel.add(deleteButton);
 
@@ -58,30 +42,11 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         return panel;
     }
 
-    private void resetTaskForm() {
-        String[] rowData = new String[table.getColumnCount()];
-        Arrays.fill(rowData, "");
-        workForm.fillForm(rowData);
-    }
-
-    private void fillTaskForm() {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            return;
-        }
-
-        Object[] rowData = new Object[table.getColumnCount()];
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            rowData[i] = table.getValueAt(selectedRow, i);
-        }
-        workForm.fillForm(rowData);
-    }
 
     private JTable createTable() {
-        table = new JTable(new WorkTableModel(container));
-        table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        RandomDataGenerator.generateWorkData((WorkTableModel)table.getModel());
-//        table.setModel(model);
+        table = new JTable(new WorkTableModel());
+        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        RandomDataGenerator.generateWorkData((WorkTableModel) table.getModel());
         return table;
     }
 
@@ -107,8 +72,8 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         return this;
     }
 
-    public static TaskTable setup(WorkForm workForm) {
-        return new TaskTable(workForm)
+    public static TaskTable setup() {
+        return new TaskTable()
                 .setupLayout()
                 .setupVisuals()
                 .setupNested();

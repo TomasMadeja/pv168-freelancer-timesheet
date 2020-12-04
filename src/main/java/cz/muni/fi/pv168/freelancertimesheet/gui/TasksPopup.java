@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui;
 
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.taskform.TaskFormWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.InvoiceForm;
-import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.WorkForm;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskTable;
 
 import javax.swing.*;
@@ -49,10 +49,10 @@ public class TasksPopup extends JFrame implements GenericElement<TasksPopup> {
 
     @Override
     public TasksPopup setupNested() {
-        WorkForm workForm = WorkForm.setup();
-        innerPanel.add(workForm);
+        TaskFormWindow taskFormWindow = TaskFormWindow.setup();
+        innerPanel.add(taskFormWindow);
 
-        TaskTable taskTable = TaskTable.setup(workForm);
+        TaskTable taskTable = TaskTable.setup();
         innerPanel.add(taskTable);
 
         JButton btn = new JButton("Add selected");
