@@ -64,6 +64,12 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         result.forEach(table::addRow);
     }
 
+    private void refresh() {
+        container.refresh();
+        table.repaint();
+        loadDataFromDatabase((WorkTableModel) table.getModel());
+    }
+
     @Override
     public TaskTable setupLayout() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
