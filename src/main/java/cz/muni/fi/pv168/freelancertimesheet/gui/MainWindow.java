@@ -1,5 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui;
 
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.taskform.TaskFormWindow;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -44,7 +46,43 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
         return this;
     }
 
+    // TODO use specific actions instead of temporary items
+    private JMenuBar createMenuBar() {
+        var menuBar = new JMenuBar();
+
+        var fileMenu = new JMenu("File");
+        var taskMenu = new JMenu("Tasks");
+        var invoiceMenu = new JMenu("Invoice");
+
+        var quitItem = new JMenuItem("Quit");
+        quitItem.addActionListener(e -> this.dispose());
+
+        var newTaskItem = new JMenuItem("New Task");
+        newTaskItem.addActionListener(e -> TaskFormWindow.setup());
+        var newTaskTypeItem = new JMenuItem("New Task Type");
+//        newTaskTypeItem.addActionListener(e -> WorkTypeFormWindow.setup());
+        var newInvoiceItem = new JMenuItem("New Invoice");
+//        newInvoiceItem.addActionListener(e -> InvoiceWindow.setup());
+
+
+        fileMenu.addSeparator();
+        fileMenu.add(quitItem);
+
+        taskMenu.add(newTaskItem);
+        taskMenu.add(newTaskTypeItem);
+
+        invoiceMenu.add(newInvoiceItem);
+
+        menuBar.add(fileMenu);
+        menuBar.add(taskMenu);
+        menuBar.add(invoiceMenu);
+
+        return menuBar;
+
+    }
+
     public MainWindow setupNested() {
+        this.setJMenuBar(createMenuBar());
         rootPanel.add(Tabs.setup());
         return this;
     }
