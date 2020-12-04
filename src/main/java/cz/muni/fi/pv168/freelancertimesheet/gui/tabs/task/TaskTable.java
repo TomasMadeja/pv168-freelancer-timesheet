@@ -12,6 +12,7 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     private JTable table;
     private final WorkContainer container;
+    private final WorkTableModel model;
 
     public int GetSelectedTasksCount() {
         return table.getSelectedRows().length;
@@ -19,6 +20,8 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     public TaskTable() {
         super();
+        container = new WorkContainer();
+        model = new WorkTableModel(container);
     }
 
     private JPanel createTableButtonPanel() {
@@ -44,7 +47,7 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
 
     private JTable createTable() {
-        table = new JTable(new WorkTableModel());
+        table = new JTable(model);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         RandomDataGenerator.generateWorkData((WorkTableModel) table.getModel());
         return table;
