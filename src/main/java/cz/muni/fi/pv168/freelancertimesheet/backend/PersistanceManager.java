@@ -5,15 +5,19 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Issuer;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
+import cz.muni.fi.pv168.freelancertimesheet.backend.orm.InvoiceImpl;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PersistanceManager {
@@ -39,7 +43,7 @@ public class PersistanceManager {
         return results;
     }
 
-    public static List<? extends Client> getAllClient(Client client) {
+    public static List<? extends Client> getAllClient() {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
         List<? extends Client> results = entityManager.createNamedQuery("getAllClients").getResultList();
@@ -49,7 +53,7 @@ public class PersistanceManager {
         return results;
     }
 
-    public static List<? extends Issuer> getAllIssuer(Issuer issuer) {
+    public static List<? extends Issuer> getAllIssuer() {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
         List<? extends Issuer> results = entityManager.createNamedQuery("getAllIssuers").getResultList();
@@ -59,10 +63,31 @@ public class PersistanceManager {
         return results;
     }
 
-    public static List<? extends Invoice> getAllInvoice(Invoice invoice) {
+    public static List<? extends Invoice> getAllInvoice() {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
         List<? extends Invoice> results = entityManager.createNamedQuery("getAllInvoices").getResultList();
+        entityManager.flush();
+        entityManager.getTransaction().commit();
+        entityManager.clear();
+        return results;
+    }
+
+    public static List<? extends Invoice> getAllInvoice(String ico, String dic) {
+        var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
+        entityManager.getTransaction().begin();
+        if (ico == null) {
+            ico = "%";
+        }
+        if (dic == null) {
+            dic = "%";
+        }
+        var query = entityManager.createQuery(
+                "SELECT i FROM InvoiceImpl i INNER JOIN ClientImpl c ON i.client = c WHERE c.ico like :ico AND c.dic like :dic"
+        )
+                .setParameter("ico", "%" + ico + "%")
+                .setParameter("dic", "%" + dic + "%");
+        var results = query.getResultList();
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.clear();

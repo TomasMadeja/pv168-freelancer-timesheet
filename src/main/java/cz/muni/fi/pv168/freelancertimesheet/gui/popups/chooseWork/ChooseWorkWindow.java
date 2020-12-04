@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.ChooseWorkTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 
@@ -31,7 +32,7 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
 
 
     private JTable createTable() {
-        var model = new ChooseWorkTableModel(selectedRows);
+        var model = new ChooseWorkTableModel(new WorkContainer(), selectedRows);
         JTable table = new JTable(model);
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
