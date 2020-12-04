@@ -40,7 +40,8 @@ public class TaskForm extends FormModel {
         startTimePicker = setupTimePicker();
         endTimePicker = setupTimePicker();
 
-        workTypeTextField = new JTextField();
+        workTypeTextField = new JTextField(20);
+        workTypeTextField.setEditable(false);
         workTypeButton = new JButton("Manage work type");
     }
 
@@ -61,10 +62,22 @@ public class TaskForm extends FormModel {
         addRow(new JLabel("Start time:"), startTimePicker);
         addRow(new JLabel("End time:"), endTimePicker);
 
-        // TODO setup workTypePanel
+
         var workTypePanel = new JPanel();
+        workTypePanel.setLayout(new GridBagLayout());
+        var c = new GridBagConstraints();
+        c.gridx = 0;
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.insets = new Insets(0, 0, 0, 5);
+        workTypePanel.add(workTypeTextField, c);
+        c.gridx = 1;
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        workTypePanel.add(workTypeButton, c);
+        // TODO
 //        workTypeButton.addActionListener(e -> WorkTypeWindow.setup());
-        workTypePanel.add(workTypeTextField, workTypeButton);
+
         addRow(new JLabel("Task type:"), workTypePanel);
 
         addConfirmButton();

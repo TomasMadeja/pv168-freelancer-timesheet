@@ -32,13 +32,6 @@ public class TaskFormWindow extends JFrame implements GenericElement<TaskFormWin
     public TaskFormWindow setupNested() {
         taskForm = TaskForm.setup();
         taskForm.setupConfirmButtonAction(e -> confirmFilledForms());
-//        taskForm.setConfirmCallback(
-//                () -> {
-//                    if (callback != null) callback.call();
-//                    this.dispose();
-//                }
-//        );
-//        taskForm.setCancelCallback(this::dispose);
 
         Dimension preferredSize = taskForm.getPreferredSize();
         this.setPreferredSize(new Dimension(preferredSize.width * 2, preferredSize.height * 2));
