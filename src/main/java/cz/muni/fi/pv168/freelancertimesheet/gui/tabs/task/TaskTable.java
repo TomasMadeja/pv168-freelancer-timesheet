@@ -1,12 +1,17 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.DBConnectionUtils;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
+import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
-import cz.muni.fi.pv168.freelancertimesheet.gui.exampledata.RandomDataGenerator;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTableModel;
 
+import javax.persistence.EntityManager;
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
@@ -49,8 +54,14 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
     private JTable createTable() {
         table = new JTable(model);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        RandomDataGenerator.generateWorkData((WorkTableModel) table.getModel());
+        loadDataFromDatabase((WorkTableModel) table.getModel());
         return table;
+    }
+
+    private void loadDataFromDatabase(TableModel<Work> table) {
+        EntityManager entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
+        List<WorkImpl> result = entityManager.createQuery("from WorkImpl").getResultList();
+        result.forEach(table::addRow);
     }
 
     @Override
