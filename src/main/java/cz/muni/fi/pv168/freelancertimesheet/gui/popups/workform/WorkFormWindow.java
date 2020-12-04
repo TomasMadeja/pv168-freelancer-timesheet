@@ -32,6 +32,7 @@ public class WorkFormWindow extends JFrame implements GenericElement<WorkFormWin
     public WorkFormWindow setupNested() {
         workForm = WorkForm.setup();
         workForm.setupConfirmButtonAction(e -> confirmFilledForms());
+        workForm.setCancelCallback(this::dispose);
 
         Dimension preferredSize = workForm.getPreferredSize();
         this.setPreferredSize(new Dimension(preferredSize.width * 2, preferredSize.height * 2));
