@@ -28,7 +28,9 @@ public class ChooseWorkTypeWindow extends JFrame implements GenericElement<Choos
 
     @Override
     public ChooseWorkTypeWindow setupNested() {
-        this.add(ChooseWorkType.setup(workType));
+        var chooseWorkType = ChooseWorkType.setup(workType);
+        chooseWorkType.setConfirmCallback(this::dispose);
+        this.add(chooseWorkType);
 
         return this;
     }

@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
 
@@ -14,6 +15,8 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
     private WorkType workType;
     private final WorkTypeContainer container;
     private JTable table;
+
+    protected FormModel.Callback confirmCallback;
 
     private final JButton confirm = new JButton("Select Work Type");
 
@@ -49,6 +52,7 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
                 var s = (WorkType) ((TableModel) table.getModel()).getDataFromContainer(wt);
 //                try {
                 workType = s;
+                triggerConfirmCallback();
 //                    getSelectedWorkType.invoke(s);
 //                } catch (IllegalAccessException | InvocationTargetException illegalAccessException) {
 //                    illegalAccessException.printStackTrace();
@@ -61,6 +65,16 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
         constraints.gridheight = 0;
         add(confirm, constraints);
         return this;
+    }
+
+    private void triggerConfirmCallback() {
+        if (confirmCallback != null) {
+            confirmCallback.call();
+        }
+    }
+
+    public void setConfirmCallback(FormModel.Callback callback) {
+        confirmCallback = callback;
     }
 
     private Component buildTable() {
