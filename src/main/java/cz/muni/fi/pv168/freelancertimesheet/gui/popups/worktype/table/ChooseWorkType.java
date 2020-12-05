@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkType> {
 
-    private iWorkTypeSetter workTypeSetter;
+    private final iWorkTypeSetter workTypeSetter;
     private final WorkTypeContainer container;
     private JTable table;
 

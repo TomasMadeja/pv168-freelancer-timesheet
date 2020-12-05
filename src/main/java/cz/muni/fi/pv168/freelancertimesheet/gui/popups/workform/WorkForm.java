@@ -46,6 +46,7 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
         workTypeTextField = new JTextField(20);
         workTypeTextField.setEditable(false);
         workTypeButton = new JButton("Manage work type");
+
     }
 
     public static WorkForm setup() {
@@ -121,19 +122,25 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
     }
 
     public Work prepareDataFromForms() {
-        // TODO add support for WorkTypes
-        var tmpWorkType = WorkTypeImpl.createWorkType(
-                "TestType1",
-                "Never gonna give you up",
-                new BigDecimal("20")
-        );
+        // TODO error with database
+        // Caused by: org.hibernate.PersistentObjectException: detached entity passed to persist: cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl
+
+        // TODO do not allow workType to be unset
+        // This is just a temporary fix that uses custom default WorkType
+        if (workType == null) {
+            workType = WorkTypeImpl.createWorkType(
+                    "TestType1",
+                    "Never gonna give you up",
+                    new BigDecimal("20")
+            );
+        }
 
         return WorkImpl.createWork(
                 nameTextField.getText(),
                 descriptionTextArea.getText(),
                 getDateTimeFromForms(startTimePicker.getTime()),
                 getDateTimeFromForms(endTimePicker.getTime()),
-                tmpWorkType
+                workType
         );
     }
 
