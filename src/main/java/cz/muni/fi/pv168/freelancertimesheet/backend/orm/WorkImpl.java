@@ -52,7 +52,7 @@ public class WorkImpl implements Work {
     @Column(name = "description", nullable=false)
     private String description;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "work_type_id", referencedColumnName = "id", nullable=false)
     private WorkTypeImpl workType;
 
