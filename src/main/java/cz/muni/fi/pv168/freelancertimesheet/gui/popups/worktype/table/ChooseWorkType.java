@@ -7,22 +7,18 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkType> {
-    private final Method getSelectedWorkType;
+    private WorkType workType;
     private final WorkTypeContainer container;
     private JTable table;
 
     private final JButton confirm = new JButton("Select Work Type");
 
-    public ChooseWorkType(Method getSelectedWorkType) {
-        this.getSelectedWorkType = getSelectedWorkType;
+    public ChooseWorkType(WorkType workType) {
+        this.workType = workType;
         container = new WorkTypeContainer();
         selectionChanged(0);
     }
@@ -50,12 +46,13 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
             @Override
             public void actionPerformed(ActionEvent e) {
                 var wt = table.getSelectedRow();
-                var s = (WorkType)((TableModel) table.getModel()).getDataFromContainer(wt);
-                try {
-                    getSelectedWorkType.invoke(s);
-                } catch (IllegalAccessException | InvocationTargetException illegalAccessException) {
-                    illegalAccessException.printStackTrace();
-                }
+                var s = (WorkType) ((TableModel) table.getModel()).getDataFromContainer(wt);
+//                try {
+                workType = s;
+//                    getSelectedWorkType.invoke(s);
+//                } catch (IllegalAccessException | InvocationTargetException illegalAccessException) {
+//                    illegalAccessException.printStackTrace();
+//                }
             }
         });
         constraints.gridx = 0;
@@ -74,8 +71,8 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
         return new JScrollPane(table);
     }
 
-    public static ChooseWorkType setup(Method getSelectedWorkType) {
-        ChooseWorkType chooseWorkType = new ChooseWorkType(getSelectedWorkType);
+    public static ChooseWorkType setup(WorkType workType) {
+        ChooseWorkType chooseWorkType = new ChooseWorkType(workType);
         chooseWorkType
                 .setupVisuals()
                 .setupLayout()

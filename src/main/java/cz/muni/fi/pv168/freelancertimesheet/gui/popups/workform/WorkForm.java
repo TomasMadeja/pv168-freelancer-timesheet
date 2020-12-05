@@ -6,10 +6,11 @@ import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
-import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table.WorkTypeTableWindow;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table.ChooseWorkTypeWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,6 +34,7 @@ public class WorkForm extends FormModel {
     private final JTextField workTypeTextField;
     private final JButton workTypeButton;
 
+    private WorkType workType;
 
     public WorkForm() {
         super();
@@ -77,12 +79,18 @@ public class WorkForm extends FormModel {
         c.weightx = 1;
         workTypePanel.add(workTypeButton, c);
         // TODO
-        workTypeButton.addActionListener(e -> WorkTypeTableWindow.setup());
+        workTypeButton.addActionListener(e -> ChooseWorkTypeWindow.setup(workType));
 
         addRow(new JLabel("Task type:"), workTypePanel);
 
         addConfirmButton();
         return this;
+    }
+
+    private Object setWorkType(Object obj) {
+        var workType = (WorkType) obj;
+        workTypeTextField.setText(workType.getName());
+        return workType;
     }
 
     public void setupConfirmButtonAction(ActionListener listener) {
