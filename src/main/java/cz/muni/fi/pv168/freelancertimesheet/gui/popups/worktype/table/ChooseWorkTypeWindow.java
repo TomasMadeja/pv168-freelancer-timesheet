@@ -1,17 +1,18 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
-import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform.iWorkTypeSetter;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class ChooseWorkTypeWindow extends JFrame implements GenericElement<ChooseWorkTypeWindow> {
-    private final WorkType workType;
 
-    public ChooseWorkTypeWindow(WorkType workType) {
+    private final iWorkTypeSetter workTypeSetter;
+
+    public ChooseWorkTypeWindow(iWorkTypeSetter workTypeSetter) {
         super("Choose Work Type");
-        this.workType = workType;
+        this.workTypeSetter = workTypeSetter;
     }
 
     @Override
@@ -28,15 +29,15 @@ public class ChooseWorkTypeWindow extends JFrame implements GenericElement<Choos
 
     @Override
     public ChooseWorkTypeWindow setupNested() {
-        var chooseWorkType = ChooseWorkType.setup(workType);
+        var chooseWorkType = ChooseWorkType.setup(workTypeSetter);
         chooseWorkType.setConfirmCallback(this::dispose);
         this.add(chooseWorkType);
 
         return this;
     }
 
-    public static ChooseWorkTypeWindow setup(WorkType workType) {
-        ChooseWorkTypeWindow chooseWorkTypeWindow = new ChooseWorkTypeWindow(workType);
+    public static ChooseWorkTypeWindow setup(iWorkTypeSetter workTypeSetter) {
+        ChooseWorkTypeWindow chooseWorkTypeWindow = new ChooseWorkTypeWindow(workTypeSetter);
         chooseWorkTypeWindow
                 .setupLayout()
                 .setupVisuals()

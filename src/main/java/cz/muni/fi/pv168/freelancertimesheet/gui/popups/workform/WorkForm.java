@@ -22,7 +22,7 @@ import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.TimeZone;
 
-public class WorkForm extends FormModel {
+public class WorkForm extends FormModel implements iWorkTypeSetter {
 
     private final DatePicker datePicker;
     private final TimePicker startTimePicker;
@@ -79,7 +79,7 @@ public class WorkForm extends FormModel {
         c.weightx = 1;
         workTypePanel.add(workTypeButton, c);
         // TODO
-        workTypeButton.addActionListener(e -> ChooseWorkTypeWindow.setup(workType));
+        workTypeButton.addActionListener(e -> ChooseWorkTypeWindow.setup(this));
 
         addRow(new JLabel("Task type:"), workTypePanel);
 
@@ -87,10 +87,10 @@ public class WorkForm extends FormModel {
         return this;
     }
 
-    private Object setWorkType(Object obj) {
-        var workType = (WorkType) obj;
+    @Override
+    public void setWorkType(WorkType obj) {
+        this.workType = obj;
         workTypeTextField.setText(workType.getName());
-        return workType;
     }
 
     public void setupConfirmButtonAction(ActionListener listener) {
