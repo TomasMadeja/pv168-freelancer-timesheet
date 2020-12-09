@@ -122,9 +122,6 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
     }
 
     public Work prepareDataFromForms() {
-        // TODO error with database
-        // Caused by: org.hibernate.PersistentObjectException: detached entity passed to persist: cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl
-
         // TODO do not allow workType to be unset
         // This is just a temporary fix that uses custom default WorkType
         if (workType == null) {
