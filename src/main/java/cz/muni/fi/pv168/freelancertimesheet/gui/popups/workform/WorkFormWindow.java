@@ -20,6 +20,7 @@ public class WorkFormWindow extends JFrame implements GenericElement<WorkFormWin
     public WorkFormWindow setupLayout() {
         GridLayout layout = new GridLayout(1, 1);
         this.setLayout(layout);
+        this.setTitle("New Task");
         return this;
     }
 

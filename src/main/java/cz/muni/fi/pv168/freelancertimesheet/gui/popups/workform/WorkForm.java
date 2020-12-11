@@ -6,10 +6,11 @@ import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
-import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table.WorkTypeTableWindow;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table.ChooseWorkTypeWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +22,7 @@ import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.TimeZone;
 
-public class WorkForm extends FormModel {
+public class WorkForm extends FormModel implements iWorkTypeSetter {
 
     private final DatePicker datePicker;
     private final TimePicker startTimePicker;
@@ -33,6 +34,7 @@ public class WorkForm extends FormModel {
     private final JTextField workTypeTextField;
     private final JButton workTypeButton;
 
+    private WorkType workType;
 
     public WorkForm() {
         super();
@@ -44,6 +46,7 @@ public class WorkForm extends FormModel {
         workTypeTextField = new JTextField(20);
         workTypeTextField.setEditable(false);
         workTypeButton = new JButton("Manage work type");
+
     }
 
     public static WorkForm setup() {
@@ -77,12 +80,18 @@ public class WorkForm extends FormModel {
         c.weightx = 1;
         workTypePanel.add(workTypeButton, c);
         // TODO
-        workTypeButton.addActionListener(e -> WorkTypeTableWindow.setup());
+        workTypeButton.addActionListener(e -> ChooseWorkTypeWindow.setup(this));
 
         addRow(new JLabel("Task type:"), workTypePanel);
 
         addConfirmButton();
         return this;
+    }
+
+    @Override
+    public void setWorkType(WorkType obj) {
+        this.workType = obj;
+        workTypeTextField.setText(workType.getName());
     }
 
     public void setupConfirmButtonAction(ActionListener listener) {
@@ -113,19 +122,22 @@ public class WorkForm extends FormModel {
     }
 
     public Work prepareDataFromForms() {
-        // TODO add support for WorkTypes
-        var tmpWorkType = WorkTypeImpl.createWorkType(
-                "TestType1",
-                "Never gonna give you up",
-                new BigDecimal("20")
-        );
+        // TODO do not allow workType to be unset
+        // This is just a temporary fix that uses custom default WorkType
+        if (workType == null) {
+            workType = WorkTypeImpl.createWorkType(
+                    "TestType1",
+                    "Never gonna give you up",
+                    new BigDecimal("20")
+            );
+        }
 
         return WorkImpl.createWork(
                 nameTextField.getText(),
                 descriptionTextArea.getText(),
                 getDateTimeFromForms(startTimePicker.getTime()),
                 getDateTimeFromForms(endTimePicker.getTime()),
-                tmpWorkType
+                workType
         );
     }
 
