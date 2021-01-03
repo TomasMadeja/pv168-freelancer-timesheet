@@ -118,6 +118,14 @@ public class PersistanceManager {
         invoice.validateAttributes();
         persistEntity(invoice);
     }
+//
+//    public static void removeInvoice(Invoice invoice) {
+//        removeEntity(invoice);
+//    }
+//
+//    public static void removeInvoices(Collection<Invoice> invoice) {
+//        removeCollection(invoice);
+//    }
 
     public static void generateAndPersistInvoice(Invoice invoice, PDFStorage storage) throws IOException, URISyntaxException {
         String invoiceHtml = PDFGenerator.generatePDF(invoice);
@@ -145,10 +153,43 @@ public class PersistanceManager {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
         for (T record : records) {
-            entityManager.persist(record);
+            try {
+                entityManager.persist(record);
+            } catch (EntityExistsException e) {
+                entityManager.merge(record);
+            }
         }
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.clear();
     }
+
+    public static void removeEntity(Object entity) {
+        var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
+        entityManager.getTransaction().begin();
+        try {
+            entityManager.remove(entity);
+        } catch (EntityExistsException e) {
+            entityManager.remove(entityManager.merge(entity));
+        }
+        entityManager.flush();
+        entityManager.getTransaction().commit();
+        entityManager.clear();
+    }
+
+    public static <T> void removeCollection(Collection<T> records) {
+        var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
+        entityManager.getTransaction().begin();
+        for (T record : records) {
+            try {
+                entityManager.remove(record);
+            } catch (EntityExistsException e) {
+                entityManager.remove(entityManager.merge(record));
+            }
+        }
+        entityManager.flush();
+        entityManager.getTransaction().commit();
+        entityManager.clear();
+    }
+
 }

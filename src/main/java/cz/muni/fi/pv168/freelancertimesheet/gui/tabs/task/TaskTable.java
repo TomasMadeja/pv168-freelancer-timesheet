@@ -54,14 +54,14 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
     private JTable createTable() {
         table = new JTable(model);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        loadDataFromDatabase((WorkTableModel) table.getModel());
+//        loadDataFromDatabase((WorkTableModel) table.getModel());
         return table;
     }
 
     private void loadDataFromDatabase(TableModel<Work> table) {
         EntityManager entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         List<WorkImpl> result = entityManager.createQuery("from WorkImpl").getResultList();
-        result.forEach(table::addRow);
+//        result.forEach(table::addRow);
     }
 
     private void refresh() {

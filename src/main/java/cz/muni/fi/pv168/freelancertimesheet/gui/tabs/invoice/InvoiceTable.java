@@ -2,6 +2,7 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
+import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.DeleteAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.InvoiceContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.InvoiceTableModel;
@@ -60,7 +61,8 @@ public class InvoiceTable extends JPanel implements GenericElement {
                         () -> this.refresh())
         );
         toolbar.add(new JButton("View"));
-        toolbar.add(new JButton("Delete"));
+        toolbar.add(new DeleteAction(table));
+//        toolbar.add(new JButton("Delete"));
         toolbar.addSeparator();
         toolbar.add(Box.createHorizontalGlue());
         return toolbar;
