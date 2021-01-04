@@ -1,12 +1,17 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.PersistanceManager;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.InvoiceContainer;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class WorkTypeForm extends FormModel {
 
@@ -15,16 +20,16 @@ public class WorkTypeForm extends FormModel {
     private final JTextArea descriptionTextArea = new JTextArea();
     private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
 
-    private final JFrame parentFrame;
+    private WorkTypeContainer container;
 
-    public WorkTypeForm(JFrame parentFrame){
+    public WorkTypeForm(WorkTypeContainer container) {
         super();
-        this.parentFrame = parentFrame;
         rateTextField.setText(Double.toString(0));
+        this.container = container;
     }
 
-    public static WorkTypeForm setup(JFrame parentFrame) {
-        WorkTypeForm form = new WorkTypeForm(parentFrame);
+    public static WorkTypeForm setup(WorkTypeContainer container) {
+        WorkTypeForm form = new WorkTypeForm(container);
         form
                 .setupLayout()
                 .setupVisuals()
@@ -66,15 +71,37 @@ public class WorkTypeForm extends FormModel {
         return workType;
     }
 
-    private void addDataToDatabase() {
-        WorkType workType = getDataFromForm();
+    private void addDataToDatabase(WorkType workType) {
         workType = validateData(workType);
         if (workType == null) return;
         PersistanceManager.persistWorkType(workType);
-        parentFrame.dispose();
     }
 
     private void makeConfirmAddData() {
-        confirmButton.addActionListener((ActionEvent e) -> addDataToDatabase());
+        confirmButton.addActionListener(
+                (ActionEvent e) -> {
+                    confirmButton.setEnabled(false);
+                    WorkType workType = getDataFromForm();
+                    new SwingWorker<Void, Void>() {
+                        @Override
+                        public Void doInBackground() {
+                            addDataToDatabase(workType);
+                            if (container != null) container.refresh();
+                            return null;
+                        }
+
+                        @Override
+                        protected void done() {
+                            try {
+                                if (confirmCallback != null)
+                                    confirmCallback.call();
+                            } catch (Exception ignore) {
+                            } finally {
+                                confirmButton.setEnabled(true);
+                            }
+                        }
+                    }.execute();
+                }
+        );
     }
 }

@@ -49,7 +49,7 @@ public class TasksPopup extends JFrame implements GenericElement<TasksPopup> {
 
     @Override
     public TasksPopup setupNested() {
-        WorkFormWindow workFormWindow = WorkFormWindow.setup();
+        WorkFormWindow workFormWindow = WorkFormWindow.setup(null, null);
         innerPanel.add(workFormWindow);
 
         TaskTable taskTable = TaskTable.setup();

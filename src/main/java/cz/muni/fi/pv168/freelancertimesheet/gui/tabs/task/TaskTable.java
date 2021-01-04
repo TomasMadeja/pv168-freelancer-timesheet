@@ -4,9 +4,13 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.DBConnectionUtils;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
+import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.DeleteAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTableModel;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform.WorkFormWindow;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeFormWindow;
 
 import javax.persistence.EntityManager;
 import javax.swing.*;
@@ -29,15 +33,23 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         model = new WorkTableModel(container);
     }
 
-    private JPanel createTableButtonPanel() {
-        JPanel panel = new JPanel();
+    private JToolBar createTableButtonPanel() {
+        JToolBar panel = new JToolBar();
         GridLayout layout = new GridLayout(1, 7);
         panel.setLayout(layout);
 
-        var editButton = new JButton("Edit"); // TODO
-        var deleteButton = new JButton("Delete"); // TODO
+        var addButton = new AddAction(
+                table,
+                (JTable table, AddAction.Callback callback) -> WorkFormWindow.setup(callback, container),
+                () -> {
+                    ((TableModel) table.getModel()).fireTableDataChanged();
+                }
+        );
+//        var editButton = new JButton("Edit"); // TODO
+        var deleteButton = new DeleteAction(table); // TODO
 
-        panel.add(editButton);
+        panel.add(addButton);
+//        panel.add(editButton);
         panel.add(deleteButton);
 
         var searchLabel = new JLabel("Search:", SwingConstants.CENTER);

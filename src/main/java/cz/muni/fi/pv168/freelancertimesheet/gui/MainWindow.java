@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform.WorkFormWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeFormWindow;
@@ -51,9 +52,9 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
         quitItem.addActionListener(e -> this.dispose());
 
         var newTaskItem = new JMenuItem("New Task");
-        newTaskItem.addActionListener(e -> WorkFormWindow.setup());
+        newTaskItem.addActionListener(e -> WorkFormWindow.setup(null, null));
         var newTaskTypeItem = new JMenuItem("New Task Type");
-        newTaskTypeItem.addActionListener(e -> WorkTypeFormWindow.setup(null));
+        newTaskTypeItem.addActionListener(e -> WorkTypeFormWindow.setup(null, null));
         var newInvoiceItem = new JMenuItem("New Invoice");
         newInvoiceItem.addActionListener(e -> InvoiceWindow.setup(null, pdfStorage));
 

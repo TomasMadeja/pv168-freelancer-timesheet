@@ -2,16 +2,19 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class WorkTypeFormWindow extends JFrame implements GenericElement<WorkTypeFormWindow> {
     private final AddAction.Callback callback;
+    private WorkTypeContainer container;
 
-    public WorkTypeFormWindow(AddAction.Callback callback) {
+    public WorkTypeFormWindow(AddAction.Callback callback, WorkTypeContainer container) {
         super("WorkType");
         this.callback = callback;
+        this.container = container;
     }
 
     @Override
@@ -28,10 +31,11 @@ public class WorkTypeFormWindow extends JFrame implements GenericElement<WorkTyp
 
     @Override
     public WorkTypeFormWindow setupNested() {
-        WorkTypeForm workTypeForm = WorkTypeForm.setup(this);
+        WorkTypeForm workTypeForm = WorkTypeForm.setup(container);
         workTypeForm.setConfirmCallback(
                 () -> {
                     if (callback != null) callback.call();
+                    this.dispose();
                 }
         );
         workTypeForm.setCancelCallback(
@@ -45,8 +49,8 @@ public class WorkTypeFormWindow extends JFrame implements GenericElement<WorkTyp
         return this;
     }
 
-    public static WorkTypeFormWindow setup(AddAction.Callback callback) {
-        WorkTypeFormWindow workTypeFormWindow = new WorkTypeFormWindow(callback);
+    public static WorkTypeFormWindow setup(AddAction.Callback callback, WorkTypeContainer container) {
+        WorkTypeFormWindow workTypeFormWindow = new WorkTypeFormWindow(callback, container);
         workTypeFormWindow
                 .setupLayout()
                 .setupVisuals()
