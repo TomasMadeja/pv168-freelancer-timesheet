@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.*;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.ClientImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.InvoiceImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.IssuerImpl;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.InvoiceContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.TextFieldFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
@@ -24,8 +25,6 @@ public class InvoiceForm extends FormModel {
 
     private List<Work> selectedWorksData;
 
-    private Supplier<Void> onConfirmCallback = null;
-
     private JLabel selectedWorks; // TODO add proper container
 
     public InvoiceForm() {
@@ -34,7 +33,6 @@ public class InvoiceForm extends FormModel {
 
     public InvoiceForm(Supplier<Void> onConfirmCallback) {
         super();
-        this.onConfirmCallback = onConfirmCallback;
     }
 
     private JPanel buildWorkPicker() {
@@ -84,8 +82,8 @@ public class InvoiceForm extends FormModel {
         return this;
     }
 
-    public static InvoiceForm setup(Supplier<Void> onConfirmCallback) {
-        InvoiceForm invoiceForm = new InvoiceForm(onConfirmCallback);
+    public static InvoiceForm setup() {
+        InvoiceForm invoiceForm = new InvoiceForm();
         invoiceForm
                 .setupLayout()
                 .setupVisuals()
@@ -93,9 +91,6 @@ public class InvoiceForm extends FormModel {
         return invoiceForm;
     }
 
-    public static InvoiceForm setup() {
-        return setup((Supplier<Void>) null);
-    }
 
     private Invoice getDataFromForm() {
         TextFieldFactory.CustomWrappedClass clientName = (TextFieldFactory.CustomWrappedClass)inputFields.get(0);
@@ -129,17 +124,34 @@ public class InvoiceForm extends FormModel {
         invoice.validateAttributes();
     }
 
-    private void addDataToDatabase() {
-        Invoice invoice = getDataFromForm();
+    private void addDataToDatabase(Invoice invoice) {
         validateData(invoice);
         PersistanceManager.persistInvoice(invoice);
     }
 
     private void makeConfirmAddData() {
         confirmButton.addActionListener((ActionEvent e) -> {
-            addDataToDatabase();
-            if (onConfirmCallback != null)
-                onConfirmCallback.get();
+            confirmButton.setEnabled(false);
+            Invoice invoice = getDataFromForm();
+            new SwingWorker<Void, Void>() {
+                @Override
+                public Void doInBackground() {
+                    addDataToDatabase(invoice);
+                    InvoiceContainer.getContainer().refresh();
+                    return null;
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        if (confirmCallback != null)
+                            confirmCallback.call();
+                    } catch (Exception ignore) {
+                    } finally {
+                        confirmButton.setEnabled(true);
+                    }
+                }
+            }.execute();
         });
     }
 

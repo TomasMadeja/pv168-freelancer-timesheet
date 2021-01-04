@@ -3,9 +3,11 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.DeleteAction;
+import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.ViewPDFAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.InvoiceContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.InvoiceTableModel;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
 
 import javax.swing.*;
@@ -17,11 +19,15 @@ public class InvoiceTable extends JPanel implements GenericElement {
     private JToolBar filterBar;
     private InvoiceContainer container;
 
+    private AbstractAction addButton;
+    private AbstractAction deleteButton;
+    private AbstractAction viewButton;
+
 //    private InvoiceForm form;
 
     public InvoiceTable() {
         super();
-        container = new InvoiceContainer();
+        container = InvoiceContainer.getContainer();
 //        this.form = form;
     }
 
@@ -54,14 +60,17 @@ public class InvoiceTable extends JPanel implements GenericElement {
         toolbar = new JToolBar();
         toolbar.setFloatable(false);
         toolbar.setRollover(true);
+        addButton = new AddAction(
+                table,
+                (JTable table, AddAction.Callback callback) -> InvoiceWindow.setup(callback),
+                () -> ((TableModel) table.getModel()).fireTableDataChanged());
         toolbar.add(
-                new AddAction(
-                        table,
-                        (JTable table, AddAction.Callback callback) -> InvoiceWindow.setup(callback),
-                        () -> this.refresh())
+                addButton
         );
+        viewButton = new ViewPDFAction(table, null); // todo fix
         toolbar.add(new JButton("View"));
-        toolbar.add(new DeleteAction(table));
+        deleteButton = new DeleteAction(table);
+        toolbar.add(deleteButton);
 //        toolbar.add(new JButton("Delete"));
         toolbar.addSeparator();
         toolbar.add(Box.createHorizontalGlue());

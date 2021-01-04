@@ -31,7 +31,6 @@ public class AddAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var employeeTableModel = (TableModel) table.getModel();
         form.build(table, successCallback);
     }
 }

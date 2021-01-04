@@ -12,7 +12,7 @@ public class InvoiceContainer implements GenericContainer{
     private static InvoiceContainer invoiceContainer;
     private List<? extends Invoice> rows;
 
-    public InvoiceContainer() {
+    private InvoiceContainer() {
         rows = PersistanceManager.getAllInvoice();
     }
 
