@@ -16,7 +16,7 @@ public class InvoiceContainer implements GenericContainer{
         rows = PersistanceManager.getAllInvoice();
     }
 
-    public static InvoiceContainer getContainer() {
+    public static synchronized InvoiceContainer getContainer() {
         if (invoiceContainer == null) {
             invoiceContainer = new InvoiceContainer();
         }
@@ -24,29 +24,29 @@ public class InvoiceContainer implements GenericContainer{
     }
 
     @Override
-    public InvoiceContainer refresh() {
+    public synchronized InvoiceContainer refresh() {
         rows = PersistanceManager.getAllInvoice();
         return this;
     }
 
     @Override
-    public Invoice get(int i) {
+    public synchronized Invoice get(int i) {
         return rows.get(i);
     }
 
     @Override
-    public int size() {
+    public synchronized int size() {
         return rows.size();
     }
 
     @Override
-    public void remove(int i) {
+    public synchronized void remove(int i) {
         PersistanceManager.removeEntity(rows.get(i));
         rows.remove(i);
     }
 
     @Override
-    public void removeList(int[] indices) {
+    public synchronized void removeList(int[] indices) {
         List<Invoice> mappedEntities = new ArrayList<>();
         int[] reverseIndices = Arrays.stream(indices)
                 .boxed()

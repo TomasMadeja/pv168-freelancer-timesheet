@@ -18,28 +18,28 @@ public class WorkContainer implements GenericContainer {
     }
 
     @Override
-    public GenericContainer refresh() {
+    public synchronized GenericContainer refresh() {
         rows = PersistanceManager.getAllWork();
         return this;
     }
 
     @Override
-    public Object get(int i) {
+    public synchronized Object get(int i) {
         return rows.get(i);
     }
 
     @Override
-    public int size() {
+    public synchronized int size() {
         return rows.size();
     }
 
     @Override
-    public void remove(int i) {
+    public synchronized void remove(int i) {
         PersistanceManager.removeEntity(rows.get(i));
         rows.remove(i);
     }
 
-    public void removeList(int[] indices) {
+    public synchronized void removeList(int[] indices) {
         List<Work> mappedEntities = new ArrayList<>();
         int[] reverseIndices = Arrays.stream(indices)
                 .boxed()
