@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.InvoiceTab;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.TaskTab;
 
@@ -7,9 +8,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Tabs extends JTabbedPane implements GenericElement {
+    private PDFStorage pdfStorage;
 
-    public Tabs(int tabsPosition, int tabsBehaviour) {
+    public Tabs(int tabsPosition, int tabsBehaviour, PDFStorage pdfStorage) {
         super(tabsPosition, tabsBehaviour);
+        this.pdfStorage = pdfStorage;
     }
 
     @Override
@@ -25,7 +28,7 @@ public class Tabs extends JTabbedPane implements GenericElement {
     @Override
     public Tabs setupNested() {
         var taskPanel = TaskTab.setup();
-        var invoicePanel = InvoiceTab.setup();
+        var invoicePanel = InvoiceTab.setup(pdfStorage);
 
         // need to create individual labels for each tabs
         // it allows to set custom size
@@ -45,8 +48,8 @@ public class Tabs extends JTabbedPane implements GenericElement {
     }
 
 
-    public static Tabs setup() {
-        var tabs = new Tabs(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
+    public static Tabs setup(PDFStorage pdfStorage) {
+        var tabs = new Tabs(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT, pdfStorage);
         tabs.setupNested();
         tabs.setVisible(true);
         return tabs;

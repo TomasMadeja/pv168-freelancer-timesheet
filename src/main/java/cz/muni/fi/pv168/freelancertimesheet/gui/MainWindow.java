@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform.WorkFormWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeFormWindow;
@@ -12,22 +13,12 @@ import java.awt.*;
  */
 public class MainWindow extends JFrame implements GenericElement<MainWindow> {
     private JPanel rootPanel;
+    private PDFStorage pdfStorage;
 
 
-    public MainWindow() throws HeadlessException {
-        super();
-    }
-
-    public MainWindow(GraphicsConfiguration gc) {
-        super(gc);
-    }
-
-    public MainWindow(String title) throws HeadlessException {
+    public MainWindow(String title, PDFStorage pdfStorage) throws HeadlessException {
         super(title);
-    }
-
-    public MainWindow(String title, GraphicsConfiguration gc) {
-        super(title, gc);
+        this.pdfStorage = pdfStorage;
     }
 
     public MainWindow setupLayout() // No need to
@@ -64,7 +55,7 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
         var newTaskTypeItem = new JMenuItem("New Task Type");
         newTaskTypeItem.addActionListener(e -> WorkTypeFormWindow.setup(null));
         var newInvoiceItem = new JMenuItem("New Invoice");
-        newInvoiceItem.addActionListener(e -> InvoiceWindow.setup(null));
+        newInvoiceItem.addActionListener(e -> InvoiceWindow.setup(null, pdfStorage));
 
 
         fileMenu.addSeparator();
@@ -85,12 +76,12 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
 
     public MainWindow setupNested() {
         this.setJMenuBar(createMenuBar());
-        rootPanel.add(Tabs.setup());
+        rootPanel.add(Tabs.setup(pdfStorage));
         return this;
     }
 
-    public static MainWindow setup() {
-        MainWindow window = new MainWindow("Dashboard");
+    public static MainWindow setup(PDFStorage pdfStorage) {
+        MainWindow window = new MainWindow("Dashboard", pdfStorage);
         window.rootPanel = new JPanel(new BorderLayout());
 
         window

@@ -28,26 +28,16 @@ public class PDFGenerator {
 
     public static final DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("YYYY-MM-DD");
 
-    public static void savePDF(String data, String out)
-    {
-        try (OutputStream os = new FileOutputStream(out))
-        {
-            try {
-                PdfRendererBuilder builder = new PdfRendererBuilder();
+    public static void savePDF(String data, String out) throws IOException {
+        try (OutputStream os = new FileOutputStream(out)) {
+            PdfRendererBuilder builder = new PdfRendererBuilder();
 
-                builder.withW3cDocument(
-                        (new W3CDom()).fromJsoup(Jsoup.parse(data)),
-                        out
-                );
-                builder.toStream(os);
-                builder.run();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+            builder.withW3cDocument(
+                    (new W3CDom()).fromJsoup(Jsoup.parse(data)),
+                    out
+            );
+            builder.toStream(os);
+            builder.run();
         }
     }
 

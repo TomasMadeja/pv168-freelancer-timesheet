@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.InvoiceForm;
@@ -10,8 +11,11 @@ import java.awt.*;
 
 public class InvoiceTab extends JPanel implements GenericElement {
 
-    public InvoiceTab() {
+    private PDFStorage pdfStorage;
+
+    public InvoiceTab(PDFStorage pdfStorage) {
         super();
+        this.pdfStorage = pdfStorage;
     }
 
     @Override
@@ -32,12 +36,12 @@ public class InvoiceTab extends JPanel implements GenericElement {
 //        InvoiceForm form = InvoiceForm.setup();
 //        InvoiceWindow.setup();
 //        add(form); //, BorderLayout.NORTH);
-        add(InvoiceTable.setup()); //, BorderLayout.CENTER);
+        add(InvoiceTable.setup(pdfStorage)); //, BorderLayout.CENTER);
         return this;
     }
 
-    public static InvoiceTab setup() {
-        InvoiceTab invoiceTab = new InvoiceTab();
+    public static InvoiceTab setup(PDFStorage pdfStorage) {
+        InvoiceTab invoiceTab = new InvoiceTab(pdfStorage);
         invoiceTab
                 .setupLayout()
                 .setupVisuals()

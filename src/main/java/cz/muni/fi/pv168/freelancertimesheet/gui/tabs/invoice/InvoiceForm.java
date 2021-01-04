@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.backend.PersistanceManager;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.*;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.ClientImpl;
@@ -15,20 +16,25 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.popups.chooseWork.ChooseWorkWind
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.function.Supplier;
 
 public class InvoiceForm extends FormModel {
+    private PDFStorage pdfStorage;
+
     private JLabel totalPriceField;
 
     private List<Work> selectedWorksData;
 
     private JLabel selectedWorks; // TODO add proper container
 
-    public InvoiceForm() {
+    public InvoiceForm(PDFStorage pdfStorage) {
         super();
+        this.pdfStorage = pdfStorage;
     }
 
     public InvoiceForm(Supplier<Void> onConfirmCallback) {
@@ -82,8 +88,8 @@ public class InvoiceForm extends FormModel {
         return this;
     }
 
-    public static InvoiceForm setup() {
-        InvoiceForm invoiceForm = new InvoiceForm();
+    public static InvoiceForm setup(PDFStorage pdfStorage) {
+        InvoiceForm invoiceForm = new InvoiceForm(pdfStorage);
         invoiceForm
                 .setupLayout()
                 .setupVisuals()
@@ -124,9 +130,9 @@ public class InvoiceForm extends FormModel {
         invoice.validateAttributes();
     }
 
-    private void addDataToDatabase(Invoice invoice) {
+    private void addDataToDatabase(Invoice invoice) throws IOException, URISyntaxException {
         validateData(invoice);
-        PersistanceManager.persistInvoice(invoice);
+        PersistanceManager.generateAndPersistInvoice(invoice, pdfStorage);
     }
 
     private void makeConfirmAddData() {
@@ -135,7 +141,7 @@ public class InvoiceForm extends FormModel {
             Invoice invoice = getDataFromForm();
             new SwingWorker<Void, Void>() {
                 @Override
-                public Void doInBackground() {
+                public Void doInBackground() throws IOException, URISyntaxException {
                     addDataToDatabase(invoice);
                     InvoiceContainer.getContainer().refresh();
                     return null;
