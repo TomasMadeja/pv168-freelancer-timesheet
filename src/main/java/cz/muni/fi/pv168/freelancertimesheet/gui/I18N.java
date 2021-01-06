@@ -7,13 +7,13 @@ public class I18N {
     private final ResourceBundle bundle;
     private final String prefix;
 
-    I18N(Class<?> clazz) {
+    public I18N(Class<?> clazz) {
         var packagePath = "";
         bundle = ResourceBundle.getBundle(packagePath + "i18n");
         prefix = clazz.getSimpleName() + ".";
     }
 
-    String getString(String key) {
+    public String getString(String key) {
         return bundle.getString(prefix + key);
     }
 

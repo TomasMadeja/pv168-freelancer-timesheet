@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform.WorkFormWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeFormWindow;
@@ -16,6 +17,9 @@ import java.awt.*;
  */
 public class TaskTab extends JPanel implements GenericElement<TaskTab> {
 
+    private final I18N i18n = new I18N(getClass());
+
+    private GridBagConstraints gbc;
 //    private GridBagConstraints gbc;
 
     public TaskTab() {
@@ -38,9 +42,9 @@ public class TaskTab extends JPanel implements GenericElement<TaskTab> {
     @Override
     public TaskTab setupNested() {
 //        var panel = new JPanel();
-//        var newTaskButton = new JButton("New Task");
+//        var newTaskButton = new JButton(i18n.getString("newTask"));
 //        newTaskButton.addActionListener(e -> WorkFormWindow.setup(null, null));
-//        var newTaskTypeButton = new JButton("New Task Type");
+//        var newTaskTypeButton = new JButton(i18n.getString("newTaskType"));
 //        newTaskTypeButton.addActionListener(e -> WorkTypeFormWindow.setup(null, null));
 //
 //        panel.add(newTaskButton);
