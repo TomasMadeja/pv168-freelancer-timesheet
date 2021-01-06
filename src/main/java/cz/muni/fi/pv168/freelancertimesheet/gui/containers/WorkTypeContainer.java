@@ -1,8 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.containers;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.PersistanceManager;
-import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
-import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 
 import java.util.ArrayList;
@@ -21,6 +19,11 @@ public class WorkTypeContainer implements GenericContainer {
     @Override
     public synchronized GenericContainer refresh() {
         rows = PersistanceManager.getAllWorkType();
+        return this;
+    }
+
+    public synchronized GenericContainer refresh(String workTypeName) {
+        rows = PersistanceManager.getAllWorkType(workTypeName);
         return this;
     }
 

@@ -25,7 +25,12 @@ public class InvoiceContainer implements GenericContainer{
 
     @Override
     public synchronized InvoiceContainer refresh() {
-        rows = PersistanceManager.getAllInvoice();
+        rows = PersistanceManager.getAllInvoice("","");
+        return this;
+    }
+
+    public synchronized InvoiceContainer refresh(String ico, String dic) {
+        rows = PersistanceManager.getAllInvoice(ico, dic);
         return this;
     }
 
