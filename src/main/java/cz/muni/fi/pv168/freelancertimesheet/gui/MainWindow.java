@@ -47,15 +47,15 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
         var menuBar = new JMenuBar();
 
         var fileMenu = new JMenu(i18n.getString("file"));
-        var taskMenu = new JMenu(i18n.getString("tasks"));
+        var taskMenu = new JMenu(i18n.getString("work"));
         var invoiceMenu = new JMenu(i18n.getString("invoice"));
 
         var quitItem = new JMenuItem(i18n.getString("quit"));
         quitItem.addActionListener(e -> this.dispose());
 
-        var newTaskItem = new JMenuItem(i18n.getString("newTask"));
+        var newTaskItem = new JMenuItem(i18n.getString("newWork"));
         newTaskItem.addActionListener(e -> WorkFormWindow.setup(null, null));
-        var newTaskTypeItem = new JMenuItem(i18n.getString("newTaskType"));
+        var newTaskTypeItem = new JMenuItem(i18n.getString("newWorkType"));
         newTaskTypeItem.addActionListener(e -> WorkTypeFormWindow.setup(null, null));
         var newInvoiceItem = new JMenuItem(i18n.getString("newInvoice"));
         newInvoiceItem.addActionListener(e -> InvoiceWindow.setup(null, pdfStorage));
