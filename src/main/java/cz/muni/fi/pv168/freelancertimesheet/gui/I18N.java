@@ -8,7 +8,7 @@ public class I18N {
     private final String prefix;
 
     I18N(Class<?> clazz) {
-        var packagePath = clazz.getPackageName().replace(".", "/") + '/';
+        var packagePath = "";
         bundle = ResourceBundle.getBundle(packagePath + "i18n");
         prefix = clazz.getSimpleName() + ".";
     }
