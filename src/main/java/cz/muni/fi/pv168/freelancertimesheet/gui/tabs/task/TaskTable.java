@@ -4,6 +4,7 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.DBConnectionUtils;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.DeleteAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
@@ -20,6 +21,8 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 public class TaskTable extends JPanel implements GenericElement<TaskTable> {
+
+    private final I18N i18n = new I18N(getClass());
 
     private JTable table;
     private final WorkContainer container;
@@ -52,7 +55,7 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         filterBar = new JToolBar();
         filterBar.setFloatable(false);
         filterBar.setRollover(true);
-        filterButton = new JButton("Search");
+        filterButton = new JButton(i18n.getString("search"));
         filterButton.addActionListener(
                 (ActionEvent e) -> {
                     filterButton.setEnabled(false);
@@ -80,10 +83,10 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         filterBar.add(filterButton);
         filterBar.addSeparator();
         workName = new JTextField(100);
-        addFilter("Work Name:", workName);
+        addFilter(i18n.getString("workName"), workName);
         filterBar.addSeparator();
         workTypeName = new JTextField(100);
-        addFilter("Work Type Name:", workTypeName);
+        addFilter(i18n.getString("workTypeName"), workTypeName);
         return filterBar;
     }
 
