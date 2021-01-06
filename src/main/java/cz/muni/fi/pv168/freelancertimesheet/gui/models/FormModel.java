@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class FormModel extends JPanel implements GenericElement<FormModel>{
+
+    private final I18N i18nFM = new I18N(FormModel.class);
+
     protected GridBagLayout layout;
     protected GridBagConstraints layoutConstraints;
     protected List<Component> inputFields;
@@ -54,13 +58,13 @@ public abstract class FormModel extends JPanel implements GenericElement<FormMod
     }
 
     protected JButton buildConfirmButton() {
-        confirmButton = new JButton("Confirm");
+        confirmButton = new JButton(i18nFM.getString("confirm"));
         confirmButton.addActionListener((ActionEvent e) -> triggerConfirmCallback());
         return confirmButton;
     }
 
     protected JButton buildCancelButton() {
-        cancelButton = new JButton("Cancel");
+        cancelButton = new JButton(i18nFM.getString("cancel"));
         cancelButton.addActionListener((ActionEvent e) -> triggerCancelCallback());
         return cancelButton;
     }
