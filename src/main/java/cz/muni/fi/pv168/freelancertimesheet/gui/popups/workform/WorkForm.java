@@ -10,6 +10,7 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
@@ -29,6 +30,8 @@ import java.time.ZonedDateTime;
 import java.util.TimeZone;
 
 public class WorkForm extends FormModel implements iWorkTypeSetter {
+
+    private final I18N i18n = new I18N(getClass());
 
     private final DatePicker datePicker;
     private final TimePicker startTimePicker;
@@ -53,7 +56,7 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
 
         workTypeTextField = new JTextField(20);
         workTypeTextField.setEditable(false);
-        workTypeButton = new JButton("Manage work type");
+        workTypeButton = new JButton(i18n.getString("manageWorkType"));
 
         this.container = container;
     }
@@ -69,11 +72,11 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
 
     @Override
     public WorkForm setupNested() {
-        addRow(new JLabel("Date:"), datePicker);
-        addRow(new JLabel("Name:"), nameTextField);
-        addRow(new JLabel("Description:"), descriptionScrollPane);
-        addRow(new JLabel("Start time:"), startTimePicker);
-        addRow(new JLabel("End time:"), endTimePicker);
+        addRow(new JLabel(i18n.getString("date")), datePicker);
+        addRow(new JLabel(i18n.getString("name")), nameTextField);
+        addRow(new JLabel(i18n.getString("description")), descriptionScrollPane);
+        addRow(new JLabel(i18n.getString("startTime")), startTimePicker);
+        addRow(new JLabel(i18n.getString("endTime")), endTimePicker);
 
 
         var workTypePanel = new JPanel();
@@ -91,7 +94,7 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
         // TODO
         workTypeButton.addActionListener(e -> ChooseWorkTypeWindow.setup(this));
 
-        addRow(new JLabel("Task type:"), workTypePanel);
+        addRow(new JLabel(i18n.getString("taskType")), workTypePanel);
 
         addConfirmButton();
         makeConfirmAddData();
@@ -114,7 +117,7 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
         var datePicker = new DatePicker(dateSettings);
 
         JButton datePickerButton = datePicker.getComponentToggleCalendarButton();
-        datePickerButton.setText("Pick date");
+        datePickerButton.setText(i18n.getString("pickDate"));
 
         return datePicker;
     }
