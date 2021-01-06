@@ -40,7 +40,7 @@ public class Tabs extends JTabbedPane implements GenericElement {
         taskLabel.setPreferredSize(new Dimension(250, 30));
         var invoiceLabel = new JLabel(i18n.getString("invoice"), SwingConstants.CENTER);
         invoiceLabel.setPreferredSize(new Dimension(250, 30));
-        var workTypeLabel = new JLabel("Work Type", SwingConstants.CENTER);
+        var workTypeLabel = new JLabel(i18n.getString("workType"), SwingConstants.CENTER);
         workTypeLabel.setPreferredSize(new Dimension(250, 30));
 
         this.addTab(null, taskPanel);
