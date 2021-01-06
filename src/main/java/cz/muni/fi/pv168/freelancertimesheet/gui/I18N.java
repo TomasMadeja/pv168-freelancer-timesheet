@@ -17,6 +17,10 @@ public class I18N {
         return bundle.getString(prefix + key);
     }
 
+    public String getGlobalString(String key) {
+        return bundle.getString("Global." + key);
+    }
+
     <E extends Enum<E>> String getString(E key) {
         return bundle.getString(key.getClass().getSimpleName() + "." + key.name());
     }

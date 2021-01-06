@@ -8,6 +8,7 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.orm.ClientImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.InvoiceImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.IssuerImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.InvoiceContainer;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.TextFieldFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
@@ -26,6 +27,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class InvoiceForm extends FormModel {
+    private final I18N i18n = new I18N(getClass());
+
     private PDFStorage pdfStorage;
 
     private JLabel totalPriceField;
@@ -45,13 +48,13 @@ public class InvoiceForm extends FormModel {
 
     private JPanel buildWorkPicker() {
         JPanel panel = new JPanel(new GridLayout(1, 2));
-        JButton workPicker = new JButton("Choose Work");
+        JButton workPicker = new JButton(i18n.getString("chooseWork"));
         InvoiceForm invoiceForm = this;
         workPicker.addActionListener(e -> {
             JFrame popup = ChooseWorkWindow.setup(this::assignWorkSelection);
             popup.setVisible(true);
         });
-        selectedWorks = new JLabel("Selected Work: 0");
+        selectedWorks = new JLabel(i18n.getString("selectedWork") + " 0");
         panel.add(selectedWorks);
         panel.add(workPicker);
         inputFields.add(workPicker);
@@ -70,29 +73,29 @@ public class InvoiceForm extends FormModel {
     }
 
     private JLabel priceDisplay() {
-        totalPriceField = new JLabel("0 CZK");
+        totalPriceField = new JLabel("0 " + i18n.getGlobalString("currency"));
         return totalPriceField;
     }
 
     @Override
     public InvoiceForm setupNested() {
-        addRow(new JLabel("Customer Name:"), TextFieldFactory.createWrappedTextField());
-        addRow(new JLabel("Address:"), TextFieldFactory.createWrappedTextField());
-        addRow(new JLabel("Email:"), TextFieldFactory.createWrappedTextField());
-        addRow(new JLabel("Telephone Number:"), TextFieldFactory.createWrappedTextField());
-        addRow(new JLabel("ICO:"), TextFieldFactory.createWrappedTextField());
-        addRow(new JLabel("DIC:"), TextFieldFactory.createWrappedTextField());
-        addRow(new JLabel("Invoice Date:"), DateTimePickerFactory.createGenericDatePicker("Select Date"));
-        addRow(new JLabel("Due Date:"), DateTimePickerFactory.createGenericDatePicker("Select Date"));
-        addRow(new JLabel("Work:"), buildWorkPicker());
-        addRow(new JLabel("Total:"), priceDisplay());
+        addRow(new JLabel(i18n.getString("customerName")), TextFieldFactory.createWrappedTextField());
+        addRow(new JLabel(i18n.getString("address")), TextFieldFactory.createWrappedTextField());
+        addRow(new JLabel(i18n.getString("email")), TextFieldFactory.createWrappedTextField());
+        addRow(new JLabel(i18n.getString("telephoneNumber")), TextFieldFactory.createWrappedTextField());
+        addRow(new JLabel(i18n.getString("ICO")), TextFieldFactory.createWrappedTextField());
+        addRow(new JLabel(i18n.getString("DIC")), TextFieldFactory.createWrappedTextField());
+        addRow(new JLabel(i18n.getString("invoiceDate")), DateTimePickerFactory.createGenericDatePicker("Select Date"));
+        addRow(new JLabel(i18n.getString("dueDate")), DateTimePickerFactory.createGenericDatePicker("Select Date"));
+        addRow(new JLabel(i18n.getString("work")), buildWorkPicker());
+        addRow(new JLabel(i18n.getString("total")), priceDisplay());
         addConfirmButton();
         makeConfirmAddData();
         return this;
     }
 
     public InvoiceForm updateSelectedWork(int count) {
-        selectedWorks.setText("Selected Work: " + count);
+        selectedWorks.setText(i18n.getString("selectedWork") + " " + count);
         return this;
     }
 
