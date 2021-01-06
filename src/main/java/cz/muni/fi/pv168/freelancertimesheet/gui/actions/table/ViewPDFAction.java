@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.actions.table;
 import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.backend.exceptions.OpeningPDFReaderException;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 
@@ -12,15 +13,18 @@ import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 
 public class ViewPDFAction extends AbstractAction{
+
+    private static final I18N i18n = new I18N(ViewPDFAction.class);
+
     private final JTable table;
     private PDFStorage pdFStorage;
 
     public ViewPDFAction(JTable table, PDFStorage storage) {
-        super("View");
+        super(i18n.getString("view"));
         this.table = table;
-        putValue(SHORT_DESCRIPTION, "Edits selected work type");
+        putValue(SHORT_DESCRIPTION, i18n.getString("shortDescription"));
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl V"));
         pdFStorage = storage;
     }
 
