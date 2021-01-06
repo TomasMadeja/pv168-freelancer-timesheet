@@ -63,12 +63,12 @@ public class InvoiceForm extends FormModel {
 
     private InvoiceForm assignWorkSelection(List<Work> selectedWorksData) {
         this.selectedWorksData = selectedWorksData;
-        selectedWorks.setText("Selected Work: " + selectedWorksData.size());
+        selectedWorks.setText(i18n.getString("selectedWork") + " " + selectedWorksData.size());
         BigDecimal sum = BigDecimal.ZERO;
         for (Work work : this.selectedWorksData) {
             sum = sum.add(work.getCost());
         }
-        totalPriceField.setText(sum.toString() + " CZK");
+        totalPriceField.setText(sum.toString() + " " + i18n.getGlobalString("currency"));
         return this;
     }
 
