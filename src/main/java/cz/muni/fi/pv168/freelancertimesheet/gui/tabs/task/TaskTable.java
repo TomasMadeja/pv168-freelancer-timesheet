@@ -72,7 +72,7 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     @Override
     public TaskTable setupLayout() {
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BorderLayout());
         return this;
     }
 
@@ -83,12 +83,10 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     @Override
     public TaskTable setupNested() {
-        this.add(createTableButtonPanel());
+        this.add(createTableButtonPanel(), BorderLayout.BEFORE_FIRST_LINE);
 
         // table needs to be wrapped in JScrollPane in order to show column names
-        this.add(new JScrollPane(createTable()));
-
-        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        this.add(new JScrollPane(createTable()), BorderLayout.CENTER);
         return this;
     }
 
