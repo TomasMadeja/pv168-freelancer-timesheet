@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.ChooseWorkTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
@@ -22,13 +23,15 @@ import java.util.function.Function;
 
 public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWorkWindow> {
 
+    private static final I18N i18n = new I18N(ChooseWorkWindow.class);
+
     GridBagConstraints gbc;
     Function<List<Work>, Object> updateCallback;
 
     private final HashMap<Work, Boolean> selectedRows;
 
     public ChooseWorkWindow(Function<List<Work>, Object> updateCallback) {
-        super("Choose Work");
+        super(i18n.getString("title"));
         this.updateCallback = updateCallback;
         selectedRows = new HashMap<>();
     }
@@ -55,7 +58,7 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
 
     private JButton confirmSelectionButton(Function<List<Work>, Object> updateWorkSelection) {
         var button = new JButton();
-        button.setText("Confirm Selection");
+        button.setText(i18n.getString("confirm"));
 
         // TODO modify so the invoice tab can get this info
         button.addActionListener(e -> {
