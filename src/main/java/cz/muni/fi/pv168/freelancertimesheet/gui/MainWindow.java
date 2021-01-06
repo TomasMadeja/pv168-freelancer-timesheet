@@ -84,7 +84,7 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
     }
 
     public static MainWindow setup(PDFStorage pdfStorage) {
-        MainWindow window = new MainWindow(i18n.getString("title", pdfStorage));
+        MainWindow window = new MainWindow(i18n.getString("title"), pdfStorage);
         window.rootPanel = new JPanel(new BorderLayout());
 
         window
