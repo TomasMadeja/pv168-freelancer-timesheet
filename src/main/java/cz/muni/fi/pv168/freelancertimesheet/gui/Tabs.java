@@ -36,7 +36,7 @@ public class Tabs extends JTabbedPane implements GenericElement {
         // need to create individual labels for each tabs
         // it allows to set custom size
         // TODO set width based on parent pane size
-        var taskLabel = new JLabel(i18n.getString("task"), SwingConstants.CENTER);
+        var taskLabel = new JLabel(i18n.getString("work"), SwingConstants.CENTER);
         taskLabel.setPreferredSize(new Dimension(250, 30));
         var invoiceLabel = new JLabel(i18n.getString("invoice"), SwingConstants.CENTER);
         invoiceLabel.setPreferredSize(new Dimension(250, 30));
