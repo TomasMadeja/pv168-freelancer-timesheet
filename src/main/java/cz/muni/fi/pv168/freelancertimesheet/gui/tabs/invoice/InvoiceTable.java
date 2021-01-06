@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.DeleteAction;
@@ -13,6 +14,10 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class InvoiceTable extends JPanel implements GenericElement {
     private JTable table;
@@ -24,6 +29,11 @@ public class InvoiceTable extends JPanel implements GenericElement {
     private AbstractAction addButton;
     private AbstractAction deleteButton;
     private AbstractAction viewButton;
+
+    private JTextField ico;
+    private JTextField dic;
+
+    private JButton filterButton;
 
 //    private InvoiceForm form;
 
@@ -84,15 +94,38 @@ public class InvoiceTable extends JPanel implements GenericElement {
         filterBar = new JToolBar();
         filterBar.setFloatable(false);
         filterBar.setRollover(true);
-        String[] dateLabels = {"Invoice Date", "Due Date"};
-        filterBar.add(new JComboBox<String>(dateLabels));
+        filterButton = new JButton("Search");
+        filterButton.addActionListener(
+                (ActionEvent e) -> {
+                    filterButton.setEnabled(false);
+                    String icoCurrent = ico.getText();
+                    String dicCurrent = dic.getText();
+                    new SwingWorker<Void, Void>() {
+                        @Override
+                        public Void doInBackground() {
+                            container.refresh(icoCurrent, dicCurrent);
+                            return null;
+                        }
+
+                        @Override
+                        protected void done() {
+                            try {
+                                ((TableModel) table.getModel()).fireTableDataChanged();
+                            } catch (Exception ignore) {
+                            } finally {
+                                filterButton.setEnabled(true);
+                            }
+                        }
+                    }.execute();
+                }
+        );
+        filterBar.add(filterButton);
         filterBar.addSeparator();
-        addFilter("From:", DateTimePickerFactory.createGenericDatePicker(""));
+        ico = new JTextField(100);
+        addFilter("ICO:", ico);
         filterBar.addSeparator();
-        addFilter("To:", DateTimePickerFactory.createGenericDatePicker(""));
-        filterBar.addSeparator();
-        String[] textlabels = {"Name:", "ICO:", "DIC:"};
-        addFilter(new JComboBox<String>(textlabels), new JTextField(100));
+        dic = new JTextField(100);
+        addFilter("DIC:", dic);
         return filterBar;
     }
 

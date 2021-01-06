@@ -16,7 +16,7 @@ import java.awt.*;
  */
 public class TaskTab extends JPanel implements GenericElement<TaskTab> {
 
-    private GridBagConstraints gbc;
+//    private GridBagConstraints gbc;
 
     public TaskTab() {
         super();
@@ -24,8 +24,8 @@ public class TaskTab extends JPanel implements GenericElement<TaskTab> {
 
     @Override
     public TaskTab setupLayout() {
-        GridBagLayout layout = new GridBagLayout();
-        gbc = new GridBagConstraints();
+        GridLayout layout = new GridLayout(1, 1);
+//        BorderLayout layout = new BorderLayout();
         this.setLayout(layout);
         return this;
     }
@@ -37,30 +37,30 @@ public class TaskTab extends JPanel implements GenericElement<TaskTab> {
 
     @Override
     public TaskTab setupNested() {
-        var panel = new JPanel();
-        var newTaskButton = new JButton("New Task");
-        newTaskButton.addActionListener(e -> WorkFormWindow.setup(null, null));
-        var newTaskTypeButton = new JButton("New Task Type");
-        newTaskTypeButton.addActionListener(e -> WorkTypeFormWindow.setup(null, null));
-
-        panel.add(newTaskButton);
-        panel.add(newTaskTypeButton);
-
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.weightx = 0.1;
-        this.add(panel, gbc);
-
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = 5;
-        gbc.weightx = 0.5;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        this.add(TaskTable.setup(), gbc);
-
+//        var panel = new JPanel();
+//        var newTaskButton = new JButton("New Task");
+//        newTaskButton.addActionListener(e -> WorkFormWindow.setup(null, null));
+//        var newTaskTypeButton = new JButton("New Task Type");
+//        newTaskTypeButton.addActionListener(e -> WorkTypeFormWindow.setup(null, null));
+//
+//        panel.add(newTaskButton);
+//        panel.add(newTaskTypeButton);
+//
+//        gbc = new GridBagConstraints();
+//        gbc.gridx = 3;
+//        gbc.gridy = 0;
+//        gbc.gridwidth = 1;
+//        gbc.weightx = 0.1;
+//        this.add(panel, gbc);
+//
+//        gbc = new GridBagConstraints();
+//        gbc.gridx = 1;
+//        gbc.gridy = 1;
+//        gbc.gridwidth = 5;
+//        gbc.weightx = 0.5;
+//        gbc.fill = GridBagConstraints.HORIZONTAL;
+//        this.add(TaskTable.setup(), gbc);
+        add(TaskTable.setup());
         return this;
     }
 

@@ -23,20 +23,45 @@ import java.util.List;
 public class PersistanceManager {
 
     public static List<? extends WorkType> getAllWorkType() {
+        return getAllWorkType(null);
+    }
+
+    public static List<? extends WorkType> getAllWorkType(String workTypeName) {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
-        List<? extends WorkType> results = entityManager.createNamedQuery("getAllWorkTypes").getResultList();
+        if (workTypeName == null) {
+            workTypeName = "%";
+        }
+        var query = entityManager.createQuery(
+                "SELECT t FROM WorkTypeImpl t WHERE t.name like :workTypeName"
+        )
+                .setParameter("workTypeName", "%" + workTypeName + "%");
+        var results = query.getResultList();
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.clear();
-        entityManager.close();
         return results;
     }
 
     public static List<? extends Work> getAllWork() {
+        return getAllWork(null, null);
+    }
+
+    public static List<? extends Work> getAllWork(String workName, String workTypeName) {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
-        List<? extends Work> results = entityManager.createNamedQuery("getAllWorks").getResultList();
+        if (workTypeName == null) {
+            workTypeName = "%";
+        }
+        if (workName == null) {
+            workName = "%";
+        }
+        var query = entityManager.createQuery(
+                "SELECT DISTINCT w FROM WorkImpl w INNER JOIN WorkTypeImpl t ON w.workType = t WHERE w.name like :workName AND t.name like :workTypeName"
+        )
+                .setParameter("workName", "%" + workName + "%")
+                .setParameter("workTypeName", "%" + workTypeName + "%");
+        var results = query.getResultList();
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.clear();
@@ -64,13 +89,7 @@ public class PersistanceManager {
     }
 
     public static List<? extends Invoice> getAllInvoice() {
-        var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
-        entityManager.getTransaction().begin();
-        List<? extends Invoice> results = entityManager.createNamedQuery("getAllInvoices").getResultList();
-        entityManager.flush();
-        entityManager.getTransaction().commit();
-        entityManager.clear();
-        return results;
+        return getAllInvoice(null, null);
     }
 
     public static List<? extends Invoice> getAllInvoice(String ico, String dic) {

@@ -23,6 +23,11 @@ public class WorkContainer implements GenericContainer {
         return this;
     }
 
+    public synchronized GenericContainer refresh(String workName, String workTypeName) {
+        rows = PersistanceManager.getAllWork(workName, workTypeName);
+        return this;
+    }
+
     @Override
     public synchronized Object get(int i) {
         return rows.get(i);

@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.freelancertimesheet.gui;
 import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.InvoiceTab;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.TaskTab;
+import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.WorkTypeTab;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +30,7 @@ public class Tabs extends JTabbedPane implements GenericElement {
     public Tabs setupNested() {
         var taskPanel = TaskTab.setup();
         var invoicePanel = InvoiceTab.setup(pdfStorage);
+        var workTypeTab  = WorkTypeTab.setup();
 
         // need to create individual labels for each tabs
         // it allows to set custom size
@@ -37,12 +39,16 @@ public class Tabs extends JTabbedPane implements GenericElement {
         taskLabel.setPreferredSize(new Dimension(250, 30));
         var invoiceLabel = new JLabel("Invoice", SwingConstants.CENTER);
         invoiceLabel.setPreferredSize(new Dimension(250, 30));
+        var workTypeLabel = new JLabel("Work Type", SwingConstants.CENTER);
+        workTypeLabel.setPreferredSize(new Dimension(250, 30));
 
         this.addTab(null, taskPanel);
         this.addTab(null, invoicePanel);
+        this.addTab(null, workTypeTab);
         // Set the custom tab component
         this.setTabComponentAt(0, taskLabel);
         this.setTabComponentAt(1, invoiceLabel);
+        this.setTabComponentAt(2, workTypeLabel);
 
         return this;
     }

@@ -17,6 +17,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.URISyntaxException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -58,6 +60,12 @@ public class InvoiceForm extends FormModel {
 
     private InvoiceForm assignWorkSelection(List<Work> selectedWorksData) {
         this.selectedWorksData = selectedWorksData;
+        selectedWorks.setText("Selected Work: " + selectedWorksData.size());
+        BigDecimal sum = BigDecimal.ZERO;
+        for (Work work : this.selectedWorksData) {
+            sum = sum.add(work.getCost());
+        }
+        totalPriceField.setText(sum.toString() + " CZK");
         return this;
     }
 

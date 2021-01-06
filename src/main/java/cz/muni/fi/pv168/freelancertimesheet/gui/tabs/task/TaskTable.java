@@ -11,10 +11,12 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform.WorkFormWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeFormWindow;
+import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.InvoiceTable;
 
 import javax.persistence.EntityManager;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.List;
 
 public class TaskTable extends JPanel implements GenericElement<TaskTable> {
@@ -22,6 +24,11 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
     private JTable table;
     private final WorkContainer container;
     private final WorkTableModel model;
+
+    private JToolBar filterBar;
+    private JButton filterButton;
+    private JTextField workName;
+    private JTextField workTypeName;
 
     public int GetSelectedTasksCount() {
         return table.getSelectedRows().length;
@@ -33,10 +40,57 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
         model = new WorkTableModel(container);
     }
 
-    private JToolBar createTableButtonPanel() {
-        JToolBar panel = new JToolBar();
-        GridLayout layout = new GridLayout(1, 7);
-        panel.setLayout(layout);
+    private TaskTable addFilter(String title, Component inputField) {
+        JLabel label = new JLabel(title);
+        label.setLabelFor(inputField);
+        filterBar.add(label);
+        filterBar.add(inputField);
+        return this;
+    }
+
+    private JToolBar buildFilterBar() {
+        filterBar = new JToolBar();
+        filterBar.setFloatable(false);
+        filterBar.setRollover(true);
+        filterButton = new JButton("Search");
+        filterButton.addActionListener(
+                (ActionEvent e) -> {
+                    filterButton.setEnabled(false);
+                    String workNameCurrent = workName.getText();
+                    String workTypeNameCurrent = workTypeName.getText();
+                    new SwingWorker<Void, Void>() {
+                        @Override
+                        public Void doInBackground() {
+                            container.refresh(workNameCurrent, workTypeNameCurrent);
+                            return null;
+                        }
+
+                        @Override
+                        protected void done() {
+                            try {
+                                ((TableModel) table.getModel()).fireTableDataChanged();
+                            } catch (Exception ignore) {
+                            } finally {
+                                filterButton.setEnabled(true);
+                            }
+                        }
+                    }.execute();
+                }
+        );
+        filterBar.add(filterButton);
+        filterBar.addSeparator();
+        workName = new JTextField(100);
+        addFilter("Work Name:", workName);
+        filterBar.addSeparator();
+        workTypeName = new JTextField(100);
+        addFilter("Work Type Name:", workTypeName);
+        return filterBar;
+    }
+
+    private JToolBar buildToolBar() {
+        JToolBar toolbar = new JToolBar();
+        toolbar.setFloatable(false);
+        toolbar.setRollover(true);
 
         var addButton = new AddAction(
                 table,
@@ -48,17 +102,21 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 //        var editButton = new JButton("Edit"); // TODO
         var deleteButton = new DeleteAction(table); // TODO
 
-        panel.add(addButton);
+        toolbar.add(addButton);
 //        panel.add(editButton);
-        panel.add(deleteButton);
+        toolbar.add(deleteButton);
 
-        var searchLabel = new JLabel("Search:", SwingConstants.CENTER);
-        panel.add(searchLabel);
-        panel.add(new JTextField());
+        toolbar.addSeparator();
+        toolbar.add(Box.createHorizontalGlue());
 
-        panel.add(new JLabel());
-        panel.add(new JLabel());
+        return toolbar;
+    }
 
+    private JPanel createTableButtonPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(2, 1));
+        panel.add(buildToolBar());
+        panel.add(buildFilterBar());
         return panel;
     }
 

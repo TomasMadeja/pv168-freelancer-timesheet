@@ -26,7 +26,6 @@ public class WorkTypeTableWindow extends JFrame implements GenericElement<WorkTy
     @Override
     public WorkTypeTableWindow setupNested() {
         this.add(WorkTypeTable.setup());
-
         return this;
     }
 
