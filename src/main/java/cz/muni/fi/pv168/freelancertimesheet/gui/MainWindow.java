@@ -12,6 +12,7 @@ import java.awt.*;
  */
 public class MainWindow extends JFrame implements GenericElement<MainWindow> {
     private JPanel rootPanel;
+    private static final I18N i18n = new I18N(MainWindow.class);
 
 
     public MainWindow() throws HeadlessException {
@@ -52,18 +53,18 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
     private JMenuBar createMenuBar() {
         var menuBar = new JMenuBar();
 
-        var fileMenu = new JMenu("File");
-        var taskMenu = new JMenu("Tasks");
-        var invoiceMenu = new JMenu("Invoice");
+        var fileMenu = new JMenu(i18n.getString("file"));
+        var taskMenu = new JMenu(i18n.getString("tasks"));
+        var invoiceMenu = new JMenu(i18n.getString("invoice"));
 
-        var quitItem = new JMenuItem("Quit");
+        var quitItem = new JMenuItem(i18n.getString("quit"));
         quitItem.addActionListener(e -> this.dispose());
 
-        var newTaskItem = new JMenuItem("New Task");
+        var newTaskItem = new JMenuItem(i18n.getString("newTask"));
         newTaskItem.addActionListener(e -> WorkFormWindow.setup());
-        var newTaskTypeItem = new JMenuItem("New Task Type");
+        var newTaskTypeItem = new JMenuItem(i18n.getString("newTaskType"));
         newTaskTypeItem.addActionListener(e -> WorkTypeFormWindow.setup(null));
-        var newInvoiceItem = new JMenuItem("New Invoice");
+        var newInvoiceItem = new JMenuItem(i18n.getString("newInvoice"));
         newInvoiceItem.addActionListener(e -> InvoiceWindow.setup(null));
 
 
@@ -90,7 +91,8 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
     }
 
     public static MainWindow setup() {
-        MainWindow window = new MainWindow("Dashboard");
+
+        MainWindow window = new MainWindow(i18n.getString("title"));
         window.rootPanel = new JPanel(new BorderLayout());
 
         window
