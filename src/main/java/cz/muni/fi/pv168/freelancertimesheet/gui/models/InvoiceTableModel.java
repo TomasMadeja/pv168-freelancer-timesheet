@@ -1,11 +1,14 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.InvoiceContainer;
 
 import java.time.ZonedDateTime;
 
 public class InvoiceTableModel extends TableModel<Invoice> {
+
+    private final I18N i18n = new I18N(getClass());
 
     public InvoiceTableModel(InvoiceContainer container) {
         super(container);
@@ -14,7 +17,7 @@ public class InvoiceTableModel extends TableModel<Invoice> {
 
     private void createColumns() {
         super.addColumn(new Column<ZonedDateTime, Invoice>(
-                "Invoice Date",
+                i18n.getString("invoiceDate"),
                 "test1",
                 false,
                 ZonedDateTime.class,
@@ -23,7 +26,7 @@ public class InvoiceTableModel extends TableModel<Invoice> {
                 null
         ));
         super.addColumn(new Column<ZonedDateTime, Invoice>(
-                "Due Date",
+                i18n.getString("dueDate"),
                 "test2",
                 false,
                 ZonedDateTime.class,
@@ -32,7 +35,7 @@ public class InvoiceTableModel extends TableModel<Invoice> {
                 null
         ));
         super.addColumn(new Column<String, Invoice>(
-                "ICO",
+                i18n.getString("ICO"),
                 "test3",
                 false,
                 String.class,
@@ -41,7 +44,7 @@ public class InvoiceTableModel extends TableModel<Invoice> {
                 null
         ));
         super.addColumn(new Column<String, Invoice>(
-                "DIC",
+                i18n.getString("DIC"),
                 "test3",
                 false,
                 String.class,
@@ -50,7 +53,7 @@ public class InvoiceTableModel extends TableModel<Invoice> {
                 null
         ));
         super.addColumn(new Column<String, Invoice>(
-                "Customer Name",
+                i18n.getString("customerName"),
                 "test3",
                 false,
                 String.class,
