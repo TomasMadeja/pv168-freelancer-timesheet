@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.InvoiceForm;
 
@@ -8,10 +9,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class InvoiceWindow extends JFrame implements GenericElement<InvoiceWindow> {
+    private static final I18N i18n = new I18N(InvoiceWindow.class);
+
     private final AddAction.Callback callback;
 
     public InvoiceWindow(AddAction.Callback callback) {
-        super("Invoice");
+        super(i18n.getString("title"));
         this.callback = callback;
     }
 
