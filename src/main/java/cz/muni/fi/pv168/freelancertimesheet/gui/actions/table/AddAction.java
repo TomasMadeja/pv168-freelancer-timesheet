@@ -11,10 +11,6 @@ public class AddAction extends AbstractAction {
     private final FormBuilder form;
     private final Callback successCallback;
 
-    public interface FormBuilder {
-        void build(JTable table, Callback callback);
-    }
-
     public interface Callback {
         void call();
     }
@@ -31,7 +27,6 @@ public class AddAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var employeeTableModel = (TableModel) table.getModel();
         form.build(table, successCallback);
     }
 }

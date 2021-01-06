@@ -10,15 +10,13 @@ import java.awt.event.KeyEvent;
 public class EditAction extends AbstractAction {
     private final JTable table;
     private final FormBuilder form;
+    private final AddAction.Callback successCallback;
 
-    public interface FormBuilder {
-        <T> FormModel build(JTable table, T row);
-    }
-
-    public EditAction(JTable table, FormBuilder form) {
+    public EditAction(JTable table, FormBuilder form, AddAction.Callback successCallback) {
         super("Edit");
         this.table = table;
         this.form = form;
+        this.successCallback = successCallback;
         putValue(SHORT_DESCRIPTION, "Edits selected work type");
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
@@ -28,6 +26,6 @@ public class EditAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         var tableModel = (TableModel) table.getModel();
         int index = table.getSelectedRow();
-        form.build(table, tableModel.getRow(index));
+        form.build(table, successCallback);
     }
 }

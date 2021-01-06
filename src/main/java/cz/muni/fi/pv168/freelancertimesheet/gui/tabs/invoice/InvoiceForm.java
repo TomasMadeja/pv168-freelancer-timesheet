@@ -1,11 +1,13 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.backend.PersistanceManager;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.*;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.ClientImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.InvoiceImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.IssuerImpl;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.InvoiceContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.TextFieldFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
@@ -14,27 +16,29 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.popups.chooseWork.ChooseWorkWind
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.function.Supplier;
 
 public class InvoiceForm extends FormModel {
+    private PDFStorage pdfStorage;
+
     private JLabel totalPriceField;
 
     private List<Work> selectedWorksData;
 
-    private Supplier<Void> onConfirmCallback = null;
-
     private JLabel selectedWorks; // TODO add proper container
 
-    public InvoiceForm() {
+    public InvoiceForm(PDFStorage pdfStorage) {
         super();
+        this.pdfStorage = pdfStorage;
     }
 
     public InvoiceForm(Supplier<Void> onConfirmCallback) {
         super();
-        this.onConfirmCallback = onConfirmCallback;
     }
 
     private JPanel buildWorkPicker() {
@@ -84,8 +88,8 @@ public class InvoiceForm extends FormModel {
         return this;
     }
 
-    public static InvoiceForm setup(Supplier<Void> onConfirmCallback) {
-        InvoiceForm invoiceForm = new InvoiceForm(onConfirmCallback);
+    public static InvoiceForm setup(PDFStorage pdfStorage) {
+        InvoiceForm invoiceForm = new InvoiceForm(pdfStorage);
         invoiceForm
                 .setupLayout()
                 .setupVisuals()
@@ -93,9 +97,6 @@ public class InvoiceForm extends FormModel {
         return invoiceForm;
     }
 
-    public static InvoiceForm setup() {
-        return setup((Supplier<Void>) null);
-    }
 
     private Invoice getDataFromForm() {
         TextFieldFactory.CustomWrappedClass clientName = (TextFieldFactory.CustomWrappedClass)inputFields.get(0);
@@ -129,17 +130,34 @@ public class InvoiceForm extends FormModel {
         invoice.validateAttributes();
     }
 
-    private void addDataToDatabase() {
-        Invoice invoice = getDataFromForm();
+    private void addDataToDatabase(Invoice invoice) throws IOException, URISyntaxException {
         validateData(invoice);
-        PersistanceManager.persistInvoice(invoice);
+        PersistanceManager.generateAndPersistInvoice(invoice, pdfStorage);
     }
 
     private void makeConfirmAddData() {
         confirmButton.addActionListener((ActionEvent e) -> {
-            addDataToDatabase();
-            if (onConfirmCallback != null)
-                onConfirmCallback.get();
+            confirmButton.setEnabled(false);
+            Invoice invoice = getDataFromForm();
+            new SwingWorker<Void, Void>() {
+                @Override
+                public Void doInBackground() throws IOException, URISyntaxException {
+                    addDataToDatabase(invoice);
+                    InvoiceContainer.getContainer().refresh();
+                    return null;
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        if (confirmCallback != null)
+                            confirmCallback.call();
+                    } catch (Exception ignore) {
+                    } finally {
+                        confirmButton.setEnabled(true);
+                    }
+                }
+            }.execute();
         });
     }
 

@@ -16,6 +16,7 @@ public class PDFStorage {
 
     public PDFStorage(Path storageRoot) {
         this.storageRoot = storageRoot.toAbsolutePath();
+        this.storageRoot.toFile().mkdirs();
     }
 
     public Path fetchFile(Invoice invoice) throws IOException {

@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.InvoiceForm;
@@ -8,11 +9,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class InvoiceWindow extends JFrame implements GenericElement<InvoiceWindow> {
+    private PDFStorage pdfStorage;
     private final AddAction.Callback callback;
 
-    public InvoiceWindow(AddAction.Callback callback) {
+    public InvoiceWindow(AddAction.Callback callback, PDFStorage pdfStorage) {
         super("Invoice");
         this.callback = callback;
+        this.pdfStorage = pdfStorage;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class InvoiceWindow extends JFrame implements GenericElement<InvoiceWindo
 
     @Override
     public InvoiceWindow setupNested() {
-        InvoiceForm invoiceForm = InvoiceForm.setup();
+        InvoiceForm invoiceForm = InvoiceForm.setup(pdfStorage);
         invoiceForm.setConfirmCallback(
                 () -> {
                     if (callback != null) callback.call();
@@ -47,8 +50,8 @@ public class InvoiceWindow extends JFrame implements GenericElement<InvoiceWindo
         return this;
     }
 
-    public static InvoiceWindow setup(AddAction.Callback callback) {
-        InvoiceWindow invoiceWindow = new InvoiceWindow(callback);
+    public static InvoiceWindow setup(AddAction.Callback callback, PDFStorage pdfStorage) {
+        InvoiceWindow invoiceWindow = new InvoiceWindow(callback, pdfStorage);
         invoiceWindow
                 .setupLayout()
                 .setupVisuals()

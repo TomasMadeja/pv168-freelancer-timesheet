@@ -42,7 +42,7 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
 //        createTmpDataInDb();
 //        RandomDataGenerator.generateWorkData((ChooseWorkTableModel) table.getModel());
 
-        loadDataFromDatabase((ChooseWorkTableModel) table.getModel());
+//        loadDataFromDatabase((ChooseWorkTableModel) table.getModel());
 
         return table;
     }
@@ -50,7 +50,7 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
     private void loadDataFromDatabase(TableModel<Work> table) {
         EntityManager entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         List<WorkImpl> result = entityManager.createQuery("from WorkImpl").getResultList();
-        result.forEach(table::addRow);
+//        result.forEach(table::addRow);
     }
 
     private JButton confirmSelectionButton(Function<List<Work>, Object> updateWorkSelection) {

@@ -23,14 +23,26 @@ public class DeleteAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        TableModel employeeTableModel = (TableModel) table.getModel();
-        Arrays.stream(table.getSelectedRows())
-                // view row index must be converted to model row index
-                .map(table::convertRowIndexToModel)
-                .boxed()
-                // We need to delete rows in descending order to not change index of rows
-                // which are not deleted yet
-                .sorted(Comparator.reverseOrder())
-                .forEach(employeeTableModel::deleteRow);
+        TableModel tableModel = (TableModel) table.getModel();
+
+        new SwingWorker<Void, Void>() {
+            @Override
+            public Void doInBackground() {
+                int[] indexArray = Arrays.stream(table.getSelectedRows())
+                        // view row index must be converted to model row index
+                        .map(table::convertRowIndexToModel)
+                        .toArray();
+                tableModel.deleteRows(indexArray, false);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    tableModel.fireTableDataChanged();
+                } catch (Exception ignore) {
+                }
+            }
+        }.execute();
     }
 }

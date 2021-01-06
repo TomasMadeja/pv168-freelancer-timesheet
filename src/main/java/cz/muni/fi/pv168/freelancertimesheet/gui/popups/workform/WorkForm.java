@@ -5,17 +5,23 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
+import cz.muni.fi.pv168.freelancertimesheet.backend.PersistanceManager;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table.ChooseWorkTypeWindow;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URISyntaxException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -36,7 +42,9 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
 
     private WorkType workType;
 
-    public WorkForm() {
+    private WorkContainer container;
+
+    public WorkForm(WorkContainer container) {
         super();
 
         datePicker = setupDatePicker();
@@ -47,10 +55,11 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
         workTypeTextField.setEditable(false);
         workTypeButton = new JButton("Manage work type");
 
+        this.container = container;
     }
 
-    public static WorkForm setup() {
-        WorkForm form = new WorkForm();
+    public static WorkForm setup(WorkContainer container) {
+        WorkForm form = new WorkForm(container);
         form.setupLayout()
                 .setupVisuals()
                 .setupNested();
@@ -85,6 +94,7 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
         addRow(new JLabel("Task type:"), workTypePanel);
 
         addConfirmButton();
+        makeConfirmAddData();
         return this;
     }
 
@@ -121,7 +131,7 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
         return new TimePicker(timeSettings);
     }
 
-    public Work prepareDataFromForms() {
+    private Work prepareDataFromForms() {
         // TODO do not allow workType to be unset
         // This is just a temporary fix that uses custom default WorkType
         if (workType == null) {
@@ -143,6 +153,39 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
 
     private ZonedDateTime getDateTimeFromForms(LocalTime time) {
         return LocalDateTime.of(datePicker.getDate(), time).atZone(TimeZone.getDefault().toZoneId());
+    }
+
+    private void addDataToDatabase(Work work) {
+        if (work == null) return;
+        PersistanceManager.persistWork(work);
+    }
+
+    private void makeConfirmAddData() {
+        confirmButton.addActionListener(
+            (ActionEvent e) -> {
+                confirmButton.setEnabled(false);
+                Work work = prepareDataFromForms();
+                new SwingWorker<Void, Void>() {
+                    @Override
+                    public Void doInBackground() {
+                        addDataToDatabase(work);
+                        if (container != null) container.refresh();
+                        return null;
+                    }
+
+                    @Override
+                    protected void done() {
+                        try {
+                            if (confirmCallback != null)
+                                confirmCallback.call();
+                        } catch (Exception ignore) {
+                        } finally {
+                            confirmButton.setEnabled(true);
+                        }
+                    }
+                }.execute();
+            }
+        );
     }
 
 }

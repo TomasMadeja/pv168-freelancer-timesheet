@@ -3,6 +3,8 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform;
 import cz.muni.fi.pv168.freelancertimesheet.backend.DBConnectionUtils;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,11 +12,14 @@ import java.awt.*;
 public class WorkFormWindow extends JFrame implements GenericElement<WorkFormWindow> {
 
     private WorkForm workForm;
+    private final AddAction.Callback callback;
+    private final WorkContainer container;
 
-    public WorkFormWindow() {
+    public WorkFormWindow(AddAction.Callback callback, WorkContainer container) {
         super();
+        this.callback = callback;
+        this.container = container;
     }
-
 
     @Override
     public WorkFormWindow setupLayout() {
@@ -31,8 +36,13 @@ public class WorkFormWindow extends JFrame implements GenericElement<WorkFormWin
 
     @Override
     public WorkFormWindow setupNested() {
-        workForm = WorkForm.setup();
-        workForm.setupConfirmButtonAction(e -> confirmFilledForms());
+        workForm = WorkForm.setup(container);
+        workForm.setConfirmCallback(
+                () -> {
+                    if (callback != null) callback.call();
+                    this.dispose();
+                }
+        );
         workForm.setCancelCallback(this::dispose);
 
         Dimension preferredSize = workForm.getPreferredSize();
@@ -41,27 +51,8 @@ public class WorkFormWindow extends JFrame implements GenericElement<WorkFormWin
         return this;
     }
 
-
-    private void confirmFilledForms() {
-        // TODO check if all needed fields have value
-        pushDataToDatabase(workForm.prepareDataFromForms());
-        this.dispose();
-    }
-
-    private void pushDataToDatabase(Work work) {
-        var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
-        entityManager.getTransaction().begin();
-
-        entityManager.persist(work);
-
-        entityManager.flush();
-        entityManager.getTransaction().commit();
-        entityManager.clear();
-    }
-
-
-    public static WorkFormWindow setup() {
-        var taskFormWindow = new WorkFormWindow()
+    public static WorkFormWindow setup(AddAction.Callback callback, WorkContainer container) {
+        var taskFormWindow = new WorkFormWindow(callback, container)
                 .setupLayout()
                 .setupVisuals()
                 .setupNested();

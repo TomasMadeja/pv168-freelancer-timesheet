@@ -1,10 +1,14 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
+import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.DeleteAction;
+import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.ViewPDFAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.InvoiceContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.InvoiceTableModel;
+import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
 
 import javax.swing.*;
@@ -15,12 +19,18 @@ public class InvoiceTable extends JPanel implements GenericElement {
     private JToolBar toolbar;
     private JToolBar filterBar;
     private InvoiceContainer container;
+    private PDFStorage pdfStorage;
+
+    private AbstractAction addButton;
+    private AbstractAction deleteButton;
+    private AbstractAction viewButton;
 
 //    private InvoiceForm form;
 
-    public InvoiceTable() {
+    public InvoiceTable(PDFStorage pdfStorage) {
         super();
-        container = new InvoiceContainer();
+        this.pdfStorage = pdfStorage;
+        container = InvoiceContainer.getContainer();
 //        this.form = form;
     }
 
@@ -53,14 +63,18 @@ public class InvoiceTable extends JPanel implements GenericElement {
         toolbar = new JToolBar();
         toolbar.setFloatable(false);
         toolbar.setRollover(true);
+        addButton = new AddAction(
+                table,
+                (JTable table, AddAction.Callback callback) -> InvoiceWindow.setup(callback, pdfStorage),
+                () -> ((TableModel) table.getModel()).fireTableDataChanged());
         toolbar.add(
-                new AddAction(
-                        table,
-                        (JTable table, AddAction.Callback callback) -> InvoiceWindow.setup(callback),
-                        () -> this.refresh())
+                addButton
         );
-        toolbar.add(new JButton("View"));
-        toolbar.add(new JButton("Delete"));
+        viewButton = new ViewPDFAction(table, pdfStorage); // todo fix
+        toolbar.add(viewButton);
+        deleteButton = new DeleteAction(table);
+        toolbar.add(deleteButton);
+//        toolbar.add(new JButton("Delete"));
         toolbar.addSeparator();
         toolbar.add(Box.createHorizontalGlue());
         return toolbar;
@@ -109,8 +123,8 @@ public class InvoiceTable extends JPanel implements GenericElement {
         return this;
     }
 
-    public static InvoiceTable setup() {
-        InvoiceTable invoiceTable = new InvoiceTable();
+    public static InvoiceTable setup(PDFStorage pdfStorage) {
+        InvoiceTable invoiceTable = new InvoiceTable(pdfStorage);
         invoiceTable
                 .setupLayout()
                 .setupVisuals()

@@ -9,4 +9,8 @@ public interface GenericContainer {
     public Object get(int i);
 
     public int size();
+
+    public void remove(int i);
+
+    public void removeList(int[] indices);
 }

@@ -4,6 +4,9 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.containers.GenericContainer;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -11,13 +14,13 @@ import java.util.function.Function;
 public class TableModel<T> extends AbstractTableModel {
 
     protected final GenericContainer container;
-    protected final List<T> rows;
+//    protected final List<T> rows;
     private final List<Column<?, T>> columns;
 
     public TableModel(GenericContainer container) {
         super();
         this.columns = new ArrayList<>();
-        this.rows = new ArrayList<>();
+//        this.rows = new ArrayList<>();
         this.container = container;
     }
 
@@ -68,19 +71,28 @@ public class TableModel<T> extends AbstractTableModel {
         return columns.get(columnIndex).isEditable();
     }
 
-    public void addRow(T rowData) {
-        int newRowIndex = rows.size();
-        rows.add(rowData);
-        fireTableRowsInserted(newRowIndex, newRowIndex);
-    }
+//    public void addRow(T rowData) {
+//        int newRowIndex = rows.size();
+//        rows.add(rowData);
+//        fireTableRowsInserted(newRowIndex, newRowIndex);
+//    }
 
     public void deleteRow(int rowIndex) {
-        rows.remove(rowIndex);
-        fireTableRowsDeleted(rowIndex, rowIndex);
+        deleteRow(rowIndex, true);
+    }
+
+    public void deleteRow(int rowIndex, boolean updateTable) {
+        container.remove(rowIndex);
+        if (updateTable) fireTableRowsDeleted(rowIndex, rowIndex);
+    }
+
+    public void deleteRows(int[] rowIndexList, boolean updateTable) {
+        container.removeList(rowIndexList);
+        if (updateTable) fireTableDataChanged();
     }
 
     public T getRow(int rowIndex) {
-        return rows.get(rowIndex);
+        return (T) container.get(rowIndex);
     }
 
     protected class Column<ColT, RowT> {

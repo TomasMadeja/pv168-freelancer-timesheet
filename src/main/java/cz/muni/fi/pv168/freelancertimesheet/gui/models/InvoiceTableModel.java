@@ -37,7 +37,7 @@ public class InvoiceTableModel extends TableModel<Invoice> {
                 false,
                 String.class,
                 Invoice.class,
-                (Object object) -> "25596641", //TODO: add ICO to proper person
+                (Object object) -> ((Invoice) object).getClient().getICO(), //TODO: add ICO to proper person
                 null
         ));
         super.addColumn(new Column<String, Invoice>(
@@ -46,7 +46,7 @@ public class InvoiceTableModel extends TableModel<Invoice> {
                 false,
                 String.class,
                 Invoice.class,
-                (Object object) -> "CZ1234567890", //TODO: add DIC to proper person
+                (Object object) -> ((Invoice) object).getClient().getDIC(), //TODO: add DIC to proper person
                 null
         ));
         super.addColumn(new Column<String, Invoice>(

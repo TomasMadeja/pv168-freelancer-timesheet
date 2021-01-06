@@ -68,9 +68,9 @@ public class WorkTypeTable extends JPanel implements GenericElement<WorkTypeTabl
         add(buildWorkTypeTable(), BorderLayout.CENTER);
         var addAction = new AddAction(
                 workTypeTable,
-                (JTable table, AddAction.Callback callback) -> WorkTypeFormWindow.setup(callback),
+                (JTable table, AddAction.Callback callback) -> WorkTypeFormWindow.setup(callback, container),
                 () -> {
-                    refresh();
+                    ((TableModel) workTypeTable.getModel()).fireTableDataChanged();
                 }
         );
         add(buildToolbar(addAction), BorderLayout.BEFORE_FIRST_LINE);
