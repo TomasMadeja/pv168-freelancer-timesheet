@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.client;
 
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.TasksPopup;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.TextFieldFactory;
@@ -11,16 +12,18 @@ import java.awt.*;
 
 public class ClientForm extends FormModel {
 
+    private final I18N i18n = new I18N(getClass());
+
     public ClientForm() {
         super();
     }
 
     @Override
     public ClientForm setupNested() {
-        addRow(new JLabel("Customer Name:"), TextFieldFactory.createWrappedTextField());
-        addRow(new JLabel("Address:"), TextFieldFactory.createWrappedTextField());
-        addRow(new JLabel("ICO:"), TextFieldFactory.createWrappedTextField());
-        addRow(new JLabel("DIC:"), TextFieldFactory.createWrappedTextField());
+        addRow(new JLabel(i18n.getString("customerName")), TextFieldFactory.createWrappedTextField());
+        addRow(new JLabel(i18n.getString("address")), TextFieldFactory.createWrappedTextField());
+        addRow(new JLabel(i18n.getString("ICO")), TextFieldFactory.createWrappedTextField());
+        addRow(new JLabel(i18n.getString("DIC")), TextFieldFactory.createWrappedTextField());
         addConfirmButton();
         return this;
     }

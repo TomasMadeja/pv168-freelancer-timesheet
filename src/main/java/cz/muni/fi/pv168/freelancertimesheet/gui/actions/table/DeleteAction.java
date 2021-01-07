@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.actions.table;
 
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
 
@@ -11,12 +12,14 @@ import java.util.Comparator;
 
 public class DeleteAction extends AbstractAction {
 
+    private static final I18N i18n = new I18N(DeleteAction.class);
+
     private final JTable table;
 
     public DeleteAction(JTable table) {
-        super("Delete");
+        super(i18n.getString("delete"));
         this.table = table;
-        putValue(SHORT_DESCRIPTION, "Deletes selected employees");
+        putValue(SHORT_DESCRIPTION, i18n.getString("shortDescription"));
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));
     }

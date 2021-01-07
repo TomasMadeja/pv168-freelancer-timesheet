@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.DeleteAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.ViewPDFAction;
@@ -20,6 +21,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class InvoiceTable extends JPanel implements GenericElement {
+
+    private final I18N i18n = new I18N(getClass());
+
     private JTable table;
     private JToolBar toolbar;
     private JToolBar filterBar;
@@ -94,7 +98,7 @@ public class InvoiceTable extends JPanel implements GenericElement {
         filterBar = new JToolBar();
         filterBar.setFloatable(false);
         filterBar.setRollover(true);
-        filterButton = new JButton("Search");
+        filterButton = new JButton(i18n.getString("search"));
         filterButton.addActionListener(
                 (ActionEvent e) -> {
                     filterButton.setEnabled(false);
@@ -122,10 +126,10 @@ public class InvoiceTable extends JPanel implements GenericElement {
         filterBar.add(filterButton);
         filterBar.addSeparator();
         ico = new JTextField(100);
-        addFilter("ICO:", ico);
+        addFilter(i18n.getString("ICO"), ico);
         filterBar.addSeparator();
         dic = new JTextField(100);
-        addFilter("DIC:", dic);
+        addFilter(i18n.getString("DIC"), dic);
         return filterBar;
     }
 

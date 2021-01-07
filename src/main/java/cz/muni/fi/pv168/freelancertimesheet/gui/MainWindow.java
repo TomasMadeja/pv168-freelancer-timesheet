@@ -15,6 +15,8 @@ import java.awt.*;
 public class MainWindow extends JFrame implements GenericElement<MainWindow> {
     private JPanel rootPanel;
     private PDFStorage pdfStorage;
+    private static final I18N i18n = new I18N(MainWindow.class);
+
 
 
     public MainWindow(String title, PDFStorage pdfStorage) throws HeadlessException {
@@ -44,18 +46,18 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
     private JMenuBar createMenuBar() {
         var menuBar = new JMenuBar();
 
-        var fileMenu = new JMenu("File");
-        var taskMenu = new JMenu("Tasks");
-        var invoiceMenu = new JMenu("Invoice");
+        var fileMenu = new JMenu(i18n.getString("file"));
+        var taskMenu = new JMenu(i18n.getString("work"));
+        var invoiceMenu = new JMenu(i18n.getString("invoice"));
 
-        var quitItem = new JMenuItem("Quit");
+        var quitItem = new JMenuItem(i18n.getString("quit"));
         quitItem.addActionListener(e -> this.dispose());
 
-        var newTaskItem = new JMenuItem("New Task");
+        var newTaskItem = new JMenuItem(i18n.getString("newWork"));
         newTaskItem.addActionListener(e -> WorkFormWindow.setup(null, null));
-        var newTaskTypeItem = new JMenuItem("New Task Type");
+        var newTaskTypeItem = new JMenuItem(i18n.getString("newWorkType"));
         newTaskTypeItem.addActionListener(e -> WorkTypeFormWindow.setup(null, null));
-        var newInvoiceItem = new JMenuItem("New Invoice");
+        var newInvoiceItem = new JMenuItem(i18n.getString("newInvoice"));
         newInvoiceItem.addActionListener(e -> InvoiceWindow.setup(null, pdfStorage));
 
 
@@ -82,7 +84,7 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
     }
 
     public static MainWindow setup(PDFStorage pdfStorage) {
-        MainWindow window = new MainWindow("Dashboard", pdfStorage);
+        MainWindow window = new MainWindow(i18n.getString("title"), pdfStorage);
         window.rootPanel = new JPanel(new BorderLayout());
 
         window

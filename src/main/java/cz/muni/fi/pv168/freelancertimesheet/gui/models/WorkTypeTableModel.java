@@ -1,11 +1,14 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 
 import java.math.BigDecimal;
 
 public class WorkTypeTableModel extends TableModel<WorkType> {
+
+    private final I18N i18n = new I18N(getClass());
 
     public WorkTypeTableModel(WorkTypeContainer container) {
         super(container);
@@ -14,7 +17,7 @@ public class WorkTypeTableModel extends TableModel<WorkType> {
 
     private void createColumns() {
         super.addColumn(new Column<String, WorkType>(
-                "Name",
+                i18n.getString("name"),
                 "test1",
                 false,
                 String.class,
@@ -23,7 +26,7 @@ public class WorkTypeTableModel extends TableModel<WorkType> {
                 null
         ));
         super.addColumn(new Column<BigDecimal, WorkType>(
-                "Rate",
+                i18n.getString("rate"),
                 "test2",
                 false,
                 BigDecimal.class,
@@ -32,7 +35,7 @@ public class WorkTypeTableModel extends TableModel<WorkType> {
                 null
         ));
         super.addColumn(new Column<String, WorkType>(
-                "Description",
+                i18n.getString("description"),
                 "test3",
                 false,
                 String.class,
