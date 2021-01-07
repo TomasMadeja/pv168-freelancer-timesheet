@@ -85,8 +85,8 @@ public class InvoiceForm extends FormModel {
         addRow(new JLabel(i18n.getString("telephoneNumber")), TextFieldFactory.createWrappedTextField());
         addRow(new JLabel(i18n.getString("ICO")), TextFieldFactory.createWrappedTextField());
         addRow(new JLabel(i18n.getString("DIC")), TextFieldFactory.createWrappedTextField());
-        addRow(new JLabel(i18n.getString("invoiceDate")), DateTimePickerFactory.createGenericDatePicker("Select Date"));
-        addRow(new JLabel(i18n.getString("dueDate")), DateTimePickerFactory.createGenericDatePicker("Select Date"));
+        addRow(new JLabel(i18n.getString("invoiceDate")), DateTimePickerFactory.createGenericDatePicker(i18n.getString("selectDate")));
+        addRow(new JLabel(i18n.getString("dueDate")), DateTimePickerFactory.createGenericDatePicker(i18n.getString("selectDate")));
         addRow(new JLabel(i18n.getString("work")), buildWorkPicker());
         addRow(new JLabel(i18n.getString("total")), priceDisplay());
         addConfirmButton();
