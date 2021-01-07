@@ -52,6 +52,7 @@ public class WorkTypeTable extends JPanel implements GenericElement<WorkTypeTabl
     private JScrollPane buildWorkTypeTable() {
         table = new JTable(new WorkTypeTableModel(container));
         table.setAutoCreateRowSorter(true);
+        table.getTableHeader().setReorderingAllowed(false);
         table.setRowHeight(20);
         return new JScrollPane(table);
     }

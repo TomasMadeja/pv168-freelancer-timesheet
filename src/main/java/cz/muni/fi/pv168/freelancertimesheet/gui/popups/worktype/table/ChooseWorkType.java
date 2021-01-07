@@ -77,6 +77,7 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
     private Component buildTable() {
         var tableModel = new WorkTypeTableModel(container);
         table = new JTable(tableModel);
+        table.getTableHeader().setReorderingAllowed(false);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.getSelectionModel().addListSelectionListener(e -> selectionChanged(table.getSelectedRows().length));
         return new JScrollPane(table);

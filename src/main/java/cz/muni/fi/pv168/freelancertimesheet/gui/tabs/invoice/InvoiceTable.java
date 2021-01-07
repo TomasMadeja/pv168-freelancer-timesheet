@@ -69,6 +69,7 @@ public class InvoiceTable extends JPanel implements GenericElement {
     private JScrollPane buildTable() {
         table = new JTable(new InvoiceTableModel(container));
         table.setAutoCreateRowSorter(true);
+        table.getTableHeader().setReorderingAllowed(false);
         table.setRowHeight(20);
         return new JScrollPane(table);
     }

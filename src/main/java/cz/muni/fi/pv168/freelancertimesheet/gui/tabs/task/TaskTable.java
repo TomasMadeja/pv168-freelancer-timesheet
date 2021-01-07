@@ -126,6 +126,7 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     private JTable createTable() {
         table = new JTable(model);
+        table.getTableHeader().setReorderingAllowed(false);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 //        loadDataFromDatabase((WorkTableModel) table.getModel());
         return table;
