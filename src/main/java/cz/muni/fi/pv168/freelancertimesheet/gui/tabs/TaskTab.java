@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
@@ -19,11 +20,14 @@ public class TaskTab extends JPanel implements GenericElement<TaskTab> {
 
     private final I18N i18n = new I18N(getClass());
 
+    private final PDFStorage pdfStorage;
+
     private GridBagConstraints gbc;
 //    private GridBagConstraints gbc;
 
-    public TaskTab() {
+    public TaskTab(PDFStorage pdfStorage) {
         super();
+        this.pdfStorage = pdfStorage;
     }
 
     @Override
@@ -64,12 +68,12 @@ public class TaskTab extends JPanel implements GenericElement<TaskTab> {
 //        gbc.weightx = 0.5;
 //        gbc.fill = GridBagConstraints.HORIZONTAL;
 //        this.add(TaskTable.setup(), gbc);
-        add(TaskTable.setup());
+        add(TaskTable.setup(pdfStorage));
         return this;
     }
 
-    public static TaskTab setup() {
-        return new TaskTab()
+    public static TaskTab setup(PDFStorage pdfStorage) {
+        return new TaskTab(pdfStorage)
                 .setupLayout()
                 .setupVisuals()
                 .setupNested();

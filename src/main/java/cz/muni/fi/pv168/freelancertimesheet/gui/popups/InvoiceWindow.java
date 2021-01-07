@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
@@ -9,11 +10,14 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.InvoiceForm;
 import javax.swing.*;
 import java.awt.*;
 
+import java.util.List;
+
 public class InvoiceWindow extends JFrame implements GenericElement<InvoiceWindow> {
     private static final I18N i18n = new I18N(InvoiceWindow.class);
 
     private PDFStorage pdfStorage;
     private final AddAction.Callback callback;
+    private InvoiceForm invoiceForm;
 
     public InvoiceWindow(AddAction.Callback callback, PDFStorage pdfStorage) {
         super(i18n.getString("title"));
@@ -35,7 +39,7 @@ public class InvoiceWindow extends JFrame implements GenericElement<InvoiceWindo
 
     @Override
     public InvoiceWindow setupNested() {
-        InvoiceForm invoiceForm = InvoiceForm.setup(pdfStorage);
+        invoiceForm = InvoiceForm.setup(pdfStorage);
         invoiceForm.setConfirmCallback(
                 () -> {
                     if (callback != null) callback.call();
@@ -62,6 +66,12 @@ public class InvoiceWindow extends JFrame implements GenericElement<InvoiceWindo
         invoiceWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         invoiceWindow.pack();
         invoiceWindow.setVisible(true);
+        return invoiceWindow;
+    }
+
+    public static InvoiceWindow setup(AddAction.Callback callback, PDFStorage pdfStorage, List<Work> works) {
+        InvoiceWindow invoiceWindow = InvoiceWindow.setup(callback, pdfStorage);
+        invoiceWindow.invoiceForm.assignWorkSelection(works);
         return invoiceWindow;
     }
 }
