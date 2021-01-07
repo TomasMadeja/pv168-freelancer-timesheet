@@ -2,16 +2,20 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform.iWorkTypeSetter;
+import org.hibernate.criterion.Restrictions;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkType> {
+
+    private final I18N i18n = new I18N(getClass());
 
     private final iWorkTypeSetter workTypeSetter;
     private final WorkTypeContainer container;
@@ -19,7 +23,7 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
 
     protected FormModel.Callback confirmCallback;
 
-    private final JButton confirm = new JButton("Select Work Type");
+    private final JButton confirm = new JButton(i18n.getString("select"));
 
     public ChooseWorkType(iWorkTypeSetter workTypeSetter) {
         this.workTypeSetter = workTypeSetter;
