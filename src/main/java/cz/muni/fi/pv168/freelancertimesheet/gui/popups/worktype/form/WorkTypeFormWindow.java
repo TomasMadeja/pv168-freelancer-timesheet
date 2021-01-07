@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 
@@ -8,11 +9,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class WorkTypeFormWindow extends JFrame implements GenericElement<WorkTypeFormWindow> {
+
+    private static final I18N i18n = new I18N(WorkTypeFormWindow.class);
+
     private final AddAction.Callback callback;
     private WorkTypeContainer container;
 
     public WorkTypeFormWindow(AddAction.Callback callback, WorkTypeContainer container) {
-        super("WorkType");
+        super(i18n.getString("title"));
         this.callback = callback;
         this.container = container;
     }

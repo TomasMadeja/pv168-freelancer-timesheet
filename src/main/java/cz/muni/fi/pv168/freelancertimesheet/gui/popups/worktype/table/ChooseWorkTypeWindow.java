@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform.iWorkTypeSetter;
 
 import javax.swing.*;
@@ -8,10 +9,12 @@ import java.awt.*;
 
 public class ChooseWorkTypeWindow extends JFrame implements GenericElement<ChooseWorkTypeWindow> {
 
+    private static final I18N i18n = new I18N(ChooseWorkTypeWindow.class);
+
     private final iWorkTypeSetter workTypeSetter;
 
     public ChooseWorkTypeWindow(iWorkTypeSetter workTypeSetter) {
-        super("Choose Work Type");
+        super(i18n.getString("title"));
         this.workTypeSetter = workTypeSetter;
     }
 

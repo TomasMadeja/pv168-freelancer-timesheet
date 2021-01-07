@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.DeleteAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.ViewPDFAction;
@@ -16,6 +17,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class WorkTypeTable extends JPanel implements GenericElement<WorkTypeTable> {
+
+    private final I18N i18n = new I18N(getClass());
+
     private final WorkTypeContainer container;
     private JTable table;
 
@@ -95,7 +99,7 @@ public class WorkTypeTable extends JPanel implements GenericElement<WorkTypeTabl
         filterBar = new JToolBar();
         filterBar.setFloatable(false);
         filterBar.setRollover(true);
-        filterButton = new JButton("Search");
+        filterButton = new JButton(i18n.getString("search"));
         filterButton.addActionListener(
                 (ActionEvent e) -> {
                     filterButton.setEnabled(false);
@@ -122,7 +126,7 @@ public class WorkTypeTable extends JPanel implements GenericElement<WorkTypeTabl
         filterBar.add(filterButton);
         filterBar.addSeparator();
         workTypeName = new JTextField(100);
-        addFilter("Work Type Name:", workTypeName);
+        addFilter(i18n.getString("workTypeName"), workTypeName);
         return filterBar;
     }
 
