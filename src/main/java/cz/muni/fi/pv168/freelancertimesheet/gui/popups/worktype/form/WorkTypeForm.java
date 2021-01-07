@@ -4,6 +4,7 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.PersistanceManager;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
+import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.InvoiceContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
@@ -14,6 +15,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class WorkTypeForm extends FormModel {
+
+    private final I18N i18n = new I18N(getClass());
 
     private final JTextField nameTextField = new JTextField();
     private final JTextField rateTextField = new JTextField();
@@ -39,9 +42,9 @@ public class WorkTypeForm extends FormModel {
 
     @Override
     public WorkTypeForm setupNested() {
-        addRow(new JLabel("Name:"), nameTextField);
-        addRow(new JLabel("Hourly rate:"), rateTextField);
-        JLabel descriptionLabel = new JLabel("Description:");
+        addRow(new JLabel(i18n.getString("name")), nameTextField);
+        addRow(new JLabel(i18n.getString("rate")), rateTextField);
+        JLabel descriptionLabel = new JLabel(i18n.getString("description"));
         addRow(descriptionLabel, descriptionScrollPane);
         addConfirmButton();
         makeConfirmAddData();
@@ -57,7 +60,7 @@ public class WorkTypeForm extends FormModel {
             );
         }
         catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Invalid hourly rate, valid are only numbers and ',' for decimal numbers!", "Invalid hourly rate", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, i18n.getString("invHourlyRateMessage"), i18n.getString("invHourlyRateTitle"), JOptionPane.ERROR_MESSAGE);
             return null;
         }
     }
@@ -65,7 +68,7 @@ public class WorkTypeForm extends FormModel {
     private WorkType validateData(WorkType workType) {
         if (workType == null) return null;
         if (workType.getName().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Field name cannot be empty!", "Invalid name!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, i18n.getString("emptyNameMessage"), i18n.getString("emptyNameTitle"), JOptionPane.ERROR_MESSAGE);
             return null;
         }
         return workType;
