@@ -114,5 +114,52 @@ public class WorkTypeTests {
         Assertions.assertEquals(referenceWorkTypes, result);
     }
 
+    @Test
+    public void testWorkTypeImplRemoveMany() {
+        var workTypesToRemove = generateWorkTypes(10);
+        for (var workTypeToRemove:
+             workTypesToRemove) {
+            PersistanceManager.persistWorkType(workTypeToRemove);
+        }
+        var workTypes = generateWorkTypes(10);
+        var referenceWorkTypes = makeCopyOfWorkTypes(workTypes);
+        for (var workType:
+                workTypes) {
+            PersistanceManager.persistWorkType(workType);
+        }
+        PersistanceManager.removeCollection(workTypesToRemove);
+        var result = PersistanceManager.getAllWorkType();
+        Collections.sort(referenceWorkTypes);
+        Collections.sort(result);
+        Assertions.assertEquals(referenceWorkTypes, result);
+    }
 
+    @Test
+    public void testWorkTypeRemoveNotPersisted() {
+        var workType = generateWorkType();
+        Assertions.assertEquals(PersistanceManager.getAllWorkType().size(), 0);
+        Assertions.assertDoesNotThrow(() -> PersistanceManager.removeEntity(workType));
+    }
+
+    @Test
+    public void testWorkTypePersistsTwoIdentical() {
+        var workType = generateWorkType();
+        var referenceWorkType = makeCopyOfWorkType(workType);
+        var copyOfWorkType = makeCopyOfWorkType(workType);
+        PersistanceManager.persistWorkType(workType);
+        Assertions.assertDoesNotThrow(() -> PersistanceManager.persistWorkType(copyOfWorkType));
+        Assertions.assertEquals(List.of(referenceWorkType, referenceWorkType), PersistanceManager.getAllWorkType());
+    }
+
+    @Test
+    public void testWorkTypeEdit() {
+        var workType = generateWorkType();
+        PersistanceManager.persistWorkType(workType);
+        var workTypeEdits = generateWorkType();
+        workType.setName(workTypeEdits.getName());
+        workType.setDescription(workTypeEdits.getDescription());
+        workType.setHourlyRate(workTypeEdits.getHourlyRate());
+        PersistanceManager.persistWorkType(workType);
+        Assertions.assertEquals(List.of(workTypeEdits), PersistanceManager.getAllWorkType());
+    }
 }
