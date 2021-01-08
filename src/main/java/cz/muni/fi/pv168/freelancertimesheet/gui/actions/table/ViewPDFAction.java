@@ -4,7 +4,6 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.backend.exceptions.OpeningPDFReaderException;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
-import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 
 import javax.swing.*;
@@ -32,6 +31,9 @@ public class ViewPDFAction extends AbstractAction{
     public void actionPerformed(ActionEvent e) {
         var tableModel = (TableModel) table.getModel();
         int index = table.getSelectedRow();
+        if (index == -1) { // ignore action when no row is selected
+            return;
+        }
         Invoice invoice = (Invoice) tableModel.getRow(index);
         try {
             pdFStorage.openInDesktop(invoice.getPdfPath());
