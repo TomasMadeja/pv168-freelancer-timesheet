@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform.WorkFormWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.InvoiceForm;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task.TaskTable;
@@ -13,16 +14,15 @@ public class TasksPopup extends JFrame implements GenericElement<TasksPopup> {
     InvoiceForm invoiceForm;
     JPanel innerPanel;
 
-    public TasksPopup() {
-        super();
-    }
+    private final PDFStorage pdfStorage;
 
-    public TasksPopup(String title) {
+    public TasksPopup(String title, PDFStorage pdfStorage) {
         super(title);
+        this.pdfStorage = pdfStorage;
     }
 
-    public static TasksPopup setup(InvoiceForm invoiceForm) {
-        TasksPopup frame = new TasksPopup("Tasks");
+    public static TasksPopup setup(InvoiceForm invoiceForm, PDFStorage pdfStorage) {
+        TasksPopup frame = new TasksPopup("Tasks", pdfStorage);
         frame
                 .setupLayout()
                 .setupVisuals()
@@ -52,7 +52,7 @@ public class TasksPopup extends JFrame implements GenericElement<TasksPopup> {
         WorkFormWindow workFormWindow = WorkFormWindow.setup(null, null);
         innerPanel.add(workFormWindow);
 
-        TaskTable taskTable = TaskTable.setup();
+        TaskTable taskTable = TaskTable.setup(pdfStorage);
         innerPanel.add(taskTable);
 
         JButton btn = new JButton("Add selected");

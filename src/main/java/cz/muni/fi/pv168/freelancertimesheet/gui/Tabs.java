@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Tabs extends JTabbedPane implements GenericElement {
-    private PDFStorage pdfStorage;
+    private final PDFStorage pdfStorage;
 
     public Tabs(int tabsPosition, int tabsBehaviour, PDFStorage pdfStorage) {
         super(tabsPosition, tabsBehaviour);
@@ -29,7 +29,7 @@ public class Tabs extends JTabbedPane implements GenericElement {
 
     @Override
     public Tabs setupNested() {
-        var taskPanel = TaskTab.setup();
+        var taskPanel = TaskTab.setup(pdfStorage);
         var invoicePanel = InvoiceTab.setup(pdfStorage);
         var workTypeTab  = WorkTypeTab.setup();
 

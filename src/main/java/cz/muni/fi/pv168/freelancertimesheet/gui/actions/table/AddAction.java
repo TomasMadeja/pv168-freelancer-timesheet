@@ -29,6 +29,16 @@ public class AddAction extends AbstractAction {
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
     }
 
+    public AddAction(String name, JTable table, FormBuilder form, Callback successCallback) {
+        super(name);
+        this.table = table;
+        this.form = form;
+        this.successCallback = successCallback;
+        putValue(SHORT_DESCRIPTION, i18n.getString("shortDescription"));
+        putValue(MNEMONIC_KEY, KeyEvent.VK_A);
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         form.build(table, successCallback);

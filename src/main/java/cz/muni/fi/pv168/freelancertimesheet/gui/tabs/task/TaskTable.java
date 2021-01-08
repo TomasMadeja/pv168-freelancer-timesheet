@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.task;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.DBConnectionUtils;
+import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
@@ -10,6 +11,7 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.DeleteAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTableModel;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform.WorkFormWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeFormWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.InvoiceTable;
@@ -18,6 +20,7 @@ import javax.persistence.EntityManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskTable extends JPanel implements GenericElement<TaskTable> {
@@ -33,14 +36,17 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
     private JTextField workName;
     private JTextField workTypeName;
 
+    private final PDFStorage pdfStorage;
+
     public int GetSelectedTasksCount() {
         return table.getSelectedRows().length;
     }
 
-    public TaskTable() {
+    public TaskTable(PDFStorage pdfStorage) {
         super();
         container = new WorkContainer();
         model = new WorkTableModel(container);
+        this.pdfStorage = pdfStorage;
     }
 
     private TaskTable addFilter(String title, Component inputField) {
@@ -111,6 +117,21 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
         toolbar.addSeparator();
         toolbar.add(Box.createHorizontalGlue());
+        var addInvoiceButton = new AddAction(
+                i18n.getString("addInvoiceButton"),
+                table,
+                (JTable table, AddAction.Callback callback) -> {
+                    List<Work> selected = new ArrayList<>();
+                    for (int i : table.getSelectedRows()) {
+                        selected.add((WorkImpl) container.get(i));
+                    }
+                    InvoiceWindow.setup(callback, pdfStorage, selected);
+                    },
+                () -> {
+                    ((TableModel) table.getModel()).fireTableDataChanged();
+                }
+        );
+        toolbar.add(addInvoiceButton);
 
         return toolbar;
     }
@@ -157,15 +178,15 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     @Override
     public TaskTable setupNested() {
+        this.add(new JScrollPane(createTable()), BorderLayout.CENTER);
         this.add(createTableButtonPanel(), BorderLayout.BEFORE_FIRST_LINE);
 
         // table needs to be wrapped in JScrollPane in order to show column names
-        this.add(new JScrollPane(createTable()), BorderLayout.CENTER);
         return this;
     }
 
-    public static TaskTable setup() {
-        return new TaskTable()
+    public static TaskTable setup(PDFStorage pdfStorage) {
+        return new TaskTable(pdfStorage)
                 .setupLayout()
                 .setupVisuals()
                 .setupNested();

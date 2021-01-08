@@ -61,7 +61,7 @@ public class InvoiceForm extends FormModel {
         return panel;
     }
 
-    private InvoiceForm assignWorkSelection(List<Work> selectedWorksData) {
+    public InvoiceForm assignWorkSelection(List<Work> selectedWorksData) {
         this.selectedWorksData = selectedWorksData;
         selectedWorks.setText(i18n.getString("selectedWork") + " " + selectedWorksData.size());
         BigDecimal sum = BigDecimal.ZERO;

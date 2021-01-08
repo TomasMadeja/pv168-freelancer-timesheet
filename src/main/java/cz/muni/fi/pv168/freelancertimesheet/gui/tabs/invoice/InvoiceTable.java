@@ -28,7 +28,7 @@ public class InvoiceTable extends JPanel implements GenericElement {
     private JToolBar toolbar;
     private JToolBar filterBar;
     private InvoiceContainer container;
-    private PDFStorage pdfStorage;
+    private final PDFStorage pdfStorage;
 
     private AbstractAction addButton;
     private AbstractAction deleteButton;
