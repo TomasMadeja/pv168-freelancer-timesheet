@@ -62,21 +62,6 @@ public class InvoiceTests {
         FileUtils.deleteDirectory(pdfStorageDir.toFile());
     }
 
-    private <T> void persistCollection(Collection<T> records) {
-        var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
-        try {
-            entityManager.getTransaction().begin();
-            for (T record : records) {
-                entityManager.persist(record);
-            }
-            entityManager.flush();
-            entityManager.getTransaction().commit();
-            entityManager.clear();
-        } finally {
-            entityManager.close();
-        }
-    }
-
     private List<WorkType> prepareWorkTypes() {
 
         List<WorkType> collection = new ArrayList<>();
@@ -100,7 +85,10 @@ public class InvoiceTests {
 
     private List<WorkType> addWorkTypes() {
         var wt = prepareWorkTypes();
-        persistCollection(wt);
+        for (var workType:
+             wt) {
+            PersistanceManager.persistWorkType(workType);
+        }
         return wt;
     }
 
@@ -140,7 +128,10 @@ public class InvoiceTests {
 
     private List<Work> addWork() {
         var w = prepareWork();
-        persistCollection(prepareWork());
+        for (var work:
+             w) {
+            PersistanceManager.persistWork(work);
+        }
         return w;
     }
 
@@ -187,7 +178,10 @@ public class InvoiceTests {
     @Test
     public void TestInvoiceAdd() {
         var invoices = prepareInvoice();
-        persistCollection(invoices);
+        for (var invoice :
+                invoices) {
+            PersistanceManager.persistInvoice(invoice);
+        }
         List<InvoiceImpl> result = (List<InvoiceImpl>)PersistanceManager.getAllInvoice();
         Collections.sort(invoices);
         Collections.sort(result);
@@ -197,12 +191,23 @@ public class InvoiceTests {
     @Test
     public void TestInvoiceDelete() {
         var invoices = prepareInvoice();
-        persistCollection(invoices);
-        List<InvoiceImpl> results = (List<InvoiceImpl>)PersistanceManager.getAllInvoice();
-        InvoiceImpl toDelete = results.get(0);
+        InvoiceImpl toDelete = invoices.get(0);
+        PersistanceManager.persistInvoice(toDelete);
         PersistanceManager.removeEntity(toDelete);
         List<InvoiceImpl> result = (List<InvoiceImpl>)PersistanceManager.getAllInvoice(toDelete.getClient().getICO(), toDelete.getClient().getDIC());
         Assertions.assertEquals(0, result.size());
+    }
+
+    @Test
+    public void TestInvoiceGeneratedPdf() throws IOException, URISyntaxException {
+        var invoices = prepareInvoice();
+        InvoiceImpl generatedPdf = invoices.get(0);
+        PDFStorage storage = new PDFStorage(Path.of("testPdfStorage/"));
+        PersistanceManager.generateAndPersistInvoice(generatedPdf, storage);
+        List<InvoiceImpl> result = (List<InvoiceImpl>)PersistanceManager.getAllInvoice();
+        Assertions.assertEquals(1, result.size());
+        Path pdfPath = storage.fetchFile(result.get(0));
+        Assertions.assertTrue(pdfPath.toFile().exists());
     }
 
     @Test
@@ -212,8 +217,7 @@ public class InvoiceTests {
         File file = Paths.get(tmp).toFile();
         try (
                 BufferedInputStream br = new BufferedInputStream(new FileInputStream(file))
-        )
-        {
+        ) {
             String contents = new String(br.readAllBytes(), StandardCharsets.UTF_8);
             Path newPath = pdfStorage.generateNewOutputPath();
             PDFGenerator.savePDF(contents, newPath.toAbsolutePath().toString());
