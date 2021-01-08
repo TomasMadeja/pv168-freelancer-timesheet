@@ -2,6 +2,7 @@ package cz.muni.fi.pv168.freelancertimesheet.backend;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
+import org.hibernate.PropertyValueException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.AfterEach;
@@ -27,26 +28,8 @@ public class WorkTypeTests {
             session.createSQLQuery("DELETE FROM works").executeUpdate();
             session.createSQLQuery("DELETE FROM work_types").executeUpdate();
             session.getTransaction().commit();
+            session.clear();
         }
-    }
-
-    private WorkType generateWorkType() {
-        var names = new String[]{"Programming", "Writing", "Graphical Design", "Sleeping", "Playing video games", "Eating"};
-        var places = new String[]{"at home", "at work", "at park", "in bed", "on remote island", "under a bridge"};
-        int num1 = rand.nextInt(6);
-        int num2 = rand.nextInt(6);
-        double num3 = rand.nextInt(10000) / 100.0;
-        var workType= new WorkTypeImpl();
-        workType.setName(names[num1]).setDescription(names[num1]+ " " + places[num2]).setHourlyRate(BigDecimal.valueOf(num3));
-        return workType;
-    }
-
-    private List<WorkType> generateWorkTypes(int n) {
-        var workTypes = new ArrayList<WorkType>();
-        for (int i = 0; i < n; i++) {
-            workTypes.add(generateWorkType());
-        }
-        return workTypes;
     }
 
     private WorkType makeCopyOfWorkType(WorkType orig) {
@@ -67,8 +50,8 @@ public class WorkTypeTests {
 
     @Test
     public void testWorkTypeImplPersist() {
-        var workType = generateWorkType();
-        var referenceWorkType = makeCopyOfWorkType(workType);
+        var workType = WorkTypeImpl.createWorkType("test", "test", "102.02");
+        var referenceWorkType = WorkTypeImpl.createWorkType("test", "test", "102.02");
         PersistanceManager.persistWorkType(workType);
         var result = PersistanceManager.getAllWorkType();
         Assertions.assertEquals(result, List.of(referenceWorkType));
@@ -76,7 +59,10 @@ public class WorkTypeTests {
 
     @Test
     public void testWorkTypeImplPersistMultiple() {
-        var workTypes = generateWorkTypes(10);
+        var workTypes = List.of(
+                WorkTypeImpl.createWorkType("test1", "test2", "42"),
+                WorkTypeImpl.createWorkType("test2", "test2", "69")
+        );
         var referenceWorkTypes = makeCopyOfWorkTypes(workTypes);
         for (var workType:
              workTypes) {
@@ -90,7 +76,7 @@ public class WorkTypeTests {
 
     @Test
     public void testWorkTypeImplRemove() {
-        var workType = generateWorkType();
+        var workType = WorkTypeImpl.createWorkType("test", "test", "102.02");
         PersistanceManager.persistWorkType(workType);
         PersistanceManager.removeEntity(workType);
         var result = PersistanceManager.getAllWorkType();
@@ -99,9 +85,12 @@ public class WorkTypeTests {
 
     @Test
     public void testWorkTypeImplRemoveOneOutOfMany() {
-        var workTypeToRemove = generateWorkType();
+        var workTypeToRemove = WorkTypeImpl.createWorkType("test", "test", "102.02");
         PersistanceManager.persistWorkType(workTypeToRemove);
-        var workTypes = generateWorkTypes(10);
+        var workTypes = List.of(
+                WorkTypeImpl.createWorkType("test1", "test2", "42"),
+                WorkTypeImpl.createWorkType("test2", "test2", "69")
+        );
         var referenceWorkTypes = makeCopyOfWorkTypes(workTypes);
         for (var workType:
                 workTypes) {
@@ -116,12 +105,18 @@ public class WorkTypeTests {
 
     @Test
     public void testWorkTypeImplRemoveMany() {
-        var workTypesToRemove = generateWorkTypes(10);
+        var workTypesToRemove = List.of(
+                WorkTypeImpl.createWorkType("test1", "test2", "42"),
+                WorkTypeImpl.createWorkType("test2", "test2", "69")
+        );;
         for (var workTypeToRemove:
              workTypesToRemove) {
             PersistanceManager.persistWorkType(workTypeToRemove);
         }
-        var workTypes = generateWorkTypes(10);
+        var workTypes = List.of(
+                WorkTypeImpl.createWorkType("test3", "test3", "424"),
+                WorkTypeImpl.createWorkType("test4", "test4", "694")
+        );;
         var referenceWorkTypes = makeCopyOfWorkTypes(workTypes);
         for (var workType:
                 workTypes) {
@@ -136,15 +131,15 @@ public class WorkTypeTests {
 
     @Test
     public void testWorkTypeRemoveNotPersisted() {
-        var workType = generateWorkType();
+        var workType = WorkTypeImpl.createWorkType("test", "test", "102.02");
         Assertions.assertEquals(PersistanceManager.getAllWorkType().size(), 0);
         Assertions.assertDoesNotThrow(() -> PersistanceManager.removeEntity(workType));
     }
 
     @Test
     public void testWorkTypePersistsTwoIdentical() {
-        var workType = generateWorkType();
-        var referenceWorkType = makeCopyOfWorkType(workType);
+        var workType = WorkTypeImpl.createWorkType("test", "test", "102.02");
+        var referenceWorkType = WorkTypeImpl.createWorkType("test", "test", "102.02");
         var copyOfWorkType = makeCopyOfWorkType(workType);
         PersistanceManager.persistWorkType(workType);
         Assertions.assertDoesNotThrow(() -> PersistanceManager.persistWorkType(copyOfWorkType));
@@ -153,13 +148,38 @@ public class WorkTypeTests {
 
     @Test
     public void testWorkTypeEdit() {
-        var workType = generateWorkType();
+        var workType = WorkTypeImpl.createWorkType("test", "test", "102.02");
         PersistanceManager.persistWorkType(workType);
-        var workTypeEdits = generateWorkType();
+        var workTypeEdits = WorkTypeImpl.createWorkType("test2", "test2", "42");
         workType.setName(workTypeEdits.getName());
         workType.setDescription(workTypeEdits.getDescription());
         workType.setHourlyRate(workTypeEdits.getHourlyRate());
         PersistanceManager.persistWorkType(workType);
         Assertions.assertEquals(List.of(workTypeEdits), PersistanceManager.getAllWorkType());
     }
+
+    @Test
+    public void testWorkTypePersistEmptyName() {
+        var workType = new WorkTypeImpl();
+        workType.setDescription("test");
+        workType.setHourlyRate("1");
+        Assertions.assertThrows(PropertyValueException.class, () -> PersistanceManager.persistWorkType(workType));
+    }
+
+    @Test
+    public void testWorkTypePersistEmptyDescription() {
+        var workType = new WorkTypeImpl();
+        workType.setName("test");
+        workType.setHourlyRate("1");
+        Assertions.assertThrows(PropertyValueException.class, () -> PersistanceManager.persistWorkType(workType));
+    }
+
+    @Test
+    public void testWorkTypePersistEmptyBigDecimal() {
+        var workType = new WorkTypeImpl();
+        workType.setDescription("test");
+        workType.setName("testy");
+        Assertions.assertThrows(PropertyValueException.class, () -> PersistanceManager.persistWorkType(workType));
+    }
+
 }
