@@ -141,6 +141,12 @@ public class InvoiceTests {
                 "CZ123123123",
                 "",
                 ""));
+        ClientImpl client2 = ((ClientImpl) ClientImpl.createEntity("Client1",
+                "Client Address, 00000 Place, Country",
+                "42069",
+                "123654789",
+                "",
+                ""));
         IssuerImpl issuer = ((IssuerImpl) IssuerImpl.createEntity(
                 "Issuer1",
                 "Issuer Address, 00000 Place, Country",
@@ -157,7 +163,7 @@ public class InvoiceTests {
                 works
         ));
         collection.add((InvoiceImpl) InvoiceImpl.createInvoice(
-                client,
+                client2,
                 issuer,
                 ZonedDateTime.parse("2000-04-08 08:30 +0000", formatter),
                 ZonedDateTime.parse("2000-05-08 08:30 +0000", formatter),
