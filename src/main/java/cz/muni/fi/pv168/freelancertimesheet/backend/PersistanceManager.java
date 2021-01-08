@@ -6,8 +6,10 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Issuer;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.InvoiceImpl;
+import org.hibernate.PersistentObjectException;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -160,7 +162,7 @@ public class PersistanceManager {
         entityManager.getTransaction().begin();
         try {
             entityManager.persist(entity);
-        } catch (EntityExistsException e) {
+        } catch (PersistenceException e) {
             entityManager.merge(entity);
         }
         entityManager.flush();
