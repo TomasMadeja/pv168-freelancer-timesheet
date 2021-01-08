@@ -152,13 +152,28 @@ public class WorkTests {
 
     @Test
     public void testCreateWork() {
-        String name = "";
-        String description = "";
-        String hourlyRate = "";
+        String name = "WorkName";
+        String description = "WorkDesc";
+        ZonedDateTime startTime = ZonedDateTime.parse("2011-11-07T10:07:30+01:00");
+        ZonedDateTime endTime = ZonedDateTime.parse("2011-11-07T10:07:30+01:00");
         var workType = WorkTypeImpl.createWorkType(
             "TestType1",
             "Test description 1.",
             "0.5"
         );
+        var work = WorkImpl.createWork(name, description, startTime, endTime, workType);
+        PersistanceManager.persistWorkType(workType);
+        PersistanceManager.persistWork(work);
+        var workCollection = PersistanceManager.getAllWork();
+        Assertions.assertEquals(workCollection.size(), 1);
+        var record = workCollection.get(0);
+        Assertions.assertEquals(record, work);
+        Assertions.assertNotSame(record, work);
+        Assertions.assertEquals(record.compareTo(work), 0);
+        Assertions.assertEquals(record.getName(), name);
+        Assertions.assertEquals(record.getDescription(), description);
+        Assertions.assertEquals(record.getStartTime().toInstant(), startTime.toInstant());
+        Assertions.assertEquals(record.getEndTime().toInstant(), endTime.toInstant());
+        Assertions.assertEquals(record.getWorkType(), workType);
     }
 }

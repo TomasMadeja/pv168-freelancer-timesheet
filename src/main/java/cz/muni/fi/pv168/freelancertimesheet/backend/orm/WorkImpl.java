@@ -164,8 +164,8 @@ public class WorkImpl implements Work {
         WorkImpl t = (WorkImpl) o;
         return name.compareTo(t.name) +
                 description.compareTo(t.description) +
-                startTime.compareTo(t.startTime) +
-                endTime.compareTo(t.endTime) +
+                startTime.toInstant().compareTo(t.startTime.toInstant()) +
+                endTime.toInstant().compareTo(t.endTime.toInstant()) +
                 workType.compareTo(t.workType);
     }
 
