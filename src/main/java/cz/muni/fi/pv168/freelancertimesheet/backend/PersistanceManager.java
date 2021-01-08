@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Issuer;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.InvoiceImpl;
+import org.hibernate.ejb.HibernateEntityManager;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.Query;
@@ -156,41 +157,50 @@ public class PersistanceManager {
     }
 
     private static void persistEntity(Object entity) {
-        var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
-        entityManager.getTransaction().begin();
-        try {
-            entityManager.persist(entity);
-        } catch (EntityExistsException e) {
-            entityManager.merge(entity);
-        }
-        entityManager.flush();
-        entityManager.getTransaction().commit();
-        entityManager.clear();
+        var session = DBConnectionUtils.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        session.saveOrUpdate(entity);
+        session.flush();
+        session.getTransaction().commit();
+        session.clear();
     }
 
+//    private static void persistEntity(Object entity) {
+//        var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
+//        entityManager.getTransaction().begin();
+//        try {
+//            entityManager.persist(entity);
+//        } catch (EntityExistsException e) {
+//            var newEntity = entityManager.merge(entity);
+//            entityManager.flush();
+//            entityManager.merge(entity);
+//            entityManager.flush();
+//        } catch (javax.persistence.PersistenceException e) {
+//            var newEntity = entityManager.merge(entity);
+//            entityManager.flush();
+//            entityManager.merge(entity);
+//            entityManager.flush();
+//        }
+//        entityManager.flush();
+//        entityManager.getTransaction().commit();
+//        entityManager.clear();
+//    }
+
     private static <T> void persistCollection(Collection<T> records) {
-        var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
-        entityManager.getTransaction().begin();
+        var session = DBConnectionUtils.getSessionFactory().openSession();
+        session.getTransaction().begin();
         for (T record : records) {
-            try {
-                entityManager.persist(record);
-            } catch (EntityExistsException e) {
-                entityManager.merge(record);
-            }
+            session.saveOrUpdate(record);
         }
-        entityManager.flush();
-        entityManager.getTransaction().commit();
-        entityManager.clear();
+        session.flush();
+        session.getTransaction().commit();
+        session.clear();
     }
 
     public static void removeEntity(Object entity) {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
-        try {
-            entityManager.remove(entity);
-        } catch (EntityExistsException e) {
-            entityManager.remove(entityManager.merge(entity));
-        }
+        entityManager.remove(entity);
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.clear();
@@ -200,11 +210,7 @@ public class PersistanceManager {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
         for (T record : records) {
-            try {
-                entityManager.remove(record);
-            } catch (EntityExistsException e) {
-                entityManager.remove(entityManager.merge(record));
-            }
+            entityManager.remove(record);
         }
         entityManager.flush();
         entityManager.getTransaction().commit();
