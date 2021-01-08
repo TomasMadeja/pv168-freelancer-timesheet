@@ -1,8 +1,11 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
+import cz.muni.fi.pv168.freelancertimesheet.backend.PersistanceManager;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Issuer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
+import cz.muni.fi.pv168.freelancertimesheet.gui.popups.issuer.form.IssuerFormWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform.WorkFormWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeFormWindow;
 
@@ -49,6 +52,7 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
         var fileMenu = new JMenu(i18n.getString("file"));
         var taskMenu = new JMenu(i18n.getString("work"));
         var invoiceMenu = new JMenu(i18n.getString("invoice"));
+        var settingsMenu = new JMenu(i18n.getString("settings"));
 
         var quitItem = new JMenuItem(i18n.getString("quit"));
         quitItem.addActionListener(e -> this.dispose());
@@ -60,6 +64,27 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
         var newInvoiceItem = new JMenuItem(i18n.getString("newInvoice"));
         newInvoiceItem.addActionListener(e -> InvoiceWindow.setup(null, pdfStorage));
 
+        var issuerSettings = new JMenuItem(i18n.getString("issuerInfo"));
+        issuerSettings.addActionListener(e -> {
+                new SwingWorker<Issuer, Void>() {
+                    @Override
+                    public Issuer doInBackground() {
+                        var issuers = PersistanceManager.getAllIssuer();
+                        return issuers.size() > 0 ? issuers.get(0) : null;
+                    }
+
+                    @Override
+                    protected void done() {
+                        try {
+                            var issuer = this.get();
+                            IssuerFormWindow.setup(null, issuer);
+                        } catch (Exception ignore) {
+                        }
+                    }
+                }.execute();
+            }
+        );
+
 
         fileMenu.addSeparator();
         fileMenu.add(quitItem);
@@ -69,9 +94,12 @@ public class MainWindow extends JFrame implements GenericElement<MainWindow> {
 
         invoiceMenu.add(newInvoiceItem);
 
+        settingsMenu.add(issuerSettings);
+
         menuBar.add(fileMenu);
         menuBar.add(taskMenu);
         menuBar.add(invoiceMenu);
+        menuBar.add(settingsMenu);
 
         return menuBar;
 

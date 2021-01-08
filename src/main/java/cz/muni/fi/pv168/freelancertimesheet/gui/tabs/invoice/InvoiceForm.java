@@ -126,12 +126,7 @@ public class InvoiceForm extends FormModel {
                 phoneNumber.getText(),
                 email.getText());
         //TODO: add issuer info
-        Issuer issuer = (Issuer) IssuerImpl.createEntity(
-                clientName.getText(),
-                clientAddress.getText(),
-                ico.getText(), dic.getText(),
-                phoneNumber.getText(),
-                email.getText());
+        Issuer issuer = null;
         ZonedDateTime issueDate = ((DatePicker) inputFields.get(6)).getDate().atStartOfDay(ZoneId.systemDefault());
         ZonedDateTime dueDate = ((DatePicker) inputFields.get(7)).getDate().atStartOfDay(ZoneId.systemDefault());
         return InvoiceImpl.createInvoice(client, issuer, issueDate, dueDate, selectedWorksData);
@@ -142,6 +137,7 @@ public class InvoiceForm extends FormModel {
     }
 
     private void addDataToDatabase(Invoice invoice) throws IOException, URISyntaxException {
+        invoice.setIssuer(PersistanceManager.getAllIssuer().get(0));
         validateData(invoice);
         PersistanceManager.generateAndPersistInvoice(invoice, pdfStorage);
     }
