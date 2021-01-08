@@ -42,7 +42,7 @@ public class WorkTypeImpl implements WorkType, Comparable {
     private String description;
 
     @Column(name = "hourly_rate", nullable=false)
-    private BigDecimal hourlyRate;
+    private String hourlyRate;
 
     @OneToMany(mappedBy="workType")
     private Collection<WorkImpl> works;
@@ -81,12 +81,12 @@ public class WorkTypeImpl implements WorkType, Comparable {
 
     @Override
     public BigDecimal getHourlyRate() {
-        return hourlyRate;
+        return new BigDecimal(hourlyRate);
     }
 
     @Override
     public WorkType setHourlyRate(BigDecimal hourlyRate) {
-        this.hourlyRate = hourlyRate;
+        this.hourlyRate = hourlyRate.toString();
         return this;
     }
 

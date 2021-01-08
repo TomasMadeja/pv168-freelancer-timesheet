@@ -63,7 +63,7 @@ public class InvoiceImpl implements Invoice {
     private ClientImpl client;
 
     @Column(name = "total_amount", nullable=false)
-    private BigDecimal totalAmount;
+    private String totalAmount;
 
     @Column(name = "pdf_path", nullable=true)
     private String pdfPath;
@@ -75,7 +75,7 @@ public class InvoiceImpl implements Invoice {
         this.issuer = issuer;
         this.client = client;
 
-        this.totalAmount = BigDecimal.ZERO;
+        this.totalAmount = "0";
         setWorks(works);
     }
 
@@ -86,7 +86,7 @@ public class InvoiceImpl implements Invoice {
         this.issuer = null;
         this.client = null;
 
-        this.totalAmount = BigDecimal.ZERO;
+        this.totalAmount = "0";
     }
 
     @Override
@@ -169,7 +169,7 @@ public class InvoiceImpl implements Invoice {
     @Override
     public Invoice addWork(Work work) {
         this.works.add((WorkImpl) work);
-        this.totalAmount = this.totalAmount.add(work.getCost());
+        this.totalAmount = new BigDecimal(this.totalAmount).add(work.getCost()).toString();
         return this;
     }
 
@@ -185,7 +185,7 @@ public class InvoiceImpl implements Invoice {
 
     @Override
     public BigDecimal getTotalAmount() {
-        return totalAmount;
+        return new BigDecimal(totalAmount);
     }
 
     @Override
