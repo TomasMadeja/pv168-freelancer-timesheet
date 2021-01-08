@@ -1,7 +1,9 @@
 package cz.muni.fi.pv168.freelancertimesheet.backend;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Client;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
+import cz.muni.fi.pv168.freelancertimesheet.backend.orm.ClientImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 
@@ -109,4 +111,40 @@ public class SampleDataGenerator {
         return new GenerateWorkResult(workTypes, collection);
     }
 
+
+    public static List<Client> generateClients() {
+        List<Client> collection = new ArrayList<>();
+        collection.add(
+                (Client) ClientImpl.createEntity(
+                        "Name1",
+                        "Address1",
+                        "12345678",
+                        "CZ12345678",
+                        "+421090111222",
+                        "mail1@mail.com"
+                )
+        );
+        collection.add(
+                (Client) ClientImpl.createEntity(
+                        "Name2",
+                        "Address2",
+                        "22345678",
+                        "CZ22345678",
+                        "+421090111222",
+                        "mail2@mail.com"
+                )
+        );
+        collection.add(
+                (Client) ClientImpl.createEntity(
+                        "Name3",
+                        "Address3",
+                        "32345678",
+                        "CZ32345678",
+                        "+423090111222",
+                        "mail3@mail.com"
+                )
+        );
+        PersistanceManager.persistCollection(collection);
+        return collection;
+    }
 }

@@ -157,7 +157,7 @@ public class PersistanceManager {
         persistInvoice(invoice);
     }
 
-    private static void persistEntity(Object entity) {
+    public static void persistEntity(Object entity) {
         var session = DBConnectionUtils.getSessionFactory().openSession();
         try {
             session.getTransaction().begin();
@@ -192,7 +192,7 @@ public class PersistanceManager {
 //        entityManager.clear();
 //    }
 
-    private static <T> void persistCollection(Collection<T> records) {
+    public static <T> void persistCollection(Collection<T> records) {
         var session = DBConnectionUtils.getSessionFactory().openSession();
         session.getTransaction().begin();
         for (T record : records) {
