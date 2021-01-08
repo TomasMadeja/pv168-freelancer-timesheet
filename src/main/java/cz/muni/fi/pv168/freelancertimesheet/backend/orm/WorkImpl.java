@@ -164,26 +164,9 @@ public class WorkImpl implements Work {
         WorkImpl t = (WorkImpl) o;
         return name.compareTo(t.name) +
                 description.compareTo(t.description) +
-                startTime.compareTo(t.startTime) +
-                endTime.compareTo(t.endTime) +
+                startTime.toInstant().compareTo(t.startTime.toInstant()) +
+                endTime.toInstant().compareTo(t.endTime.toInstant()) +
                 workType.compareTo(t.workType);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WorkImpl work = (WorkImpl) o;
-        return name.equals(work.name) &&
-                startTime.isEqual(work.startTime) &&
-                endTime.isEqual(work.endTime) &&
-                description.equals(work.description) &&
-                workType.equals(work.workType);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, startTime, endTime, description, workType);
     }
 
     public BigDecimal getHours() {
@@ -235,5 +218,25 @@ public class WorkImpl implements Work {
         validateName(name);
         validateDescription(description);
         validateWorkType(workType);
+        validateStartTime(startTime);
+        validateEndTime(endTime);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WorkImpl work = (WorkImpl) o;
+        return id == work.id &&
+                Objects.equals(name, work.name) &&
+                startTime.toInstant().equals(work.startTime.toInstant()) &&
+                endTime.toInstant().equals(work.endTime.toInstant()) &&
+                Objects.equals(description, work.description) &&
+                Objects.equals(workType, work.workType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, startTime.toInstant(), endTime.toInstant(), description, workType);
     }
 }

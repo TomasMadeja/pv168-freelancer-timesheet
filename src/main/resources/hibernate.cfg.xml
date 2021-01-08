@@ -12,7 +12,7 @@
             jdbc:derby:resources/dbDerby;create=true
         </property>
         <!-- JDBC connection pool (use the built-in) -->
-        <property name="connection.pool_size">1</property>
+        <property name="connection.pool_size">10</property>
         <!-- SQL dialect -->
         <property name="hibernate.connection.autocommit">true</property>
         <property name="dialect">
