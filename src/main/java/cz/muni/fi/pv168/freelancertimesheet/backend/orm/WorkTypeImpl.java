@@ -31,10 +31,6 @@ public class WorkTypeImpl implements WorkType, Comparable {
     @Column(name = "id")
     private int id;
 
-    public int getId() {
-        return id;
-    }
-
     @Column(name = "name", nullable=false)
     private String name;
 
@@ -132,7 +128,8 @@ public class WorkTypeImpl implements WorkType, Comparable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WorkTypeImpl workType = (WorkTypeImpl) o;
-        return Objects.equals(name, workType.name) &&
+        return Objects.equals(id, workType.id) &&
+                Objects.equals(name, workType.name) &&
                 Objects.equals(description, workType.description) &&
                 (new BigDecimal(hourlyRate)).compareTo(new BigDecimal(workType.hourlyRate)) == 0;
     }
@@ -146,6 +143,7 @@ public class WorkTypeImpl implements WorkType, Comparable {
     public int compareTo(Object o) {
         WorkTypeImpl t = (WorkTypeImpl) o;
         int i;
+        if ((i = Integer.compare(id, t.id)) != 0) return i;
         if ((i = name.compareTo(t.name)) != 0) return i;
         if ((i = description.compareTo(t.description)) != 0) return i;
         return (new BigDecimal(hourlyRate)).compareTo(new BigDecimal(t.hourlyRate).stripTrailingZeros());
