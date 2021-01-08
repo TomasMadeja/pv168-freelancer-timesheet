@@ -158,11 +158,16 @@ public class PersistanceManager {
 
     private static void persistEntity(Object entity) {
         var session = DBConnectionUtils.getSessionFactory().openSession();
-        session.getTransaction().begin();
-        session.saveOrUpdate(entity);
-        session.flush();
-        session.getTransaction().commit();
-        session.clear();
+        try {
+            session.getTransaction().begin();
+            session.saveOrUpdate(entity);
+            session.flush();
+            session.getTransaction().commit();
+            session.clear();
+        }
+        finally {
+            session.close();
+        }
     }
 
 //    private static void persistEntity(Object entity) {
