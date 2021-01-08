@@ -175,6 +175,10 @@ public class InvoiceImpl implements Invoice, Comparable {
 
     @Override
     public Invoice validateWorks(List<? extends Work> works) {
+        for (var work :
+                works) {
+            validateWork(work);
+        }
         return this;
     }
 
@@ -232,4 +236,6 @@ public class InvoiceImpl implements Invoice, Comparable {
                 client.dic.equals(invoice.client.dic) &&
                 client.ico.equals(invoice.client.ico);
     }
+
+
 }

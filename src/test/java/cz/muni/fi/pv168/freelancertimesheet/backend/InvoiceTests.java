@@ -1,9 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.backend;
 
 import cz.muni.fi.pv168.freelancertimesheet.Main;
-import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
-import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
-import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.*;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.*;
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
@@ -37,6 +35,7 @@ public class InvoiceTests {
     private PDFStorage pdfStorage;
     private Path pdfStorageDir;
 
+    @BeforeEach
     @AfterEach
     public void cleanupTables() {
         SessionFactory factory = DBConnectionUtils.getSessionFactory();
@@ -176,7 +175,7 @@ public class InvoiceTests {
     }
 
     @Test
-    public void TestInvoiceAdd() {
+    public void testInvoiceAdd() {
         var invoices = prepareInvoice();
         for (var invoice :
                 invoices) {
@@ -189,7 +188,7 @@ public class InvoiceTests {
     }
 
     @Test
-    public void TestInvoiceDelete() {
+    public void testInvoiceDelete() {
         var invoices = prepareInvoice();
         InvoiceImpl toDelete = invoices.get(0);
         PersistanceManager.persistInvoice(toDelete);
@@ -199,7 +198,7 @@ public class InvoiceTests {
     }
 
     @Test
-    public void TestInvoiceGeneratedPdf() throws IOException, URISyntaxException {
+    public void testInvoiceGeneratedPdf() throws IOException, URISyntaxException {
         var invoices = prepareInvoice();
         InvoiceImpl generatedPdf = invoices.get(0);
         PDFStorage storage = new PDFStorage(Path.of("testPdfStorage/"));
@@ -208,6 +207,60 @@ public class InvoiceTests {
         Assertions.assertEquals(1, result.size());
         Path pdfPath = storage.fetchFile(result.get(0));
         Assertions.assertTrue(pdfPath.toFile().exists());
+    }
+
+    @Test
+    public void testSetClient() {
+        var invoice = prepareInvoice().get(0);
+        Client client = (Client)ClientImpl.createEntity(
+                "Jozef",
+                "Home",
+                "123456",
+                "789456",
+                "09045697",
+                "care@not.com"
+        );
+        invoice.setClient(client);
+        PersistanceManager.persistInvoice(invoice);
+        List<InvoiceImpl> result = (List<InvoiceImpl>)PersistanceManager.getAllInvoice();
+        Assertions.assertTrue(result.contains(invoice));
+    }
+
+    @Test
+    public void testSetIssuer() {
+        var invoice = prepareInvoice().get(0);
+        Issuer issuer = (Issuer)IssuerImpl.createEntity(
+                "Jozef",
+                "Home",
+                "123456",
+                "789456",
+                "09045697",
+                "care@not.com"
+        );
+        invoice.setIssuer(issuer);
+        PersistanceManager.persistInvoice(invoice);
+        List<InvoiceImpl> result = (List<InvoiceImpl>)PersistanceManager.getAllInvoice();
+        Assertions.assertTrue(result.contains(invoice));
+    }
+
+    @Test
+    public void testSetIssueData() {
+        var invoice = prepareInvoice().get(0);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm ZZ");
+        invoice.setIssueDate(ZonedDateTime.parse("2020-05-08 08:30 +0000", formatter));
+        PersistanceManager.persistInvoice(invoice);
+        List<InvoiceImpl> result = (List<InvoiceImpl>)PersistanceManager.getAllInvoice();
+        Assertions.assertTrue(result.contains(invoice));
+    }
+
+    @Test
+    public void testSetDueDate() {
+        var invoice = prepareInvoice().get(0);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm ZZ");
+        invoice.setDueDate(ZonedDateTime.parse("2020-06-08 08:30 +0000", formatter));
+        PersistanceManager.persistInvoice(invoice);
+        List<InvoiceImpl> result = (List<InvoiceImpl>)PersistanceManager.getAllInvoice();
+        Assertions.assertTrue(result.contains(invoice));
     }
 
     @Test
