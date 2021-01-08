@@ -33,7 +33,7 @@ import java.util.List;
 )
 @javax.persistence.Entity
 @Table(name="invoices")
-public class InvoiceImpl implements Invoice {
+public class InvoiceImpl implements Invoice, Comparable {
 
     @Id
     @GeneratedValue
@@ -211,5 +211,25 @@ public class InvoiceImpl implements Invoice {
         validateIssueDate(issueDate);
         validateDueDate(dueDate);
         validateWorks(works);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        InvoiceImpl t = (InvoiceImpl) o;
+        int i;
+        Integer thisId = id;
+        Integer thatId = t.id;
+        if ((i = thisId.compareTo(thatId)) != 0) return i;
+        return (totalAmount.compareTo(t.totalAmount));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InvoiceImpl invoice = (InvoiceImpl) o;
+        return id == invoice.id &&
+                client.dic.equals(invoice.client.dic) &&
+                client.ico.equals(invoice.client.ico);
     }
 }

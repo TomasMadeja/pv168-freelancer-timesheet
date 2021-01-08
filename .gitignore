@@ -37,4 +37,4 @@ resources/
 
 !src/main/resources/*
 pdfStorage/
-
+testPdfStorage/
