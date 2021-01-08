@@ -200,8 +200,12 @@ public class PersistanceManager {
     public static void removeEntity(Object entity) {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
-        entityManager.remove(entity);
-        entityManager.flush();
+        try {
+            entityManager.remove(entity);
+            entityManager.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         entityManager.getTransaction().commit();
         entityManager.clear();
     }
@@ -210,9 +214,17 @@ public class PersistanceManager {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
         for (T record : records) {
-            entityManager.remove(record);
+            try {
+                entityManager.remove(record);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        entityManager.flush();
+        try {
+            entityManager.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         entityManager.getTransaction().commit();
         entityManager.clear();
     }

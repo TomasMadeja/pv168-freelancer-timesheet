@@ -169,23 +169,6 @@ public class WorkImpl implements Work {
                 workType.compareTo(t.workType);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WorkImpl work = (WorkImpl) o;
-        return name.equals(work.name) &&
-                startTime.isEqual(work.startTime) &&
-                endTime.isEqual(work.endTime) &&
-                description.equals(work.description) &&
-                workType.equals(work.workType);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, startTime, endTime, description, workType);
-    }
-
     public BigDecimal getHours() {
         BigDecimal hours = new BigDecimal(ChronoUnit.HOURS.between(startTime, endTime));
         if (ChronoUnit.MINUTES.between(startTime, endTime) % 60 != 0) {
@@ -235,5 +218,25 @@ public class WorkImpl implements Work {
         validateName(name);
         validateDescription(description);
         validateWorkType(workType);
+        validateStartTime(startTime);
+        validateEndTime(endTime);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WorkImpl work = (WorkImpl) o;
+        return id == work.id &&
+                Objects.equals(name, work.name) &&
+                startTime.toInstant().equals(work.startTime.toInstant()) &&
+                endTime.toInstant().equals(work.endTime.toInstant()) &&
+                Objects.equals(description, work.description) &&
+                Objects.equals(workType, work.workType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, startTime.toInstant(), endTime.toInstant(), description, workType);
     }
 }

@@ -81,12 +81,12 @@ public class WorkTypeImpl implements WorkType, Comparable {
 
     @Override
     public BigDecimal getHourlyRate() {
-        return new BigDecimal(hourlyRate);
+        return new BigDecimal(hourlyRate).stripTrailingZeros();
     }
 
     @Override
     public WorkType setHourlyRate(BigDecimal hourlyRate) {
-        this.hourlyRate = hourlyRate.toString();
+        this.hourlyRate = hourlyRate.stripTrailingZeros().toPlainString();
         return this;
     }
 
@@ -123,7 +123,7 @@ public class WorkTypeImpl implements WorkType, Comparable {
         return "WorkTypeImpl{" +
                 "id=" + id +
                 ", description='" + description + '\'' +
-                ", hourlyRate=" + hourlyRate +
+                ", hourlyRate=" + new BigDecimal(hourlyRate).stripTrailingZeros() +
                 '}';
     }
 
@@ -139,7 +139,7 @@ public class WorkTypeImpl implements WorkType, Comparable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, hourlyRate);
+        return Objects.hash(id, name, description, new BigDecimal(hourlyRate).stripTrailingZeros());
     }
 
     @Override
@@ -148,7 +148,7 @@ public class WorkTypeImpl implements WorkType, Comparable {
         int i;
         if ((i = name.compareTo(t.name)) != 0) return i;
         if ((i = description.compareTo(t.description)) != 0) return i;
-        return (new BigDecimal(hourlyRate)).compareTo(new BigDecimal(t.hourlyRate));
+        return (new BigDecimal(hourlyRate)).compareTo(new BigDecimal(t.hourlyRate).stripTrailingZeros());
     }
 
     @Override
