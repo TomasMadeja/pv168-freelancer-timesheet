@@ -134,7 +134,7 @@ public class WorkTypeImpl implements WorkType, Comparable {
         WorkTypeImpl workType = (WorkTypeImpl) o;
         return Objects.equals(name, workType.name) &&
                 Objects.equals(description, workType.description) &&
-                hourlyRate.compareTo(workType.hourlyRate) == 0;
+                (new BigDecimal(hourlyRate)).compareTo(new BigDecimal(workType.hourlyRate)) == 0;
     }
 
     @Override
@@ -148,7 +148,7 @@ public class WorkTypeImpl implements WorkType, Comparable {
         int i;
         if ((i = name.compareTo(t.name)) != 0) return i;
         if ((i = description.compareTo(t.description)) != 0) return i;
-        return hourlyRate.compareTo(t.hourlyRate);
+        return (new BigDecimal(hourlyRate)).compareTo(new BigDecimal(t.hourlyRate));
     }
 
     @Override
