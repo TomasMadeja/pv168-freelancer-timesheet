@@ -1,14 +1,12 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.PDFStorage;
-import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.DeleteAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.ViewPDFAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.InvoiceContainer;
-import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.InvoiceTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
@@ -16,9 +14,6 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 public class InvoiceTable extends JPanel implements GenericElement {
 
@@ -71,6 +66,17 @@ public class InvoiceTable extends JPanel implements GenericElement {
         table.setAutoCreateRowSorter(true);
         table.getTableHeader().setReorderingAllowed(false);
         table.setRowHeight(20);
+
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        ListSelectionModel selectionModel = table.getSelectionModel();
+        selectionModel.addListSelectionListener(e -> {
+            if (table.getSelectedRow() == -1) {
+                disableButtons();
+            } else {
+                enableButtons();
+            }
+        });
+
         return new JScrollPane(table);
     }
 
@@ -89,10 +95,20 @@ public class InvoiceTable extends JPanel implements GenericElement {
         toolbar.add(viewButton);
         deleteButton = new DeleteAction(table);
         toolbar.add(deleteButton);
-//        toolbar.add(new JButton("Delete"));
         toolbar.addSeparator();
         toolbar.add(Box.createHorizontalGlue());
+        disableButtons();
         return toolbar;
+    }
+
+    private void disableButtons() {
+        viewButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+    }
+
+    private void enableButtons() {
+        viewButton.setEnabled(true);
+        deleteButton.setEnabled(true);
     }
 
     private JToolBar buildFilterBar() {
