@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.backend;
 
+import cz.muni.fi.pv168.freelancertimesheet.Main;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
@@ -13,10 +14,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityManager;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -55,14 +64,17 @@ public class InvoiceTests {
 
     private <T> void persistCollection(Collection<T> records) {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
-        entityManager.getTransaction().begin();
-        for (T record : records) {
-            entityManager.persist(record);
+        try {
+            entityManager.getTransaction().begin();
+            for (T record : records) {
+                entityManager.persist(record);
+            }
+            entityManager.flush();
+            entityManager.getTransaction().commit();
+            entityManager.clear();
+        } finally {
+            entityManager.close();
         }
-        entityManager.flush();
-        entityManager.getTransaction().commit();
-        entityManager.clear();
-        entityManager.close();
     }
 
     private List<WorkType> prepareWorkTypes() {
@@ -191,5 +203,21 @@ public class InvoiceTests {
         PersistanceManager.removeEntity(toDelete);
         List<InvoiceImpl> result = (List<InvoiceImpl>)PersistanceManager.getAllInvoice(toDelete.getClient().getICO(), toDelete.getClient().getDIC());
         Assertions.assertEquals(0, result.size());
+    }
+
+    @Test
+    public void samplePDF() throws URISyntaxException, IOException {
+        URL res = Main.class.getClassLoader().getResource("example.html");
+        URI tmp = res.toURI();
+        File file = Paths.get(tmp).toFile();
+        try (
+                BufferedInputStream br = new BufferedInputStream(new FileInputStream(file))
+        )
+        {
+            String contents = new String(br.readAllBytes(), StandardCharsets.UTF_8);
+            Path newPath = pdfStorage.generateNewOutputPath();
+            PDFGenerator.savePDF(contents, newPath.toAbsolutePath().toString());
+            Assertions.assertTrue(newPath.toFile().exists(), "Output PDF file doesn't exist.");
+        }
     }
 }
