@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.util.Objects;
 
 @MappedSuperclass
 public class EntityImpl implements Entity {
@@ -147,9 +148,9 @@ public class EntityImpl implements Entity {
     }
 
 
-    public static Entity createEntity(String name, String address, String ico, String dic, String phoneNumber, String email) {
-        return new EntityImpl(name, address, ico, dic, phoneNumber, email);
-    }
+//    public static Entity createEntity(String name, String address, String ico, String dic, String phoneNumber, String email) {
+//        return new EntityImpl(name, address, ico, dic, phoneNumber, email);
+//    }
 
     @Override
     public void validateAttributes() {
@@ -157,5 +158,26 @@ public class EntityImpl implements Entity {
         validateAddress(address);
         validateDIC(dic);
         validateICO(ico);
+        validatePhoneNumber(phoneNumber);
+        validateEmail(email);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EntityImpl entity = (EntityImpl) o;
+        return id == entity.id &&
+                Objects.equals(name, entity.name) &&
+                Objects.equals(address, entity.address) &&
+                Objects.equals(email, entity.email) &&
+                Objects.equals(phoneNumber, entity.phoneNumber) &&
+                Objects.equals(ico, entity.ico) &&
+                Objects.equals(dic, entity.dic);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, address, email, phoneNumber, ico, dic);
     }
 }
