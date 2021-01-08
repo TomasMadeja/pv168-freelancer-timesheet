@@ -25,7 +25,7 @@ public class PDFStorage {
     }
 
     public Path generateNewOutputPath() {
-        String fileName = UUID.randomUUID().toString();
+        String fileName = UUID.randomUUID().toString() + ".pdf";
         return Paths.get(storageRoot.toString(), fileName).toAbsolutePath();
     }
 
