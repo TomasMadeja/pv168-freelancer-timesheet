@@ -9,9 +9,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.persistence.EntityManager;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class WorkTypeTests {
 
@@ -181,5 +183,6 @@ public class WorkTypeTests {
         workType.setName("testy");
         Assertions.assertThrows(PropertyValueException.class, () -> PersistanceManager.persistWorkType(workType));
     }
+
 
 }
