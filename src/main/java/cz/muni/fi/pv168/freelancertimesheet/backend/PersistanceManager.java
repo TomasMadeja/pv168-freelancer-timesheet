@@ -137,6 +137,8 @@ public class PersistanceManager {
     public static void persistInvoice(Invoice invoice) {
         invoice.validateAttributes();
         persistClient(invoice.getClient());
+        if (invoice.getIssuer() != null)
+            persistIssuer(invoice.getIssuer());
         persistEntity(invoice);
     }
 //
