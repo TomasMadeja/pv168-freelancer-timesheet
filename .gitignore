@@ -38,3 +38,5 @@ resources/
 !src/main/resources/*
 pdfStorage/
 testPdfStorage/
+target/
+freelancerTimesheet.iml
