@@ -38,6 +38,7 @@ public class DateTimePickerFactory {
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
         DatePicker datePicker = new DatePicker(dateSettings);
+        datePicker.getComponentDateTextField().setEditable(false);
 
         JButton datePickerButton = datePicker.getComponentToggleCalendarButton();
         datePicker.setText(title);
