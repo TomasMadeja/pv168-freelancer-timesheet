@@ -13,14 +13,18 @@ jobs:
     - os:
         - osx
       script:
-        - gradle check --info --stacktrace
+        - ./gradlew check --info --stacktrace
 
     - os:
         - linux
+      install:
+        - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       script:
         - mvn clean test
 
     - os:
         - osx
+      install:
+        - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       script:
         - mvn clean test
