@@ -13,6 +13,7 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
+import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table.ChooseWorkTypeWindow;
 
@@ -112,14 +113,18 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
     }
 
     private DatePicker setupDatePicker() {
+        return DateTimePickerFactory.createGenericDatePicker(i18n.getString("pickDate"));
+        /*
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
         var datePicker = new DatePicker(dateSettings);
+        datePicker.getComponentDateTextField().setEditable(false);
 
         JButton datePickerButton = datePicker.getComponentToggleCalendarButton();
         datePickerButton.setText(i18n.getString("pickDate"));
 
         return datePicker;
+        */
     }
 
     private TimePicker setupTimePicker() {
