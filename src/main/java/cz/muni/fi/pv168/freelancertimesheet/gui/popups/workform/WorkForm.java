@@ -135,8 +135,9 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
         timeSettings.setFormatForDisplayTime(PickerUtilities.createFormatterFromPatternString(
                 "HH:mm", timeSettings.getLocale()));
         timeSettings.generatePotentialMenuTimes(TimePickerSettings.TimeIncrement.FifteenMinutes, null, null);
-
-        return new TimePicker(timeSettings);
+        var timePicker = new TimePicker(timeSettings);
+        timePicker.getComponentTimeTextField().setEditable(false);
+        return timePicker;
     }
 
     private Work prepareDataFromForms() {
