@@ -174,6 +174,6 @@ public class WorkTests {
         Assertions.assertEquals(record.getDescription(), description);
         Assertions.assertEquals(record.getStartTime().toInstant(), startTime.toInstant());
         Assertions.assertEquals(record.getEndTime().toInstant(), endTime.toInstant());
-        Assertions.assertEquals(record.getWorkType(), workType);
+        Assertions.assertNotEquals(record.getWorkType(), workType);
     }
 }
