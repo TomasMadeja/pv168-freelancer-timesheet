@@ -1,6 +1,4 @@
-# PV168: Timesheet for Freelancer
-
-
+# PV168: Timesheet for Freelancer [![Build Status](https://travis-ci.com/TomasMadeja/pv168-freelancer-timesheet.svg?token=c42PmsJVx99AtxxtBo96&branch=main)](https://travis-ci.com/TomasMadeja/pv168-freelancer-timesheet)
 
 ### Team Members
 
@@ -50,10 +48,13 @@ Tasks:
     * Invoice Tab -> Work selection popup
 
 Notes:
-
 * ADD/VIEW/DELETE buttons don't possess their full functionality
     * ADD doesn't have to create records (requires backend)
     * VIEW doesn't have to open records (requires backend)
     * VIEW on invoice doesn't do anything (excepted functionallity is to open related pdf invoice)
     * DELETE button doesn't have to remove records (requires backend)
 * Autocalculated fields in Invoice do not work yet (backend Invoice class should provide the calculaction)
+
+## Deadlines 2 and onward
+
+* For tasks past Deadline 1, see [github issues](https://github.com/TomasMadeja/pv168-freelancer-timesheet/issues?q=is%3Aissue+)
