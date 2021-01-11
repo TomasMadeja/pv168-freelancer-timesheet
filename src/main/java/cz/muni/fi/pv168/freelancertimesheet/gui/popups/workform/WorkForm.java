@@ -73,13 +73,6 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
 
     @Override
     public WorkForm setupNested() {
-        addRow(new JLabel(i18n.getString("date")), datePicker);
-        addRow(new JLabel(i18n.getString("name")), nameTextField);
-        addRow(new JLabel(i18n.getString("description")), descriptionScrollPane);
-        addRow(new JLabel(i18n.getString("startTime")), startTimePicker);
-        addRow(new JLabel(i18n.getString("endTime")), endTimePicker);
-
-
         var workTypePanel = new JPanel();
         workTypePanel.setLayout(new GridBagLayout());
         var c = new GridBagConstraints();
@@ -96,6 +89,12 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
         workTypeButton.addActionListener(e -> ChooseWorkTypeWindow.setup(this));
 
         addRow(new JLabel(i18n.getString("taskType")), workTypePanel);
+
+        addRow(new JLabel(i18n.getString("date")), datePicker);
+        addRow(new JLabel(i18n.getString("name")), nameTextField);
+        addRow(new JLabel(i18n.getString("description")), descriptionScrollPane);
+        addRow(new JLabel(i18n.getString("startTime")), startTimePicker);
+        addRow(new JLabel(i18n.getString("endTime")), endTimePicker);
 
         addConfirmButton();
         makeConfirmAddData();
