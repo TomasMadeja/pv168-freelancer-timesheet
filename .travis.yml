@@ -1,8 +1,16 @@
-dist: xenial
+os:
+  - linux
+  - osx
+  - windows
 
 language: java
 jdk:
   - oraclejdk11
 
-script:
-  - gradle check --info --stacktrace
+jobs:
+  include:
+    - script:
+      - gradle check --info --stacktrace
+
+    - script:
+      - mvn clean tests
