@@ -1,9 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.chooseWork;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
-import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
-import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
-import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
@@ -11,8 +8,6 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.models.ChooseWorkTableModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -111,54 +106,5 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
                 .setupNested();
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         return window;
-    }
-
-
-    private List<WorkType> prepareWorkTypes() {
-
-        List<WorkType> collection = new ArrayList<>();
-        collection.add(WorkTypeImpl.createWorkType(
-                "TestType1",
-                "Never gonna give you up",
-                new BigDecimal("20")
-        ));
-        collection.add(WorkTypeImpl.createWorkType(
-                "TestType2",
-                "Never gonna let you down",
-                new BigDecimal("30")
-        ));
-        collection.add(WorkTypeImpl.createWorkType(
-                "TestType3",
-                "Forgot the rest",
-                new BigDecimal("40")
-        ));
-        return collection;
-    }
-
-    private List<Work> prepareWork() {
-        WorkType[] workTypes = prepareWorkTypes().toArray(WorkType[]::new);
-        List<Work> collection = new ArrayList<>();
-        collection.add(WorkImpl.createWork(
-                "TestWork1",
-                "Beepboop",
-                ZonedDateTime.parse("2011-12-03T10:15:30+01:00"),
-                ZonedDateTime.parse("2011-12-04T10:15:30+01:00"),
-                workTypes[0]
-        ));
-        collection.add(WorkImpl.createWork(
-                "TestWork1",
-                "Beepboop",
-                ZonedDateTime.parse("2011-12-05T10:15:30+01:00"),
-                ZonedDateTime.parse("2011-12-06T10:15:30+01:00"),
-                workTypes[1]
-        ));
-        collection.add(WorkImpl.createWork(
-                "TestWork1",
-                "Beepboop",
-                ZonedDateTime.parse("2011-12-07T10:15:30+01:00"),
-                ZonedDateTime.parse("2011-12-08T10:15:30+01:00"),
-                workTypes[2]
-        ));
-        return collection;
     }
 }
