@@ -1,6 +1,5 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.chooseWork;
 
-import cz.muni.fi.pv168.freelancertimesheet.backend.DBConnectionUtils;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
@@ -9,9 +8,7 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.ChooseWorkTableModel;
-import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 
-import javax.persistence.EntityManager;
 import javax.swing.*;
 import java.awt.*;
 import java.math.BigDecimal;
@@ -41,19 +38,7 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
         var model = new ChooseWorkTableModel(new WorkContainer(), selectedRows);
         JTable table = new JTable(model);
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-//        createTmpDataInDb();
-//        RandomDataGenerator.generateWorkData((ChooseWorkTableModel) table.getModel());
-
-//        loadDataFromDatabase((ChooseWorkTableModel) table.getModel());
-
         return table;
-    }
-
-    private void loadDataFromDatabase(TableModel<Work> table) {
-        EntityManager entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
-        List<WorkImpl> result = entityManager.createQuery("from WorkImpl").getResultList();
-//        result.forEach(table::addRow);
     }
 
     private JButton confirmSelectionButton(Function<List<Work>, Object> updateWorkSelection) {
@@ -128,19 +113,6 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
         return window;
     }
 
-
-    // create temporary data in database for testing
-    private void createTmpDataInDb() {
-        List<Work> records = prepareWork();
-        var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
-        entityManager.getTransaction().begin();
-        for (Work record : records) {
-            entityManager.persist(record);
-        }
-        entityManager.flush();
-        entityManager.getTransaction().commit();
-        entityManager.clear();
-    }
 
     private List<WorkType> prepareWorkTypes() {
 
