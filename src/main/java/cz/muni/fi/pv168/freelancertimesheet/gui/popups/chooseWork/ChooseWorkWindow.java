@@ -42,7 +42,6 @@ public class ChooseWorkWindow extends JFrame implements GenericElement<ChooseWor
 
         // TODO modify so the invoice tab can get this info
         button.addActionListener(e -> {
-            System.out.println("Printing selected rows (invoice choose work tab):");
             List<Work> selectedWorks = new ArrayList<>();
             selectedRows.forEach((workRow, isSelected) -> {
                 if (isSelected) {
