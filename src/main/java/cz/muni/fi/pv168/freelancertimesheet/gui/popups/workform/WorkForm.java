@@ -1,7 +1,6 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
@@ -12,8 +11,8 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
-import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
+import cz.muni.fi.pv168.freelancertimesheet.gui.elements.TextFieldFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table.ChooseWorkTypeWindow;
 
@@ -21,10 +20,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URISyntaxException;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
@@ -91,8 +87,8 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
         addRow(new JLabel(i18n.getString("taskType")), workTypePanel);
 
         addRow(new JLabel(i18n.getString("date")), datePicker);
-        addRow(new JLabel(i18n.getString("name")), nameTextField);
-        addRow(new JLabel(i18n.getString("description")), descriptionScrollPane);
+        addRow(new JLabel(i18n.getString("name")), TextFieldFactory.createWrappedTextField());
+        addRow(new JLabel(i18n.getString("description")), TextFieldFactory.createWrappedTextField());
         addRow(new JLabel(i18n.getString("startTime")), startTimePicker);
         addRow(new JLabel(i18n.getString("endTime")), endTimePicker);
 
