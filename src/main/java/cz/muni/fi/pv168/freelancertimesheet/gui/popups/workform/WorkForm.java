@@ -13,6 +13,7 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
+import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table.ChooseWorkTypeWindow;
 
@@ -72,13 +73,6 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
 
     @Override
     public WorkForm setupNested() {
-        addRow(new JLabel(i18n.getString("date")), datePicker);
-        addRow(new JLabel(i18n.getString("name")), nameTextField);
-        addRow(new JLabel(i18n.getString("description")), descriptionScrollPane);
-        addRow(new JLabel(i18n.getString("startTime")), startTimePicker);
-        addRow(new JLabel(i18n.getString("endTime")), endTimePicker);
-
-
         var workTypePanel = new JPanel();
         workTypePanel.setLayout(new GridBagLayout());
         var c = new GridBagConstraints();
@@ -96,6 +90,12 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
 
         addRow(new JLabel(i18n.getString("taskType")), workTypePanel);
 
+        addRow(new JLabel(i18n.getString("date")), datePicker);
+        addRow(new JLabel(i18n.getString("name")), nameTextField);
+        addRow(new JLabel(i18n.getString("description")), descriptionScrollPane);
+        addRow(new JLabel(i18n.getString("startTime")), startTimePicker);
+        addRow(new JLabel(i18n.getString("endTime")), endTimePicker);
+
         addConfirmButton();
         makeConfirmAddData();
         return this;
@@ -112,14 +112,18 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
     }
 
     private DatePicker setupDatePicker() {
+        return DateTimePickerFactory.createGenericDatePicker(i18n.getString("pickDate"));
+        /*
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
         var datePicker = new DatePicker(dateSettings);
+        datePicker.getComponentDateTextField().setEditable(false);
 
         JButton datePickerButton = datePicker.getComponentToggleCalendarButton();
         datePickerButton.setText(i18n.getString("pickDate"));
 
         return datePicker;
+        */
     }
 
     private TimePicker setupTimePicker() {
@@ -130,8 +134,9 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
         timeSettings.setFormatForDisplayTime(PickerUtilities.createFormatterFromPatternString(
                 "HH:mm", timeSettings.getLocale()));
         timeSettings.generatePotentialMenuTimes(TimePickerSettings.TimeIncrement.FifteenMinutes, null, null);
-
-        return new TimePicker(timeSettings);
+        var timePicker = new TimePicker(timeSettings);
+        timePicker.getComponentTimeTextField().setEditable(false);
+        return timePicker;
     }
 
     private Work prepareDataFromForms() {
