@@ -4,13 +4,10 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.DeleteAction;
-import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.ViewPDFAction;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
-import cz.muni.fi.pv168.freelancertimesheet.gui.popups.InvoiceWindow;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form.WorkTypeFormWindow;
-import cz.muni.fi.pv168.freelancertimesheet.gui.tabs.invoice.InvoiceTable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,6 +51,7 @@ public class WorkTypeTable extends JPanel implements GenericElement<WorkTypeTabl
         table.setAutoCreateRowSorter(true);
         table.getTableHeader().setReorderingAllowed(false);
         table.setRowHeight(20);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         return new JScrollPane(table);
     }
 
