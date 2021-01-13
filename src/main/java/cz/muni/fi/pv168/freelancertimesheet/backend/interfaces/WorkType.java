@@ -2,7 +2,9 @@ package cz.muni.fi.pv168.freelancertimesheet.backend.interfaces;
 
 import java.math.BigDecimal;
 
-public interface WorkType extends Comparable, ORMEntity {
+public interface WorkType extends Comparable<WorkType>, ORMEntity {
+
+    public Integer getId();
 
     public String getName();
 

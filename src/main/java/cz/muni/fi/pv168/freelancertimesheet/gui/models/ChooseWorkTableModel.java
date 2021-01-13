@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.models;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.GenericContainer;
+import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
 
 import java.time.ZonedDateTime;
 import java.util.HashMap;
@@ -13,7 +14,7 @@ public class ChooseWorkTableModel extends TableModel<Work> {
 
     private final HashMap<Work, Boolean> selectedRows;
 
-    public ChooseWorkTableModel(GenericContainer container, HashMap<Work, Boolean> selectedRows) {
+    public ChooseWorkTableModel(WorkContainer container, HashMap<Work, Boolean> selectedRows) {
         super(container);
         this.selectedRows = selectedRows;
         createColumns();

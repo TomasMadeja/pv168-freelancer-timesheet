@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class WorkContainer implements GenericContainer {
+public class WorkContainer implements GenericContainer<Work> {
 
     private List<? extends Work> rows;
 
@@ -29,7 +29,7 @@ public class WorkContainer implements GenericContainer {
     }
 
     @Override
-    public synchronized Object get(int i) {
+    public synchronized Work get(int i) {
         return rows.get(i);
     }
 

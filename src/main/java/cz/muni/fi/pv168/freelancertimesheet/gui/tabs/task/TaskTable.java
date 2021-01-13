@@ -155,7 +155,7 @@ public class TaskTable extends JPanel implements GenericElement<TaskTable> {
 
     private void loadDataFromDatabase(TableModel<Work> table) {
         EntityManager entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
-        List<WorkImpl> result = entityManager.createQuery("from WorkImpl").getResultList();
+        List<WorkImpl> result = entityManager.createQuery("from WorkImpl", WorkImpl.class).getResultList();
 //        result.forEach(table::addRow);
     }
 
