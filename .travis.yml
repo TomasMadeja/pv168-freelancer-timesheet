@@ -31,9 +31,9 @@ jobs:
 
     - os:
         - linux
-        script:
-          - gradle shadowJar
-          - gradle distZip
-          - gradle distTar
-          - gradle shadowDistZip
-          - gradle shadowDistTar
+      script:
+        - gradle shadowJar
+        - gradle distZip
+        - gradle distTar
+        - gradle shadowDistZip
+        - gradle shadowDistTar
