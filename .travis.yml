@@ -28,3 +28,12 @@ jobs:
         - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       script:
         - mvn clean test
+
+    - os:
+        - linux
+        script:
+          - gradle shadowJar
+          - gradle distZip
+          - gradle distTar
+          - gradle shadowDistZip
+          - gradle shadowDistTar
