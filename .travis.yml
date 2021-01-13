@@ -8,7 +8,7 @@ jobs:
     - os:
         - linux
       script:
-        - gradle check --info --stacktrace
+        - ./gradlew check --info --stacktrace
 
     - os:
         - osx
@@ -32,8 +32,8 @@ jobs:
     - os:
         - linux
       script:
-        - gradle shadowJar
-        - gradle distZip
-        - gradle distTar
-        - gradle shadowDistZip
-        - gradle shadowDistTar
+        - ./gradlew shadowJar
+        - ./gradlew distZip
+        - ./gradlew distTar
+        - ./gradlew shadowDistZip
+        - ./gradlew shadowDistTar
