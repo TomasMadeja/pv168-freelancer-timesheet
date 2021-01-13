@@ -27,11 +27,11 @@ import java.util.List;
 
 public class PersistanceManager {
 
-    public static List<? extends WorkType> getAllWorkType() {
+    public static List<WorkTypeImpl> getAllWorkType() {
         return getAllWorkType(null);
     }
 
-    public static List<? extends WorkTypeImpl> getAllWorkType(String workTypeName) {
+    public static List<WorkTypeImpl> getAllWorkType(String workTypeName) {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
         if (workTypeName == null) {
@@ -49,11 +49,11 @@ public class PersistanceManager {
         return results;
     }
 
-    public static List<? extends Work> getAllWork() {
+    public static List<WorkImpl> getAllWork() {
         return getAllWork(null, null);
     }
 
-    public static List<? extends Work> getAllWork(String workName, String workTypeName) {
+    public static List<WorkImpl> getAllWork(String workName, String workTypeName) {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
         if (workTypeName == null) {
@@ -75,31 +75,31 @@ public class PersistanceManager {
         return results;
     }
 
-    public static List<? extends Client> getAllClient() {
+    public static List<ClientImpl> getAllClient() {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
-        List<? extends Client> results = entityManager.createNamedQuery("getAllClients", ClientImpl.class).getResultList();
+        List<ClientImpl> results = entityManager.createNamedQuery("getAllClients", ClientImpl.class).getResultList();
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.clear();
         return results;
     }
 
-    public static List<? extends Issuer> getAllIssuer() {
+    public static List<IssuerImpl> getAllIssuer() {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
-        List<? extends Issuer> results = entityManager.createNamedQuery("getAllIssuers", IssuerImpl.class).getResultList();
+        List<IssuerImpl> results = entityManager.createNamedQuery("getAllIssuers", IssuerImpl.class).getResultList();
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.clear();
         return results;
     }
 
-    public static List<? extends Invoice> getAllInvoice() {
+    public static List<InvoiceImpl> getAllInvoice() {
         return getAllInvoice(null, null);
     }
 
-    public static List<? extends Invoice> getAllInvoice(String ico, String dic) {
+    public static List<InvoiceImpl> getAllInvoice(String ico, String dic) {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
         if (ico == null) {
