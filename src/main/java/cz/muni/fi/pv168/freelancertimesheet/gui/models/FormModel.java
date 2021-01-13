@@ -69,13 +69,13 @@ public abstract class FormModel extends JPanel implements GenericElement<FormMod
         return cancelButton;
     }
 
-    private void triggerConfirmCallback() {
+    protected void triggerConfirmCallback() {
         if (confirmCallback != null) {
             confirmCallback.call();
         }
     }
 
-    private void triggerCancelCallback() {
+    protected void triggerCancelCallback() {
         if (cancelCallback != null) {
             cancelCallback.call();
         }
