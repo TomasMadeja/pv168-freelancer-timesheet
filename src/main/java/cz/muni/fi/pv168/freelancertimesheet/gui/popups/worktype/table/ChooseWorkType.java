@@ -55,7 +55,7 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
         table = getTable(workTypeTable);
         confirm.setEnabled(true);
         confirm.addActionListener(e -> {
-                    if (table != null and tableModel != null) {
+                    if (table != null && tableModel != null) {
                         var selectedRow = table.getSelectedRow();
                         if (selectedRow != -1) {
                             var selectedWorkType = tableModel.getRow(selectedRow);
