@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class InvoiceContainer implements GenericContainer{
+public class InvoiceContainer implements GenericContainer<Invoice>{
     private static InvoiceContainer invoiceContainer;
     private List<? extends Invoice> rows;
 

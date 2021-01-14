@@ -24,12 +24,12 @@ import java.util.Objects;
 )
 @Entity
 @Table(name = "work_types")
-public class WorkTypeImpl implements WorkType, Comparable {
+public class WorkTypeImpl implements WorkType{
 
     @Id
     @GeneratedValue
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "name", nullable=false)
     private String name;
@@ -42,6 +42,11 @@ public class WorkTypeImpl implements WorkType, Comparable {
 
     @OneToMany(mappedBy="workType")
     private Collection<WorkImpl> works;
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
     @Override
     public String getName() {
@@ -102,15 +107,15 @@ public class WorkTypeImpl implements WorkType, Comparable {
         return this;
     }
 
-    public static WorkType createWorkType(String name, String description, BigDecimal hourlyRate) {
-        WorkType instance = new WorkTypeImpl();
+    public static WorkTypeImpl createWorkType(String name, String description, BigDecimal hourlyRate) {
+        WorkTypeImpl instance = new WorkTypeImpl();
         instance.setName(name);
         instance.setDescription(description);
         instance.setHourlyRate(hourlyRate);
         return instance;
     }
 
-    public static WorkType createWorkType(String name, String description, String hourlyRate) {
+    public static WorkTypeImpl createWorkType(String name, String description, String hourlyRate) {
         return createWorkType(name, description, new BigDecimal(hourlyRate));
     }
 
@@ -139,14 +144,19 @@ public class WorkTypeImpl implements WorkType, Comparable {
         return Objects.hash(id, name, description, new BigDecimal(hourlyRate).stripTrailingZeros());
     }
 
-    @Override
-    public int compareTo(Object o) {
-        WorkTypeImpl t = (WorkTypeImpl) o;
+    public int compareTo(WorkType o) {
         int i;
-        if ((i = Integer.compare(id, t.id)) != 0) return i;
-        if ((i = name.compareTo(t.name)) != 0) return i;
-        if ((i = description.compareTo(t.description)) != 0) return i;
-        return (new BigDecimal(hourlyRate)).compareTo(new BigDecimal(t.hourlyRate).stripTrailingZeros());
+        Integer otherId = o.getId();
+        if (id != null && otherId != null && (i = Integer.compare(id, o.getId())) != 0) {
+            return i;
+        } else if (id == null && otherId != null) {
+            return -1;
+        } else if (otherId == null && id != null){
+            return 1;
+        }
+        if ((i = name.compareTo(o.getName())) != 0) return i;
+        if ((i = description.compareTo(o.getDescription())) != 0) return i;
+        return (new BigDecimal(hourlyRate)).compareTo(o.getHourlyRate().stripTrailingZeros());
     }
 
     @Override

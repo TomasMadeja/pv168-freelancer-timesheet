@@ -181,7 +181,7 @@ public class InvoiceTests {
                 invoices) {
             PersistanceManager.persistInvoice(invoice);
         }
-        List<InvoiceImpl> result = (List<InvoiceImpl>)PersistanceManager.getAllInvoice();
+        List<InvoiceImpl> result = PersistanceManager.getAllInvoice();
         Collections.sort(invoices);
         Collections.sort(result);
         Assertions.assertArrayEquals(invoices.toArray(),result.toArray());

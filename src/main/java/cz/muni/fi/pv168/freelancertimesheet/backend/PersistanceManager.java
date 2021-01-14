@@ -5,7 +5,11 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Issuer;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Work;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
+import cz.muni.fi.pv168.freelancertimesheet.backend.orm.ClientImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.InvoiceImpl;
+import cz.muni.fi.pv168.freelancertimesheet.backend.orm.IssuerImpl;
+import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
+import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import org.hibernate.ejb.HibernateEntityManager;
 
 import javax.persistence.EntityExistsException;
@@ -23,18 +27,19 @@ import java.util.List;
 
 public class PersistanceManager {
 
-    public static List<? extends WorkType> getAllWorkType() {
+    public static List<WorkTypeImpl> getAllWorkType() {
         return getAllWorkType(null);
     }
 
-    public static List<? extends WorkType> getAllWorkType(String workTypeName) {
+    public static List<WorkTypeImpl> getAllWorkType(String workTypeName) {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
         if (workTypeName == null) {
             workTypeName = "%";
         }
         var query = entityManager.createQuery(
-                "SELECT t FROM WorkTypeImpl t WHERE t.name like :workTypeName"
+                "SELECT t FROM WorkTypeImpl t WHERE t.name like :workTypeName",
+                WorkTypeImpl.class
         )
                 .setParameter("workTypeName", "%" + workTypeName + "%");
         var results = query.getResultList();
@@ -44,11 +49,11 @@ public class PersistanceManager {
         return results;
     }
 
-    public static List<? extends Work> getAllWork() {
+    public static List<WorkImpl> getAllWork() {
         return getAllWork(null, null);
     }
 
-    public static List<? extends Work> getAllWork(String workName, String workTypeName) {
+    public static List<WorkImpl> getAllWork(String workName, String workTypeName) {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
         if (workTypeName == null) {
@@ -58,7 +63,8 @@ public class PersistanceManager {
             workName = "%";
         }
         var query = entityManager.createQuery(
-                "SELECT DISTINCT w FROM WorkImpl w INNER JOIN WorkTypeImpl t ON w.workType = t WHERE w.name like :workName AND t.name like :workTypeName"
+                "SELECT DISTINCT w FROM WorkImpl w INNER JOIN WorkTypeImpl t ON w.workType = t WHERE w.name like :workName AND t.name like :workTypeName",
+                WorkImpl.class
         )
                 .setParameter("workName", "%" + workName + "%")
                 .setParameter("workTypeName", "%" + workTypeName + "%");
@@ -69,31 +75,31 @@ public class PersistanceManager {
         return results;
     }
 
-    public static List<? extends Client> getAllClient() {
+    public static List<ClientImpl> getAllClient() {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
-        List<? extends Client> results = entityManager.createNamedQuery("getAllClients").getResultList();
+        List<ClientImpl> results = entityManager.createNamedQuery("getAllClients", ClientImpl.class).getResultList();
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.clear();
         return results;
     }
 
-    public static List<? extends Issuer> getAllIssuer() {
+    public static List<IssuerImpl> getAllIssuer() {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
-        List<? extends Issuer> results = entityManager.createNamedQuery("getAllIssuers").getResultList();
+        List<IssuerImpl> results = entityManager.createNamedQuery("getAllIssuers", IssuerImpl.class).getResultList();
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.clear();
         return results;
     }
 
-    public static List<? extends Invoice> getAllInvoice() {
+    public static List<InvoiceImpl> getAllInvoice() {
         return getAllInvoice(null, null);
     }
 
-    public static List<? extends Invoice> getAllInvoice(String ico, String dic) {
+    public static List<InvoiceImpl> getAllInvoice(String ico, String dic) {
         var entityManager = DBConnectionUtils.getSessionFactory().createEntityManager();
         entityManager.getTransaction().begin();
         if (ico == null) {
@@ -103,7 +109,8 @@ public class PersistanceManager {
             dic = "%";
         }
         var query = entityManager.createQuery(
-                "SELECT i FROM InvoiceImpl i INNER JOIN ClientImpl c ON i.client = c WHERE c.ico like :ico AND c.dic like :dic"
+                "SELECT i FROM InvoiceImpl i INNER JOIN ClientImpl c ON i.client = c WHERE c.ico like :ico AND c.dic like :dic",
+                InvoiceImpl.class
         )
                 .setParameter("ico", "%" + ico + "%")
                 .setParameter("dic", "%" + dic + "%");

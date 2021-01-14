@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class WorkTypeContainer implements GenericContainer {
+public class WorkTypeContainer implements GenericContainer<WorkType> {
 
     private List<? extends WorkType> rows;
 
@@ -28,7 +28,7 @@ public class WorkTypeContainer implements GenericContainer {
     }
 
     @Override
-    public synchronized Object get(int i) {
+    public synchronized WorkType get(int i) {
         return rows.get(i);
     }
 
