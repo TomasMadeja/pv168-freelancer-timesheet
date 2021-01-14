@@ -1,5 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table;
 
+import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
+import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.GenericElement;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.actions.table.AddAction;
@@ -18,6 +20,8 @@ public class WorkTypeTable extends JPanel implements GenericElement<WorkTypeTabl
     private final I18N i18n = new I18N(getClass());
 
     private final WorkTypeContainer container;
+
+    private WorkTypeTableModel model;
     private JTable table;
 
     private JToolBar toolbar;
@@ -32,7 +36,7 @@ public class WorkTypeTable extends JPanel implements GenericElement<WorkTypeTabl
         container = new WorkTypeContainer();
     }
 
-    public static JPanel setup() {
+    public static WorkTypeTable setup() {
         WorkTypeTable workTypeTable = new WorkTypeTable();
         workTypeTable
                 .setupVisuals()
@@ -46,8 +50,17 @@ public class WorkTypeTable extends JPanel implements GenericElement<WorkTypeTabl
         ((TableModel) table.getModel()).fireTableDataChanged();
     }
 
+    public WorkType getSelectedRow() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow == -1) {
+            return null;
+        }
+        return model.getRow(selectedRow);
+    }
+
     private JScrollPane buildWorkTypeTable() {
-        table = new JTable(new WorkTypeTableModel(container));
+        model = new WorkTypeTableModel(container);
+        table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getTableHeader().setReorderingAllowed(false);
         table.setRowHeight(20);

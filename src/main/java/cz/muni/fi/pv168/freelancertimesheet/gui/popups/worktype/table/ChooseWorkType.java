@@ -16,17 +16,13 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
     private final I18N i18n = new I18N(getClass());
 
     private final iWorkTypeSetter workTypeSetter;
-    private final WorkTypeContainer container;
-    private JTable table;
-    private final JPanel workTypeTable;
-    private WorkTypeTableModel tableModel;
+    private final WorkTypeTable workTypeTable;
     protected FormModel.Callback confirmCallback;
 
     private final JButton confirm = new JButton(i18n.getString("select"));
 
     public ChooseWorkType(iWorkTypeSetter workTypeSetter) {
         this.workTypeSetter = workTypeSetter;
-        container = new WorkTypeContainer();
         selectionChanged(0);
         workTypeTable = WorkTypeTable.setup();
     }
@@ -52,17 +48,12 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
 
         add(workTypeTable, constraints);
 
-        table = getTable(workTypeTable);
         confirm.setEnabled(true);
         confirm.addActionListener(e -> {
-                    if (table != null && tableModel != null) {
-                        var selectedRow = table.getSelectedRow();
-                        if (selectedRow != -1) {
-                            var selectedWorkType = tableModel.getRow(selectedRow);
-                            workTypeSetter.setWorkType(selectedWorkType);
-                            triggerConfirmCallback();
-                        }
-                    }
+                    var selectedWorkType = workTypeTable.getSelectedRow();
+                    if (selectedWorkType == null) return;
+                    workTypeSetter.setWorkType(selectedWorkType);
+                    triggerConfirmCallback();
                 }
         );
 
