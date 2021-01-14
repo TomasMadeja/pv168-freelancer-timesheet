@@ -8,7 +8,7 @@ jobs:
     - os:
         - linux
       script:
-        - gradle check --info --stacktrace
+        - ./gradlew check --info --stacktrace
 
     - os:
         - osx
@@ -28,3 +28,12 @@ jobs:
         - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       script:
         - mvn clean test
+
+    - os:
+        - linux
+      script:
+        - ./gradlew shadowJar
+        - ./gradlew distZip
+        - ./gradlew distTar
+        - ./gradlew shadowDistZip
+        - ./gradlew shadowDistTar

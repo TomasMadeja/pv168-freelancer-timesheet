@@ -204,7 +204,7 @@ public class WorkTypeTests {
     @Test
     public void testWorkTypeToString() {
         var workType1 = WorkTypeImpl.createWorkType("test", "test1", "42");
-        Assertions.assertEquals("WorkTypeImpl{id=0, description='test1', hourlyRate=42}", workType1.toString());
+        Assertions.assertEquals("WorkTypeImpl{id=null, description='test1', hourlyRate=42}", workType1.toString());
     }
 
     @Test

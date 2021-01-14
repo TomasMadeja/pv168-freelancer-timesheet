@@ -33,7 +33,7 @@ import java.util.List;
 )
 @javax.persistence.Entity
 @Table(name="invoices")
-public class InvoiceImpl implements Invoice, Comparable {
+public class InvoiceImpl implements Invoice, Comparable<InvoiceImpl> {
 
     @Id
     @GeneratedValue
@@ -218,8 +218,8 @@ public class InvoiceImpl implements Invoice, Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        InvoiceImpl t = (InvoiceImpl) o;
+    public int compareTo(InvoiceImpl o) {
+        InvoiceImpl t = o;
         int i;
         Integer thisId = id;
         Integer thatId = t.id;

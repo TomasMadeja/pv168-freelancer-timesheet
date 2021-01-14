@@ -13,11 +13,11 @@ import java.util.function.Function;
 
 public class TableModel<T> extends AbstractTableModel {
 
-    protected final GenericContainer container;
+    protected final GenericContainer<T> container;
 //    protected final List<T> rows;
     private final List<Column<?, T>> columns;
 
-    public TableModel(GenericContainer container) {
+    public TableModel(GenericContainer<T> container) {
         super();
         this.columns = new ArrayList<>();
 //        this.rows = new ArrayList<>();
@@ -92,7 +92,7 @@ public class TableModel<T> extends AbstractTableModel {
     }
 
     public T getRow(int rowIndex) {
-        return (T) container.get(rowIndex);
+        return container.get(rowIndex);
     }
 
     protected class Column<ColT, RowT> {

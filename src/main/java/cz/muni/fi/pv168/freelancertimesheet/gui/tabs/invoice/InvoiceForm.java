@@ -90,7 +90,7 @@ public class InvoiceForm extends FormModel {
         addRow(new JLabel(i18n.getString("work")), buildWorkPicker());
         addRow(new JLabel(i18n.getString("total")), priceDisplay());
         addConfirmButton();
-        makeConfirmAddData();
+//        makeConfirmAddData();
         return this;
     }
 
@@ -142,30 +142,31 @@ public class InvoiceForm extends FormModel {
         PersistanceManager.generateAndPersistInvoice(invoice, pdfStorage);
     }
 
-    private void makeConfirmAddData() {
-        confirmButton.addActionListener((ActionEvent e) -> {
-            confirmButton.setEnabled(false);
-            Invoice invoice = getDataFromForm();
-            new SwingWorker<Void, Void>() {
-                @Override
-                public Void doInBackground() throws IOException, URISyntaxException {
-                    addDataToDatabase(invoice);
-                    InvoiceContainer.getContainer().refresh();
-                    return null;
-                }
+    @Override
+    protected void triggerConfirmCallback() {
+        confirmButton.setEnabled(false);
+        Invoice invoice = getDataFromForm();
+        new SwingWorker<Void, Void>() {
+            boolean cont = false;
+            @Override
+            public Void doInBackground() throws IOException, URISyntaxException {
+                addDataToDatabase(invoice);
+                cont = true;
+                InvoiceContainer.getContainer().refresh();
+                return null;
+            }
 
-                @Override
-                protected void done() {
-                    try {
-                        if (confirmCallback != null)
-                            confirmCallback.call();
-                    } catch (Exception ignore) {
-                    } finally {
-                        confirmButton.setEnabled(true);
-                    }
+            @Override
+            protected void done() {
+                try {
+                    if (confirmCallback != null && cont)
+                        confirmCallback.call();
+                } catch (Exception ignore) {
+                } finally {
+                    confirmButton.setEnabled(true);
                 }
-            }.execute();
-        });
+            }
+        }.execute();
     }
 
 }
