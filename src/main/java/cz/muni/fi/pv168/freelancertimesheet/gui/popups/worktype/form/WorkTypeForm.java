@@ -59,7 +59,7 @@ public class WorkTypeForm extends FormModel {
         }
         catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, i18n.getString("invHourlyRateMessage"), i18n.getString("invHourlyRateTitle"), JOptionPane.ERROR_MESSAGE);
-            return null;
+            throw e;
         }
     }
 
@@ -81,12 +81,14 @@ public class WorkTypeForm extends FormModel {
     private void makeConfirmAddData() {
         confirmButton.addActionListener(
                 (ActionEvent e) -> {
-                    confirmButton.setEnabled(false);
                     WorkType workType = getDataFromForm();
+                    confirmButton.setEnabled(false);
                     new SwingWorker<Void, Void>() {
+                        boolean cont = false;
                         @Override
                         public Void doInBackground() {
                             addDataToDatabase(workType);
+                            cont = true;
                             if (container != null) container.refresh();
                             return null;
                         }
@@ -94,7 +96,7 @@ public class WorkTypeForm extends FormModel {
                         @Override
                         protected void done() {
                             try {
-                                if (confirmCallback != null)
+                                if (confirmCallback != null && cont)
                                     confirmCallback.call();
                             } catch (Exception ignore) {
                             } finally {

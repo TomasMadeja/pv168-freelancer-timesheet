@@ -170,12 +170,14 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
     private void makeConfirmAddData() {
         confirmButton.addActionListener(
             (ActionEvent e) -> {
-                confirmButton.setEnabled(false);
                 Work work = prepareDataFromForms();
+                confirmButton.setEnabled(false);
                 new SwingWorker<Void, Void>() {
+                    boolean cont = false;
                     @Override
                     public Void doInBackground() {
                         addDataToDatabase(work);
+                        cont = true;
                         if (container != null) container.refresh();
                         return null;
                     }
@@ -183,7 +185,7 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
                     @Override
                     protected void done() {
                         try {
-                            if (confirmCallback != null)
+                            if (confirmCallback != null & cont)
                                 confirmCallback.call();
                         } catch (Exception ignore) {
                         } finally {
