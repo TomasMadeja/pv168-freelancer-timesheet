@@ -7,6 +7,40 @@
 * Martin Mojžíšek [IS](https://is.muni.cz/auth/osoba/485242) [GitHub](https://github.com/Megaranator)
 * Samuel Špalek [IS](https://is.muni.cz/auth/osoba/493013) [GitHub](https://github.com/Zyfix)
 
+## Building the application
+
+The primary build tool for the project is Gradle and requires JDK 11.  
+
+It's recommended to use `gradlew` on linux and `gradlew.bat` on windows to build the projects. 
+
+Some of the useful commands:
+
+```
+    check           - executes tests
+    shadowJar       - builds a fat-jar (includes all dependencies in single jar), located in build/libs/ folder
+    distZip         - builds distributable zip, located in build/distributions
+    distTar         - builds distributable tar, located in build/distributions
+    shadowDistZip   - builds fat-jar distributable zip, located in build/distributions
+    shadowDistTar   - builds fat-jar distributable tar, located in build/distributions
+``` 
+
+Distribution build structure:
+
+```
+    bin/    - application run scripts for win and linux
+    lib/    - jars
+```
+
+## Runtime
+
+Application creates and/or requires following in current directory:
+
+```
+    resources/dbDerby/  - contains database storage
+    pdfStorage/         - contains pdfFiles (linked to database)
+    derby.log           - derby db log file
+```
+
 ## Assignament Specification
 
 The application will allow for recording work done by the freelancer for clients. The
