@@ -6,9 +6,7 @@ import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.TableModel;
-import cz.muni.fi.pv168.freelancertimesheet.gui.models.WorkTypeTableModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform.iWorkTypeSetter;
-import org.hibernate.criterion.Restrictions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,18 +16,15 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
     private final I18N i18n = new I18N(getClass());
 
     private final iWorkTypeSetter workTypeSetter;
-    private final WorkTypeContainer container;
-    private JTable table;
-    private WorkTypeTableModel tableModel;
-
+    private final WorkTypeTable workTypeTable;
     protected FormModel.Callback confirmCallback;
 
     private final JButton confirm = new JButton(i18n.getString("select"));
 
     public ChooseWorkType(iWorkTypeSetter workTypeSetter) {
         this.workTypeSetter = workTypeSetter;
-        container = new WorkTypeContainer();
         selectionChanged(0);
+        workTypeTable = WorkTypeTable.setup();
     }
 
     @Override
@@ -50,18 +45,23 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
         constraints.gridy = 0;
         constraints.gridwidth = 1;
         constraints.gridheight = 1;
-        add(buildTable(), constraints);
+
+        add(workTypeTable, constraints);
+
+        confirm.setEnabled(true);
         confirm.addActionListener(e -> {
-                    var selectedWorkType = tableModel.getRow(table.getSelectedRow());
+                    var selectedWorkType = workTypeTable.getSelectedRow();
+                    if (selectedWorkType == null) return;
                     workTypeSetter.setWorkType(selectedWorkType);
                     triggerConfirmCallback();
                 }
         );
+
         constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.gridwidth = 0;
         constraints.gridheight = 0;
-        add(confirm, constraints);
+        this.add(confirm, constraints);
         return this;
     }
 
@@ -75,13 +75,19 @@ public class ChooseWorkType extends JPanel implements GenericElement<ChooseWorkT
         confirmCallback = callback;
     }
 
-    private Component buildTable() {
-        tableModel = new WorkTypeTableModel(container);
-        table = new JTable(tableModel);
-        table.getTableHeader().setReorderingAllowed(false);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.getSelectionModel().addListSelectionListener(e -> selectionChanged(table.getSelectedRows().length));
-        return new JScrollPane(table);
+    // Find JTable component recursively
+    private JTable getTable(Component container) {
+        Container component = (Container) container;
+        for (Component child : component.getComponents()) {
+            if (child instanceof JTable) {
+                return (JTable) child;
+            }
+            var output = getTable(child);
+            if (output != null) {
+                return output;
+            }
+        }
+        return null;
     }
 
     public static ChooseWorkType setup(iWorkTypeSetter workTypeSetter) {

@@ -5,36 +5,36 @@ import javax.swing.*;
 public class TextFieldFactory {
 
     public static class CustomWrappedClass extends JScrollPane {
-        JTextArea textArea;
+        JTextField textField;
 
-        public CustomWrappedClass(JTextArea textArea) {
-            super(textArea);
-            this.textArea = textArea;
-            textArea.setEditable(true);
+        public CustomWrappedClass(JTextField textField) {
+            super(textField);
+            this.textField = textField;
+            textField.setEditable(true);
         }
 
         @Override
         public void setEnabled(boolean enabled) {
             super.setEnabled(enabled);
-            textArea.setEnabled(enabled);
-            textArea.setEditable(enabled);
+            textField.setEnabled(enabled);
+            textField.setEditable(enabled);
         }
 
         public CustomWrappedClass setText(String text) {
-            textArea.setText(text);
+            textField.setText(text);
             return this;
         }
 
         public String getText() {
-            return textArea.getText();
+            return textField.getText();
         }
     }
 
     public static CustomWrappedClass createWrappedTextField() {
-        JTextArea textField = new JTextArea();
+        JTextField textField = new JTextField();
         CustomWrappedClass scrollPane = new CustomWrappedClass(textField);
-        textField.setLineWrap(true);
-        textField.setWrapStyleWord(true);
+//        textField.setLineWrap(true);
+//        textField.setWrapStyleWord(true);
 
         return scrollPane;
     }

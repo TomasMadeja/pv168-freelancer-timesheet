@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
@@ -12,8 +12,8 @@ import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkImpl;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkContainer;
-import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.elements.DateTimePickerFactory;
+import cz.muni.fi.pv168.freelancertimesheet.gui.elements.TextFieldFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 import cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.table.ChooseWorkTypeWindow;
 
@@ -21,10 +21,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URISyntaxException;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
@@ -35,11 +32,10 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
     private final I18N i18n = new I18N(getClass());
 
     private final DatePicker datePicker;
-    private final TimePicker startTimePicker;
-    private final TimePicker endTimePicker;
-    private final JTextField nameTextField = new JTextField();
-    private final JTextArea descriptionTextArea = new JTextArea();
-    private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
+    private final DateTimePicker startTimePicker;
+    private final DateTimePicker endTimePicker;
+    private final TextFieldFactory.CustomWrappedClass nameTextField;
+    private final TextFieldFactory.CustomWrappedClass descriptionTextArea;
 
     private final JTextField workTypeTextField;
     private final JButton workTypeButton;
@@ -51,9 +47,12 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
     public WorkForm(WorkContainer container) {
         super();
 
+        nameTextField = TextFieldFactory.createWrappedTextField();
+        descriptionTextArea = TextFieldFactory.createWrappedTextField();
+
         datePicker = setupDatePicker();
-        startTimePicker = setupTimePicker();
-        endTimePicker = setupTimePicker();
+        startTimePicker = DateTimePickerFactory.createGenericDateTimePicker("", "");
+        endTimePicker = DateTimePickerFactory.createGenericDateTimePicker("", "");
 
         workTypeTextField = new JTextField(20);
         workTypeTextField.setEditable(false);
@@ -90,9 +89,9 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
 
         addRow(new JLabel(i18n.getString("taskType")), workTypePanel);
 
-        addRow(new JLabel(i18n.getString("date")), datePicker);
+//        addRow(new JLabel(i18n.getString("date")), datePicker);
         addRow(new JLabel(i18n.getString("name")), nameTextField);
-        addRow(new JLabel(i18n.getString("description")), descriptionScrollPane);
+        addRow(new JLabel(i18n.getString("description")), descriptionTextArea);
         addRow(new JLabel(i18n.getString("startTime")), startTimePicker);
         addRow(new JLabel(i18n.getString("endTime")), endTimePicker);
 
@@ -153,8 +152,8 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
         return WorkImpl.createWork(
                 nameTextField.getText(),
                 descriptionTextArea.getText(),
-                getDateTimeFromForms(startTimePicker.getTime()),
-                getDateTimeFromForms(endTimePicker.getTime()),
+                startTimePicker.getDateTimeStrict().atZone(TimeZone.getDefault().toZoneId()),
+                endTimePicker.getDateTimeStrict().atZone(TimeZone.getDefault().toZoneId()),
                 workType
         );
     }

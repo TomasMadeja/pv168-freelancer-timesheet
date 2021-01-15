@@ -1,34 +1,33 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.worktype.form;
 
 import cz.muni.fi.pv168.freelancertimesheet.backend.PersistanceManager;
-import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.Invoice;
 import cz.muni.fi.pv168.freelancertimesheet.backend.interfaces.WorkType;
 import cz.muni.fi.pv168.freelancertimesheet.backend.orm.WorkTypeImpl;
 import cz.muni.fi.pv168.freelancertimesheet.gui.I18N;
-import cz.muni.fi.pv168.freelancertimesheet.gui.containers.InvoiceContainer;
 import cz.muni.fi.pv168.freelancertimesheet.gui.containers.WorkTypeContainer;
+import cz.muni.fi.pv168.freelancertimesheet.gui.elements.TextFieldFactory;
 import cz.muni.fi.pv168.freelancertimesheet.gui.models.FormModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 public class WorkTypeForm extends FormModel {
 
     private final I18N i18n = new I18N(getClass());
 
-    private final JTextField nameTextField = new JTextField();
-    private final JTextField rateTextField = new JTextField();
-    private final JTextArea descriptionTextArea = new JTextArea();
-    private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
+    private final TextFieldFactory.CustomWrappedClass nameTextField;
+    private final TextFieldFactory.CustomWrappedClass rateTextField;
+    private final TextFieldFactory.CustomWrappedClass descriptionTextArea;
 
     private WorkTypeContainer container;
 
     public WorkTypeForm(WorkTypeContainer container) {
         super();
-        rateTextField.setText(Double.toString(0));
         this.container = container;
+        nameTextField = TextFieldFactory.createWrappedTextField();
+        descriptionTextArea = TextFieldFactory.createWrappedTextField();
+        rateTextField = TextFieldFactory.createWrappedTextField();
+        rateTextField.setText(Double.toString(0));
     }
 
     public static WorkTypeForm setup(WorkTypeContainer container) {
@@ -44,8 +43,7 @@ public class WorkTypeForm extends FormModel {
     public WorkTypeForm setupNested() {
         addRow(new JLabel(i18n.getString("name")), nameTextField);
         addRow(new JLabel(i18n.getString("rate")), rateTextField);
-        JLabel descriptionLabel = new JLabel(i18n.getString("description"));
-        addRow(descriptionLabel, descriptionScrollPane);
+        addRow(new JLabel(i18n.getString("description")), descriptionTextArea);
         addConfirmButton();
         makeConfirmAddData();
         return this;
