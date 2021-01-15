@@ -144,8 +144,8 @@ public class InvoiceForm extends FormModel {
 
     @Override
     protected void triggerConfirmCallback() {
-        confirmButton.setEnabled(false);
         Invoice invoice = getDataFromForm();
+        confirmButton.setEnabled(false);
         new SwingWorker<Void, Void>() {
             boolean cont = false;
             @Override
