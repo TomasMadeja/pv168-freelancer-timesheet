@@ -136,7 +136,18 @@ public class InvoiceForm extends FormModel {
         invoice.validateAttributes();
     }
 
-    private void addDataToDatabase(Invoice invoice) throws IOException, URISyntaxException {
+    private void addDataToDatabase(Invoice invoice) throws Exception {
+        var issuers = PersistanceManager.getAllIssuer();
+        if (issuers.size() < 1) {
+            SwingUtilities.invokeLater(
+                    () -> JOptionPane.showMessageDialog(
+                            this,
+                            i18n.getString("errorMessageIssuerDoesntExist"),
+                            i18n.getString("errorTitleIssuerDoesntExist"), JOptionPane.ERROR_MESSAGE
+                    )
+            );
+            throw new Exception("Issuer doesn't exist");
+        }
         invoice.setIssuer(PersistanceManager.getAllIssuer().get(0));
         validateData(invoice);
         PersistanceManager.generateAndPersistInvoice(invoice, pdfStorage);
@@ -149,7 +160,7 @@ public class InvoiceForm extends FormModel {
         new SwingWorker<Void, Void>() {
             boolean cont = false;
             @Override
-            public Void doInBackground() throws IOException, URISyntaxException {
+            public Void doInBackground() throws Exception {
                 addDataToDatabase(invoice);
                 cont = true;
                 InvoiceContainer.getContainer().refresh();
