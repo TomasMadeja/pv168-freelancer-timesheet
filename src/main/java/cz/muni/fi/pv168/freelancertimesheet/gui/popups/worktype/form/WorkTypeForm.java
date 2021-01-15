@@ -66,7 +66,13 @@ public class WorkTypeForm extends FormModel {
     private WorkType validateData(WorkType workType) {
         if (workType == null) return null;
         if (workType.getName().isEmpty()) {
-            JOptionPane.showMessageDialog(this, i18n.getString("emptyNameMessage"), i18n.getString("emptyNameTitle"), JOptionPane.ERROR_MESSAGE);
+            SwingUtilities.invokeLater(
+                    () -> JOptionPane.showMessageDialog(
+                            this,
+                            i18n.getString("emptyNameMessage"),
+                            i18n.getString("emptyNameTitle"), JOptionPane.ERROR_MESSAGE
+                    )
+            );
             return null;
         }
         return workType;
