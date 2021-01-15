@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.freelancertimesheet.gui.popups.workform;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
@@ -31,11 +32,10 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
     private final I18N i18n = new I18N(getClass());
 
     private final DatePicker datePicker;
-    private final TimePicker startTimePicker;
-    private final TimePicker endTimePicker;
-    private final JTextField nameTextField = new JTextField();
-    private final JTextArea descriptionTextArea = new JTextArea();
-    private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
+    private final DateTimePicker startTimePicker;
+    private final DateTimePicker endTimePicker;
+    private final TextFieldFactory.CustomWrappedClass nameTextField;
+    private final TextFieldFactory.CustomWrappedClass descriptionTextArea;
 
     private final JTextField workTypeTextField;
     private final JButton workTypeButton;
@@ -47,9 +47,12 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
     public WorkForm(WorkContainer container) {
         super();
 
+        nameTextField = TextFieldFactory.createWrappedTextField();
+        descriptionTextArea = TextFieldFactory.createWrappedTextField();
+
         datePicker = setupDatePicker();
-        startTimePicker = setupTimePicker();
-        endTimePicker = setupTimePicker();
+        startTimePicker = DateTimePickerFactory.createGenericDateTimePicker("", "");
+        endTimePicker = DateTimePickerFactory.createGenericDateTimePicker("", "");
 
         workTypeTextField = new JTextField(20);
         workTypeTextField.setEditable(false);
@@ -86,9 +89,9 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
 
         addRow(new JLabel(i18n.getString("taskType")), workTypePanel);
 
-        addRow(new JLabel(i18n.getString("date")), datePicker);
-        addRow(new JLabel(i18n.getString("name")), TextFieldFactory.createWrappedTextField());
-        addRow(new JLabel(i18n.getString("description")), TextFieldFactory.createWrappedTextField());
+//        addRow(new JLabel(i18n.getString("date")), datePicker);
+        addRow(new JLabel(i18n.getString("name")), nameTextField);
+        addRow(new JLabel(i18n.getString("description")), descriptionTextArea);
         addRow(new JLabel(i18n.getString("startTime")), startTimePicker);
         addRow(new JLabel(i18n.getString("endTime")), endTimePicker);
 
@@ -149,8 +152,8 @@ public class WorkForm extends FormModel implements iWorkTypeSetter {
         return WorkImpl.createWork(
                 nameTextField.getText(),
                 descriptionTextArea.getText(),
-                getDateTimeFromForms(startTimePicker.getTime()),
-                getDateTimeFromForms(endTimePicker.getTime()),
+                startTimePicker.getDateTimeStrict().atZone(TimeZone.getDefault().toZoneId()),
+                endTimePicker.getDateTimeStrict().atZone(TimeZone.getDefault().toZoneId()),
                 workType
         );
     }

@@ -17,8 +17,7 @@ public class WorkTypeForm extends FormModel {
 
     private final TextFieldFactory.CustomWrappedClass nameTextField;
     private final TextFieldFactory.CustomWrappedClass rateTextField;
-    private final JTextArea descriptionTextArea = new JTextArea();
-    private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
+    private final TextFieldFactory.CustomWrappedClass descriptionTextArea;
 
     private WorkTypeContainer container;
 
@@ -26,6 +25,7 @@ public class WorkTypeForm extends FormModel {
         super();
         this.container = container;
         nameTextField = TextFieldFactory.createWrappedTextField();
+        descriptionTextArea = TextFieldFactory.createWrappedTextField();
         rateTextField = TextFieldFactory.createWrappedTextField();
         rateTextField.setText(Double.toString(0));
     }
@@ -43,8 +43,7 @@ public class WorkTypeForm extends FormModel {
     public WorkTypeForm setupNested() {
         addRow(new JLabel(i18n.getString("name")), nameTextField);
         addRow(new JLabel(i18n.getString("rate")), rateTextField);
-        JLabel descriptionLabel = new JLabel(i18n.getString("description"));
-        addRow(descriptionLabel, TextFieldFactory.createWrappedTextField());
+        addRow(new JLabel(i18n.getString("description")), descriptionTextArea);
         addConfirmButton();
         makeConfirmAddData();
         return this;

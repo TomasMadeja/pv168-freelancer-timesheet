@@ -3,6 +3,8 @@ package cz.muni.fi.pv168.freelancertimesheet.gui.elements;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.DateTimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 
 import javax.swing.*;
 import java.text.ParseException;
@@ -42,6 +44,19 @@ public class DateTimePickerFactory {
 
         JButton datePickerButton = datePicker.getComponentToggleCalendarButton();
         datePicker.setText(title);
+
+        return datePicker;
+    }
+
+    public static DateTimePicker createGenericDateTimePicker(String dateTitle, String timeTitle) {
+        DatePickerSettings dateSettings = new DatePickerSettings();
+        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+        var datePicker = new DateTimePicker(dateSettings, new TimePickerSettings());
+        datePicker.getDatePicker().getComponentDateTextField().setEditable(false);
+        datePicker.getTimePicker().getComponentTimeTextField().setEditable(false);
+
+        datePicker.getDatePicker().getComponentToggleCalendarButton().setText(dateTitle);
+        datePicker.getTimePicker().getComponentTimeTextField().setText(timeTitle);
 
         return datePicker;
     }
